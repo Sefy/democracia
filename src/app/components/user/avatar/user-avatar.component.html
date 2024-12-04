@@ -1,0 +1,29 @@
+<!--<div class="avatar">-->
+<!--  &lt;!&ndash; @TODO: prévoir un avatar par défaut ? parmi quelques images de base ? &ndash;&gt;-->
+<!--  <img height="32" width="32" [src]="user.avatarUrl" />-->
+<!--</div>-->
+
+<!--{{ user.username }}-->
+
+<div class="avatar-container" cdkOverlayOrigin #trigger="cdkOverlayOrigin" (mouseenter)="toggleHover(true)"
+     (mouseleave)="toggleHover(false)">
+  <!-- Avatar circulaire -->
+  <img [src]="user.avatarUrl" alt="Avatar" class="avatar-image"/>
+
+  <!-- Info box affichée au survol -->
+</div>
+
+<ng-template
+  cdkConnectedOverlay
+  [cdkConnectedOverlayOrigin]="trigger"
+  [cdkConnectedOverlayOpen]="isHover"
+>
+
+  <div class="info-box" (mouseenter)="toggleHover(true)" (mouseleave)="toggleHover(false)">
+    <h3>{{ user.username }}</h3>
+    <p>{{ user.email }}</p>
+
+    <span *ngIf="user.role" class="role role-{{ user.role.toLowerCase() }}">{{ user.role|role }}</span>
+  </div>
+
+</ng-template>

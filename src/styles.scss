@@ -1,0 +1,49 @@
+@use '@angular/material' as mat;
+@use 'style-parts/util';
+@use 'style-parts/components/button';
+@use 'style-parts/components/dialog';
+@use 'style-parts/components/mat-vars';
+@use 'style-parts/theme';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+$mat-theme: theme.mat-build();
+$theme: theme.build(#002654, #CE1126);
+
+:root {
+  @include util.vars($theme);
+
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24
+  }
+}
+
+html {
+  @include mat.theme((
+    color: $mat-theme,
+    typography: 'Inter',
+    density: 0
+  ));
+}
+
+@include util.reset();
+@include util.style();
+@include util.animations();
+
+// components
+@include button.style();
+@include dialog.style();
+@include mat-vars.overrides();
+
+// @TODO: move to something like "_container.scss" or "_global.scss" ...
+
+body {
+  // global initial settings : background and font
+  font-family: "Inter", ui-sans-serif, sytem-ui, sans-serif;
+  font-feature-settings: 'cv11';
+}

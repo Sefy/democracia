@@ -1,0 +1,18 @@
+<mat-toolbar>
+  <button class="sidenav-toggle" mat-icon-button (click)="toggleSideNav.emit()">
+    <mat-icon>menu</mat-icon>
+  </button>
+
+  <a href="/" class="title-logo">
+    <img src="/assets/img/democracia-logo.png">
+    <h1>DEMOCRACIA</h1>
+  </a>
+
+  <div class="topbar-buttons">
+
+    <app-theme-switcher />
+
+    <app-login-button />
+  </div>
+
+</mat-toolbar>

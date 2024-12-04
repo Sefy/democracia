@@ -1,0 +1,24 @@
+:host {
+  display: block;
+  padding: 1em;
+
+  .header {
+    text-align: center;
+
+    img {
+      display: inline-block;
+      width: 300px;
+      margin-bottom: .75rem;
+    }
+  }
+
+  .discours {
+    max-width: 1280px;
+    margin: auto;
+    text-align: justify;
+
+    p {
+      margin: 1.5em;
+    }
+  }
+}

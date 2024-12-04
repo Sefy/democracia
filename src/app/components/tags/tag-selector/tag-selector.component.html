@@ -1,0 +1,17 @@
+<app-tag-list [tags]="value" label="Tags sélectionnés" [delete]="true" (onDelete)="deleteTag($event)">
+  <mat-form-field subscriptSizing="dynamic">
+    <mat-label>Nouveau tag</mat-label>
+
+    <input
+      matInput
+      [formControl]="searchControl"
+      [matAutocomplete]="matAutocomplete"
+    />
+
+    <mat-autocomplete #matAutocomplete="matAutocomplete" (optionSelected)="addTag($event)">
+      <mat-option *ngFor="let tag of filteredTags" [value]="tag.id">
+        <app-tag-item [tag]="tag"/>
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</app-tag-list>

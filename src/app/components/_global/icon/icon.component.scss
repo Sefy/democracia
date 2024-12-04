@@ -1,0 +1,17 @@
+:host {
+  display: contents;
+
+  --icon-size: 21px;
+
+  .mat-icon {
+    font-size: var(--icon-size);
+    height: auto;
+    width: auto;
+  }
+
+  fa-icon {
+    ::ng-deep svg {
+      height: var(--icon-size);
+    }
+  }
+}

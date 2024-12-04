@@ -1,0 +1,28 @@
+:host {
+  > button {
+    display: flex;
+    place-items: center;
+  }
+
+  app-user-avatar {
+    margin-right: .25rem;
+
+    ::ng-deep .avatar-container img {
+      border: none !important;
+    }
+  }
+}
+
+::ng-deep .login-menu-panel {
+  //background-color: rgba(255, 255, 255, .8) !important;
+}
+
+.login-menu-container {
+  p {
+    margin: 5px 1em;
+  }
+
+  button {
+    text-align: center;
+  }
+}

@@ -1,0 +1,8 @@
+@use '@angular/material' as mat;
+
+@mixin overrides() {
+  @include mat.slide-toggle-overrides((
+    track-height: 28px,
+    with-icon-handle-size: 21px
+  ));
+}

@@ -1,0 +1,26 @@
+footer {
+  width: 100%;
+
+  mat-toolbar {
+    background: var(--secondary-base);
+    color: var(--secondary-base-contrast);
+
+    display: flex;
+    flex-direction: column;
+    place-items: center;
+    place-content: center;
+    font-size: 12px;
+    line-height: 1.25;
+    height: auto;
+    padding: .5em;
+    gap: .5em;
+  }
+
+  .links {
+    display: flex;
+    place-items: center;
+    gap: 1em;
+
+    --icon-size: 2.5em;
+  }
+}

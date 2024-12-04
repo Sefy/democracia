@@ -1,0 +1,15 @@
+mat-nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: .5em;
+}
+
+mat-list-item {
+  a {
+    color: unset;
+  }
+}
+
+hr {
+  margin: 5px 10px;
+}

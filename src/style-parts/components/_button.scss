@@ -1,0 +1,26 @@
+@use '../util';
+
+@mixin style() {
+  button {
+    padding: var(--component-padding);
+    border-radius: var(--component-radius);
+
+    &.center-inner .mdc-button__label {
+      display: flex;
+      place-items: center;
+      gap: 4px;
+    }
+
+    &.gradient {
+      @include util.gradient-bg();
+
+      &:hover {
+        box-shadow: 0 0 10px 0 var(--secondary-base);
+      }
+    }
+
+    &.icon-btn {
+      border-radius: 50%;
+    }
+  }
+}

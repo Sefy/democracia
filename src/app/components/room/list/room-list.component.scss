@@ -1,0 +1,62 @@
+:host {
+
+  &.grid {
+    grid-template-columns: repeat(auto-fill, minmax(max(20%, 400px), 1fr));
+    gap: 1em;
+  }
+
+  .room-item {
+    cursor: pointer;
+
+    app-card-header {
+      display: flex;
+      place-items: center;
+
+      .room-status {
+        margin-left: auto;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+
+        &.active {
+          background: lightgreen;
+        }
+
+        &.inactive {
+          background: indianred;
+        }
+      }
+    }
+
+    .subject {
+      color: var(--mat-sys-primary);
+    }
+
+    .description {
+      color: var(--color-text-gray);
+      font-style: italic;
+
+      &:empty {
+        display: none;
+      }
+    }
+
+    app-tag-list:empty {
+      display: none;
+    }
+
+    .icons-list {
+      display: flex;
+      place-items: center;
+      gap: 10px;
+      color: var(--color-text-light);
+
+      span {
+        //display: contents;
+        display: flex;
+        place-items: center;
+        gap: 5px;
+      }
+    }
+  }
+}

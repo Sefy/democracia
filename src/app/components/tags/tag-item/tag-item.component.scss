@@ -1,0 +1,19 @@
+:host {
+  display: inline-flex;
+  place-items: center;
+
+  border-radius: 20px;
+  padding: .4em .7em;
+
+  white-space: nowrap;
+
+  gap: .5em;
+
+  .delete {
+    cursor: pointer;
+  }
+
+  app-icon {
+    display: inherit;
+  }
+}

@@ -1,0 +1,9 @@
+<app-base-input label="Recherche ..." iconPrefix="search" class="search" [ngModel]="''"
+                (ngModelChange)="searchChange.next($event)" />
+
+<button mat-raised-button class="center-inner" (click)="createRoom.next($event)">
+  <app-icon icon="add"/>
+  Nouvelle Room
+</button>
+
+<ng-content />

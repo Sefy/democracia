@@ -1,0 +1,9 @@
+<app-dialog-header [title]="room.title">
+  <button mat-icon-button (click)="expandRoom()">
+    <app-icon icon="open_in_full"/>
+  </button>
+</app-dialog-header>
+
+<mat-dialog-content>
+  <app-chatbox [roomInfo]="room" [noTitle]="true"/>
+</mat-dialog-content>

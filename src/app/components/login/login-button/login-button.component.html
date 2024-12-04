@@ -1,0 +1,38 @@
+<button mat-raised-button [matMenuTriggerFor]="userMenu" (menuOpened)="onOpen()"
+        style="--mat-protected-button-horizontal-padding: 16px">
+  <div class="flex items-center" style="gap: 3px">
+    @if (user) {
+      <app-user-avatar [user]="user" [disableHover]="true" style="--avatar-size: 30px" />
+      <span>{{ user.username }}</span>
+    } @else {
+      <ng-container *ngTemplateOutlet="loginIcon"/>
+      <span>Non connecté</span>
+    }
+  </div>
+
+  <ng-template #loginIcon>
+    <mat-icon>account_circle</mat-icon>
+  </ng-template>
+</button>
+
+<mat-menu #userMenu="matMenu" class="login-menu-panel">
+  <div (click)="preventMenuClose($event)" class="login-menu-container">
+    <ng-container *ngIf="user; else notLogged">
+      <p>Connecté en tant que {{ user.username }}</p>
+
+      <button mat-menu-item (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        Déconnexion
+      </button>
+    </ng-container>
+
+    <ng-template #notLogged>
+      <p>Non connecté</p>
+
+      <button mat-menu-item (click)="login()">
+        <mat-icon>login</mat-icon>
+        Se connecter
+      </button>
+    </ng-template>
+  </div>
+</mat-menu>

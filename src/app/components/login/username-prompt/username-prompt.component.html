@@ -1,0 +1,17 @@
+<app-dialog-header title="Nom d'utilisateur" [noClose]="true"/>
+
+<div style="position: relative">
+  <app-loader *ngIf="loading" [overlay]="true"/>
+  <mat-dialog-content style="padding-top: 0">
+    <div class="mb-2">Veuillez choisir un nom d'utilisateur</div>
+
+    <mat-form-field subscriptSizing="dynamic" style="width: 100%">
+      <mat-label>Nom / Pseudo</mat-label>
+      <input matInput (keyup.enter)="submit()" [(ngModel)]="username">
+    </mat-form-field>
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <button mat-raised-button (click)="submit()">OK</button>
+  </mat-dialog-actions>
+</div>

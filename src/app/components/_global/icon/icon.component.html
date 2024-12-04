@@ -1,0 +1,5 @@
+@if (type === 'mat') {
+  <mat-icon>{{ icon }}</mat-icon>
+} @else {
+  <fa-icon [icon]="[type, icon]" />
+}

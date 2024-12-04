@@ -1,0 +1,21 @@
+.main-sidenav-menu {
+  min-width: 200px;
+
+  opacity: .8;
+  backdrop-filter: blur(4px);
+
+  padding: .5em;
+
+  ::ng-deep .mat-drawer-inner-container {
+    display: flex;
+    flex-direction: column;
+
+    app-nav-menu {
+      flex: 1;
+    }
+  }
+}
+
+.main-container {
+  min-height: calc(100vh - var(--header-height));
+}

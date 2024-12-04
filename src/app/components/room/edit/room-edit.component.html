@@ -1,0 +1,18 @@
+<app-dialog-header [title]="room?.id ? 'Modifier Room' : 'Nouvelle Room'" />
+
+<form (submit)="submit($event)" [formGroup]="form">
+  <app-loader *ngIf="loading" [overlay]="true" />
+
+  <mat-dialog-content>
+    <app-base-input formControlName="title" label="Titre" />
+    <app-base-input formControlName="description" label="Description" />
+
+    <app-tag-selector formControlName="tags" />
+
+    <!-- @TODO: think about options like max members ? toxicity level tolerance ? etc ... -->
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <button mat-raised-button>OK</button>
+  </mat-dialog-actions>
+</form>

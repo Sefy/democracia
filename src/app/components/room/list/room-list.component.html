@@ -1,0 +1,35 @@
+<app-card *ngFor="let room of rooms" class="room-item mat-elevation-z9" (click)="openDetail(room)">
+  <app-card-header>
+    <h3 class="subject">{{ room.title }}</h3>
+
+    <span class="room-status {{ room.isActive ? 'active': 'inactive' }}" [matTooltip]="room.isActive ? 'Active' : 'Inactive'"></span>
+
+    <span class="subtitle"></span>
+  </app-card-header>
+
+  <app-card-content class="flex flex-col gap-2 mt-3">
+    <div class="description">{{ room.description }}</div>
+
+    <app-tag-list *ngIf="room.tags?.length" [tags]="room.tags"/>
+
+    <div class="flex-1"></div>
+
+    <div class="icons-list">
+      <span matTooltip="Tendance">
+        <app-icon icon="trending_up"/>
+        {{ room.trendingScore }}
+      </span>
+
+      <span matTooltip="Messages">
+        <app-icon icon="mail"/>
+        {{ room.messagesCount }}
+      </span>
+
+      <span matTooltip="Utilisateurs connectés">
+        <app-icon icon="person"/>
+        {{ room.userCount ?? '-' }}
+      </span>
+      <!--      [Tendance : #{{ room.trendingPos }} / Connectés : {{ room.userCount }} / Messages : {{ room.messagesCount }}]-->
+    </div>
+  </app-card-content>
+</app-card>

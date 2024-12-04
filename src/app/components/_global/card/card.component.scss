@@ -1,0 +1,16 @@
+:host {
+  display: flex;
+  flex-direction: column;
+
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--container-radius, 5px);
+  background: light-dark(white, black);
+  box-shadow: var(--shadow-small) rgba(0, 0, 0, 0.5);
+  transition: all 0.2s;
+
+  font-size: 14px; // @TODO: move to taille de la typo globale !
+
+  &:hover {
+    box-shadow: var(--shadow-medium) rgba(0, 0, 0, .5);
+  }
+}

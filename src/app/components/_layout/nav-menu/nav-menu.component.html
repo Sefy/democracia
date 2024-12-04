@@ -1,0 +1,12 @@
+<mat-nav-list>
+  <ng-container *ngFor="let item of items">
+    <mat-list-item [matTooltip]="item.description!" [activated]="!!item.isActive" [routerLink]="item.link">
+      <div class="flex items-center gap-2" matListItemTitle>
+        <mat-icon *ngIf="item.icon">{{ item.icon }}</mat-icon>
+        {{ item.name }}
+      </div>
+    </mat-list-item>
+
+    <hr *ngIf="item.dividerAfter"/>
+  </ng-container>
+</mat-nav-list>

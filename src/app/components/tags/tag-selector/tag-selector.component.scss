@@ -1,0 +1,20 @@
+mat-form-field {
+  width: 100%;
+  margin-top: .5em;
+}
+
+::ng-deep mat-option app-tag-item {
+  padding: 3px 10px;
+
+  mat-icon {
+    margin-right: unset !important;
+  }
+}
+
+app-tag-list {
+  display: block;
+  background: var(--primary-extra-light-trans-25);
+  border-radius: var(--component-radius);
+  padding: .5em;
+  margin-bottom: .5em;
+}

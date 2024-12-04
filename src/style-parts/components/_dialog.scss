@@ -1,0 +1,5 @@
+@mixin style() {
+  .cdk-overlay-backdrop {
+    backdrop-filter: blur(4px);
+  }
+}

@@ -1,0 +1,40 @@
+<div class="chatroom-header">
+  <h3 *ngIf="!noTitle" class="chatroom-title">{{ ($any(room) ?? roomInfo).title }}</h3>
+
+  <p class="chatroom-desc">{{ ($any((room)) ?? roomInfo).description }}</p>
+
+  <!-- mat-tabs : messages les plus votés, votes en cours, users connectés ... -->
+  <mat-tab-group *ngIf="room">
+    <mat-tab label="Top messages">
+
+      <app-top-messages [messages]="$any(room)?.mostVoted"/>
+    </mat-tab>
+
+    <mat-tab label="Votes en cours">
+      Changer le sujet de la room en ...
+    </mat-tab>
+
+    <mat-tab label="Utilisateurs" bodyClass="user-tab">
+      <!-- @TODO: ajouter des statuts, réputation, etc ... à afficher au hover de l'avatar ? -->
+      <app-user-avatar *ngFor="let user of room.users" [user]="user" />
+
+      <div *ngIf="room.anonCount" class="anon-count">+ {{ room.anonCount }} anonymes</div>
+    </mat-tab>
+  </mat-tab-group>
+</div>
+
+<div class="messages-container">
+  <app-messages-list *ngIf="room?.messages; else loader" [messages]="room.messages" (onLike)="sendLike($event)"/>
+</div>
+
+<div class="input-message-container">
+  <mat-form-field subscriptSizing="dynamic" [class.must-login]="!currentUser" (click)="onClickMessageInput($event)">
+    <mat-label>{{ currentUser ? 'Votre message' : 'Connexion requise' }}</mat-label>
+    <input matInput [(ngModel)]="message" (ngModelChange)="onMessageTyping($event)" (keyup.enter)="sendMessage()"
+           [disabled]="!socketConnected"/>
+  </mat-form-field>
+</div>
+
+<ng-template #loader>
+  <app-loader [overlay]="true" [size]="100" message="Chargement des messages ..."/>
+</ng-template>

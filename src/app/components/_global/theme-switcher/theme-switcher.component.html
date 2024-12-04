@@ -1,0 +1,4 @@
+<mat-icon>light_mode</mat-icon>
+<mat-slide-toggle [ngModel]="(themeService.currentTheme$|async) === 'dark'"
+                  (ngModelChange)="themeService.setTheme($event ? 'dark' : 'light')"/>
+<mat-icon>dark_mode</mat-icon>

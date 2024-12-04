@@ -1,0 +1,13 @@
+<app-header (toggleSideNav)="sidenav.toggle()"/>
+
+<mat-sidenav-container [hasBackdrop]="true">
+  <mat-sidenav #sidenav mode="over" class="main-sidenav-menu" [autoFocus]="false">
+    <app-nav-menu />
+    <app-theme-switcher />
+  </mat-sidenav>
+
+
+  <mat-sidenav-content class="main-container" [@routeAnimations]="slideInAnimation">
+    <router-outlet/>
+  </mat-sidenav-content>
+</mat-sidenav-container>

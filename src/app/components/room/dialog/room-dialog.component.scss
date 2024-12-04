@@ -1,0 +1,11 @@
+:host {
+  --mat-dialog-content-padding: 1em;
+
+  mat-dialog-content {
+    max-height: 85vh;
+  }
+
+  app-dialog-header ::ng-deep button + button {
+    margin-left: unset !important;
+  }
+}

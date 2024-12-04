@@ -1,0 +1,22 @@
+<div class="hero">
+  <h1 class="page-title">
+    Democracia Project
+  </h1>
+
+  <app-quote class="text-lg"/>
+</div>
+
+<div class="home-rooms-container">
+  <app-room-list-header (createRoom)="createRoom()" (searchChange)="searchSubject.next($event)">
+    <mat-slide-toggle (change)="toggleAutoRefresh($event.checked)" [checked]="true">Refresh auto</mat-slide-toggle>
+  </app-room-list-header>
+  <app-room-list *ngIf="rooms; else loader" [rooms]="rooms" [options]="{grid: true}"/>
+</div>
+
+<div class="flex-1"></div>
+
+<app-footer/>
+
+<ng-template #loader>
+  <app-loader [size]="80" class="center" message="Chargement ..."/>
+</ng-template>

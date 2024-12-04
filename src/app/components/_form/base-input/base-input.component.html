@@ -1,0 +1,26 @@
+<mat-form-field subscriptSizing="dynamic">
+  <mat-label *ngIf="label">{{ label }}</mat-label>
+  <mat-icon *ngIf="iconPrefix" matIconPrefix>{{ iconPrefix }}</mat-icon>
+  <input matInput
+         [ngModel]="value"
+         (ngModelChange)="_onChange($event)"
+         [required]="required"
+         [placeholder]="placeholder ?? ''"
+  />
+
+  @if (autocomplete) {
+    <input matInput
+           [ngModel]="value"
+           (ngModelChange)="_onChange($event)"
+           [required]="required"
+           [placeholder]="placeholder ?? ''"
+           [matAutocomplete]="auto"
+    />
+
+    <mat-autocomplete #auto="matAutocomplete">
+      @if (autocomplete.loading) {
+        <mat-option *ngFor="let option of autocomplete.options" [value]="option">{{ option }}</mat-option>
+      }
+    </mat-autocomplete>
+  }
+</mat-form-field>

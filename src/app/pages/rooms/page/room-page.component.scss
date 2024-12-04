@@ -1,0 +1,13 @@
+:host {
+  max-width: 90vw;
+  margin: auto;
+  padding: 1em;
+
+  display: flex;
+  flex-direction: column;
+  min-height: inherit;
+
+  app-chatbox {
+    flex: 1;
+  }
+}

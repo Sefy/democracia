@@ -1,0 +1,17 @@
+<mat-toolbar *ngIf="draggable" mat-dialog-title cdkDrag cdkDragHandle cdkDragRootElement=".cdk-overlay-pane" class="draggable">
+  <ng-container *ngTemplateOutlet="content" />
+</mat-toolbar>
+
+<mat-toolbar *ngIf="!draggable">
+  <ng-container *ngTemplateOutlet="content" />
+</mat-toolbar>
+
+<ng-template #content>
+  <span class="flex-1">{{ title }}</span>
+
+  <ng-content />
+
+  <button *ngIf="!noClose" mat-icon-button mat-dialog-close tabindex="-1">
+    <mat-icon>close</mat-icon>
+  </button>
+</ng-template>

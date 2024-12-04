@@ -1,0 +1,9 @@
+.table-header {
+  display: flex;
+  place-items: center;
+  margin-bottom: 7px;
+
+  .buttons {
+    margin-left: auto;
+  }
+}

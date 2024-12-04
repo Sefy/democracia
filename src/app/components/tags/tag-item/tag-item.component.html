@@ -1,0 +1,3 @@
+<app-icon *ngIf="tag.icon" class="icon" [icon]="tag.icon"/>
+{{ tag.name }}
+<app-icon *ngIf="delete" icon="close" class="delete" (click)="onDelete.emit(tag)" matTooltip="Supprimer" />

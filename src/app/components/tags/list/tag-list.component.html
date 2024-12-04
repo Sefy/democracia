@@ -1,0 +1,9 @@
+<span *ngIf="label" class="label">{{ label }}</span>
+
+@if (tags) {
+  <div class="list-container">
+    <app-tag-item *ngFor="let tag of tags" [tag]="tag" [delete]="delete" (onDelete)="onDelete.emit($event)" />
+  </div>
+}
+
+<ng-content />

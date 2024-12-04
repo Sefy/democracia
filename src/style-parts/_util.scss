@@ -1,0 +1,232 @@
+@use './theme';
+@use 'sass:list';
+@use 'sass:math';
+
+// covered by TW
+@mixin reset() {
+  * {
+    box-sizing: border-box;
+    border: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  body {
+    margin: 0;
+    line-height: inherit;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: inherit;
+  }
+
+  menu, ol, ul {
+    list-style: none;
+  }
+
+  button, input, optgroup, select, textarea {
+    font: inherit;
+    font-feature-settings: inherit;
+    font-variation-settings: inherit;
+    letter-spacing: inherit;
+    color: inherit;
+    background: none;
+  }
+
+  button {
+    cursor: pointer;
+    padding: unset;
+  }
+}
+
+@mixin vars($theme) {
+  @include theme.expose-vars($theme);
+
+  // sizes
+  --header-height: 64px;
+
+  --container-padding: 10px 16px;
+  --container-radius: 10px;
+
+  --component-padding: .3em 1em;
+  --component-radius: 7px;
+
+  --color-text-gray: rgb(156 163 175); // text-gray-400, thx TW :p
+  --color-text-light: light-dark(rgba(0, 0, 0, .7), rgba(255, 255, 255, .7));
+
+  --mdc-elevated-card-container-color: light-dark(#fafafa, #333);
+
+  --shadow-color: light-dark(rgba(0, 0, 0, .1), rgba((255, 255, 255, .1)));
+  --shadow-small: 0 1px 2px 0;
+  --shadow-medium: 0 4px 6px 0;
+  --shadow-large: 0 6px 8px 0;
+}
+
+@mixin style() {
+  .gradient-bg {
+    @include gradient-bg();
+  }
+
+  .gradient-text {
+    @include gradient-bg();
+    background-clip: text;
+    color: transparent;
+  }
+
+  .secondary-glow {
+    box-shadow: var(--glow-box-shadow, 0 0 10px 0) var(--secondary-base);
+  }
+
+  .draggable {
+    cursor: move;
+  }
+
+  .page-title {
+    font-size: 3rem;
+    line-height: 1;
+    font-weight: 700;
+    margin-bottom: .5rem;
+  }
+
+  // solution temporaire pcq déconne en prod, et je l'utilise finalement pas tant que ça @TODO: voir ce qu'on fait ...
+  // juste à commenter quand on est en local ...
+  @include tw-polyfill();
+}
+
+// @NB: pas besoin si TW ;o
+@mixin tw-polyfill() {
+  html {
+    line-height: 1.5;
+    -webkit-text-size-adjust: 100%;
+    -moz-tab-size: 4;
+    tab-size: 4;
+    font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    font-feature-settings: normal;
+    font-variation-settings: normal;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  img, svg, video, canvas, audio, iframe, embed, object {
+    display: block;
+    vertical-align: middle;
+  }
+
+  blockquote, dl, dd, h1, h2, h3, h4, h5, h6, hr, figure, p, pre {
+    margin: 0;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-size: inherit;
+    font-weight: inherit;
+  }
+
+  .flex {
+    display: flex;
+  }
+
+  .flex-col {
+    flex-direction: column;
+  }
+
+  .grid {
+    display: grid;
+  }
+
+  .flex-1 {
+    flex: 1;
+  }
+
+  .items-center {
+    place-items: center;
+  }
+
+  .content-center {
+    place-items: center;
+  }
+
+  .text-center {
+    text-align: center;
+  }
+
+  .font-bold {
+    font-weight: 700;
+  }
+
+  .text-lg {
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+  }
+
+  @for $i from 1 to 10 {
+    .gap-#{$i} {
+      gap: #{$i * 4px};
+    }
+
+    .mt-#{$i} {
+      margin-top: #{$i * 4px};
+    }
+  }
+}
+
+@mixin gradient-bg() {
+  background: linear-gradient(to right, var(--primary-base), var(--secondary-base));
+}
+
+@mixin animations() {
+  @keyframes bg-position-loop {
+    0% {
+      background-position: 0 100%;
+    }
+
+    50% {
+      background-position: 100% 0;
+    }
+
+    100% {
+      background-position: 0 100%;
+    }
+  }
+}
+
+//// carré à peu près OK
+//// -8px -8px 10px -5px var(--primary-base),      8px -8px 10px -5px,      0px 8px 10px -5px var(--secondary-base)
+//@mixin rotate-shadow-animation($colors) {
+//  $percents: (0, 25, 50, 75, 100);
+//
+//  @keyframes rotate-shadow {
+//    @for $i from 1 through list.length($percents) {
+//      $percent: list.nth($percents, $i);
+//
+//      #{$percent}% {
+//        $colorsShadows: ();
+//
+//        @for $j from 1 through list.length($colors) {
+//          $color: list.nth($colors, $j);
+//
+//          $state: ($i - 1 + $j - 1) % 5;
+//
+//          $colorsShadows: list.append($colorsShadows, get-shadow-rotation($state) 10px $color, 'comma');
+//        }
+//
+//        box-shadow: $colorsShadows;
+//      }
+//    }
+//  }
+//}
+//
+//@function get-shadow-rotation($state) {
+//  $size: 10px;
+//
+//  @if ($state == 0) {
+//    @return 20px 0;
+//  } @else if ($state == 1) {
+//    @return 0 20px;
+//  } @else if ($state == 2) {
+//    @return -20px 0;
+//  } @else if ($state == 3) {
+//    @return 0 -20px;
+//  }
+//
+//  @return 20px 0;
+//}

@@ -1,0 +1,88 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 50vh;
+
+  border-radius: 5px;
+
+  .chatroom-desc:not(:empty) {
+    font-size: 14px;
+    font-style: italic;
+    color: var(--color-text-gray);
+    margin-bottom: 10px;
+  }
+
+  .chatroom-header {
+    margin-bottom: 10px;
+
+    .chatroom-title {
+      font-size: 32px;
+      line-height: 1.5;
+      margin-bottom: .25em;
+      color: rgba(0, 0, 0, .8);
+      text-align: center;
+    }
+
+    mat-tab-group {
+      border: 1px solid rgba(0, 0, 0, .15);
+      border-radius: var(--container-radius);
+
+      ::ng-deep .mat-mdc-tab-body-wrapper {
+        margin-top: 5px;
+        border-radius: 5px;
+        background: rgba(255, 255, 255, 0.35);
+      }
+    }
+  }
+
+  .messages-container {
+    min-height: 300px;
+    max-height: 90vh;
+    width: 100%;
+    //padding: 0 5px;
+    flex: 1;
+    overflow: auto;
+    padding: 10px 0;
+    position: relative;
+
+    background: light-dark(rgba(255, 255, 255, .75), rgba(0, 0, 0, .75));
+    border-radius: var(--container-radius);
+  }
+
+  .input-message-container {
+    width: 100%;
+    margin-top: 10px;
+
+    mat-form-field {
+      width: 100%;
+
+      &.must-login {
+        cursor: pointer;
+
+        input {
+          cursor: inherit;
+        }
+      }
+    }
+  }
+
+  ::ng-deep .mat-mdc-tab-body-content {
+    padding: 10px;
+  }
+
+  ::ng-deep .user-tab .mat-mdc-tab-body-content {
+      max-height: 30vh;
+
+    display: flex;
+    flex-wrap: wrap;
+    place-items: center;
+    place-content: space-evenly;
+    gap: .5em;
+
+    .anon-count {
+      font-style: italic;
+      font-size: small;
+      text-align: center;
+    }
+  }
+}

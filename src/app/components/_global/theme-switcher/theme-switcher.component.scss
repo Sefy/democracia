@@ -1,0 +1,10 @@
+@use '@angular/material' as mat;
+
+:host {
+  display: flex;
+  place-items: center;
+  gap: 5px;
+  margin: 1em auto;
+
+  --mdc-switch-state-layer-size: 26px;
+}

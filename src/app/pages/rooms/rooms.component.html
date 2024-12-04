@@ -1,0 +1,24 @@
+<ng-container *ngIf="rooms; else loader">
+  <div class="table-header">
+    <div class="buttons">
+    </div>
+  </div>
+
+  <app-room-list *ngIf="rooms.length; else noResult" [rooms]="rooms" [options]="options"/>
+
+  <div class="text-center" style="margin-top: 24px">
+    <!-- @TODO: revoir le style x) -->
+<!--    <button mat-raised-button (click)="createRoom()" [disabled]="!canAddRoom">-->
+<!--      <mat-icon>add</mat-icon>-->
+<!--      Nouvelle room-->
+<!--    </button>-->
+  </div>
+</ng-container>
+
+<ng-template #loader>
+  <app-loader class="center" message="Chargement ..."/>
+</ng-template>
+
+<ng-template #noResult>
+  Aucun résultat !
+</ng-template>

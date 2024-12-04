@@ -1,0 +1,39 @@
+@use '@angular/material' as mat;
+
+:host {
+  // @TODO: super ! -_- Alors inutile à priori, mais à vérifier (voir quelle diff avec background et color directement)
+  @include mat.toolbar-overrides((
+    container-background-color: var(--primary-base),
+    container-text-color: var(--primary-base-contrast)
+  ));
+
+  .title-logo {
+    display: flex;
+    place-items: center;
+    gap: .5em;
+
+    img {
+      width: 50px;
+    }
+  }
+
+  .sidenav-toggle {
+    margin: 0 3px 0 -3px;
+  }
+
+  button[mat-icon-button] {
+    color: inherit;
+  }
+
+  .topbar-buttons {
+    margin-left: auto;
+    display: flex;
+    place-items: center;
+
+    app-login-button {
+      margin-left: 5px;
+      padding-left: .5em;
+      border-left: 1px solid rgba(0, 0, 0, .2);
+    }
+  }
+}
