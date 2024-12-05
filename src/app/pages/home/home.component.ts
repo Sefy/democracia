@@ -14,6 +14,7 @@ import { RoomListHeaderComponent } from "@app/components/room/list-header/room-l
 import { DialogService } from "@app/services/dialog.service";
 import { MatSlideToggle } from "@angular/material/slide-toggle";
 import { FooterComponent } from "@app/components/_layout/footer/footer.component";
+import { RouterLink } from "@angular/router";
 
 const HOME_GRID_COUNT = 15;
 const LIVE_RELOAD_TIMER_SEC = 10;
@@ -31,7 +32,8 @@ const LIVE_RELOAD_TIMER_SEC = 10;
     QuoteComponent,
     RoomListHeaderComponent,
     MatSlideToggle,
-    FooterComponent
+    FooterComponent,
+    RouterLink
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'

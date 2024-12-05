@@ -31,21 +31,21 @@ export class RoomRouter {
     });
 
     // @TODO: filter on User Role !
-    router.post('/', authenticateJWT, async (req: Request, resp: Response) => {
-      const roomData = req.body.room;
-
-      try {
-        roomData.tags = await this.tagService.getAll({ids: roomData.tags as number[]});
-
-        const newRoom = await this.roomService.createRoom(roomData);
-
-        resp.send({ok: true});
-      } catch (e) {
-        console.error(e);
-
-        resp.send({ok: false, error: e});
-      }
-    });
+    // router.post('/', authenticateJWT, async (req: Request, resp: Response) => {
+    //   const roomData = req.body.room;
+    //
+    //   try {
+    //     roomData.tags = await this.tagService.getAll({ids: roomData.tags as number[]});
+    //
+    //     const newRoom = await this.roomService.createRoom(roomData);
+    //
+    //     resp.send({ok: true});
+    //   } catch (e) {
+    //     console.error(e);
+    //
+    //     resp.send({ok: false, error: e});
+    //   }
+    // });
 
     router.get('/search/:subject', async (req, resp, next) => {
       const subject = req.params.subject;
