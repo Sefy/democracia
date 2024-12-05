@@ -101,7 +101,7 @@ export class RoomRouter {
         let room = this.chatService.getRoom(id);
 
         if (!room) {
-          room = this.chatService.startRoom(await this.roomService.get(id));
+          room = this.chatService.startRoom(await this.roomService.get(id, {tags: true}));
         }
 
         this.chatService.joinRoomAnon(room, anon);
@@ -138,7 +138,7 @@ export class RoomRouter {
         let room = this.chatService.getRoom(id);
 
         if (!room) {
-          room = this.chatService.startRoom(await this.roomService.get(id));
+          room = this.chatService.startRoom(await this.roomService.get(id, {tags: true}));
         }
 
         if (room) {

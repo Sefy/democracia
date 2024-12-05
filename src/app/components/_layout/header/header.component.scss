@@ -1,4 +1,5 @@
 @use '@angular/material' as mat;
+@use 'util';
 
 :host {
   // @TODO: super ! -_- Alors inutile à priori, mais à vérifier (voir quelle diff avec background et color directement)
@@ -7,6 +8,10 @@
     container-text-color: var(--primary-base-contrast)
   ));
 
+  mat-toolbar {
+    overflow: hidden;
+  }
+
   .title-logo {
     display: flex;
     place-items: center;
@@ -14,6 +19,12 @@
 
     img {
       width: 50px;
+    }
+
+    @include util.respond-to(sm) {
+      h1 {
+        display: none;
+      }
     }
   }
 

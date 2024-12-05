@@ -3,5 +3,6 @@ export const env = {
   debug: false,
 
   GOOGLE_CLIENT_ID: '',
+
   API_BASE_URL: '/api'
 }

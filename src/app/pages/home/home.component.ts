@@ -9,11 +9,11 @@ import { RoomListComponent } from "@app/components/room/list/room-list.component
 import { LoaderComponent } from "@app/components/_global/loader/loader.component";
 import { PublicRoom } from "@common/room";
 import { QuoteComponent } from "@app/components/quote/quote.component";
-import { FooterComponent } from "@app/components/_layout/footer/footer.component";
-import { debounceTime, interval, map, of, Subject, Subscription, switchMap, tap } from "rxjs";
+import { debounceTime, interval, map, Subject, Subscription, switchMap, tap } from "rxjs";
 import { RoomListHeaderComponent } from "@app/components/room/list-header/room-list-header.component";
 import { DialogService } from "@app/services/dialog.service";
 import { MatSlideToggle } from "@angular/material/slide-toggle";
+import { FooterComponent } from "@app/components/_layout/footer/footer.component";
 
 const HOME_GRID_COUNT = 15;
 const LIVE_RELOAD_TIMER_SEC = 10;
@@ -26,12 +26,12 @@ const LIVE_RELOAD_TIMER_SEC = 10;
     MatCardModule,
     MatButtonModule,
     MatFormFieldModule,
-    FooterComponent,
     RoomListComponent,
     LoaderComponent,
     QuoteComponent,
     RoomListHeaderComponent,
-    MatSlideToggle
+    MatSlideToggle,
+    FooterComponent
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'

@@ -2,8 +2,8 @@ import { Component, EventEmitter, HostBinding, Input, OnChanges, Output } from '
 import { TagData } from "@common/room";
 import { IconComponent } from "@app/components/_global/icon/icon.component";
 import { CommonModule } from "@angular/common";
-import invert from "@app/util/color-invert";
 import { MatTooltip } from "@angular/material/tooltip";
+import color from 'color';
 
 @Component({
   selector: 'app-tag-item',
@@ -27,7 +27,7 @@ export class TagItemComponent implements OnChanges {
   ngOnChanges() {
     if (this.tag?.color) {
       this.backgroundColor = this.tag.color;
-      this.color = invert(this.backgroundColor, true);
+      this.color = color(this.backgroundColor).isLight() ? 'black' : 'white';
     }
   }
 }

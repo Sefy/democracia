@@ -18,4 +18,5 @@
 
 .main-container {
   min-height: calc(100vh - var(--header-height));
+  overflow: hidden auto;
 }

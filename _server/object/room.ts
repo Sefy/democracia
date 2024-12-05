@@ -12,6 +12,12 @@ export class Tag implements TagData, Publishable<TagData> {
   name!: string;
   color?: string;
 
+  constructor(data?: TagData) {
+    if (data) {
+      Object.assign(this, data);
+    }
+  }
+
   toPublic() {
     return {
       id: this.id,
@@ -60,6 +66,10 @@ export class Room implements RoomData {
   constructor(data?: RoomData) {
     if (data) {
       Object.assign(this, data);
+
+      if (data.tags) {
+        this.tags = new Set((data.tags as TagData[]).map(t => new Tag(t)));
+      }
     }
   }
 
