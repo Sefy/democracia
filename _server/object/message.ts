@@ -41,7 +41,7 @@ export class Message implements MessageData, Publishable<PublicMessage> {
   // Join data
   room?: Room;
   author?: User;
-  votes: Set<Vote> = new Set();
+  votes: Vote[] = [];
 
   saved?: boolean;
 
@@ -62,7 +62,11 @@ export class Message implements MessageData, Publishable<PublicMessage> {
   }
 
   addVote(vote: Vote) {
-    this.votes.add(vote);
+    // pour l'instant on check ici, mais vaudrait mieux le faire plus en amont ...
+    if (!this.votes.some(v => v.user.id === vote.user.id)) {
+      this.votes.push(vote);
+    }
+
     return this;
   }
 
@@ -73,8 +77,8 @@ export class Message implements MessageData, Publishable<PublicMessage> {
 
   // @TODO: maybe store and update on each addVote / removeVote ?
   get likesCount() {
-    return Array.from(this.votes).filter(v => v.type === VoteType.LIKE).length -
-      Array.from(this.votes).filter(v => v.type === VoteType.DISLIKE).length;
+    return this.votes.filter(v => v.type === VoteType.LIKE).length -
+      this.votes.filter(v => v.type === VoteType.DISLIKE).length;
   }
 
   toPublic(): PublicMessage {

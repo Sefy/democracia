@@ -34,11 +34,11 @@ export class Room implements RoomData {
   description?: string;
 
   // Join data
-  tags: Set<Tag> = new Set();
-  users: Set<User> = new Set();
-  anons: Set<AnonData> = new Set();
-  messages: Set<Message> = new Set();
-  mostVoted: Set<Message> = new Set();
+  tags: Tag[] = [];
+  users: User[] = [];
+  anons: AnonData[] = [];
+  messages: Message[] = [];
+  mostVoted: Message[] = [];
 
   // Counts
   // userCount?: number;
@@ -56,11 +56,11 @@ export class Room implements RoomData {
 
   // est ce qu'on a le droit de faire ça .. ? x)
   get userCount() {
-    return this.users.size;
+    return this.users.length;
   }
 
   get anonCount() {
-    return this.anons.size;
+    return this.anons.length;
   }
 
   constructor(data?: RoomData) {
@@ -68,43 +68,50 @@ export class Room implements RoomData {
       Object.assign(this, data);
 
       if (data.tags) {
-        this.tags = new Set((data.tags as TagData[]).map(t => new Tag(t)));
+        this.tags = (data.tags as TagData[]).map(t => new Tag(t));
       }
     }
   }
 
-  getUser(id: number) {
-    return ArrayUtil.find(this.users, id);
+  getUser(id: number, index = false) {
+    return index ?
+      this.users.findIndex(u => u.id === id) :
+      this.users.find(u => u.id === id);
   }
 
   addUser(user: User) {
-    this.users.add(user);
+    if (!this.getUser(user.id)) {
+      this.users.push(user);
+    }
+
     return this;
   }
 
   removeUser(id: number) {
-    const exist = this.getUser(id);
+    const index = this.getUser(id, true) as number;
 
-    if (exist) {
-      this.users.delete(exist);
+    if (index > -1) {
+      this.users.splice(index, 1);
     }
   }
 
-  findAnon(id: string) {
-    return Array.from(this.anons).find(a => a.id === id);
+  findAnon(id: string, index = false) {
+    return index ?
+      this.anons.findIndex(a => a.id === id) :
+      this.anons.find(a => a.id === id);
   }
 
   addAnon(anon: AnonData) {
-    if (!this.anons.has(anon)) {
-      this.anons.add(anon);
+    if (!this.findAnon(anon.id)) {
+      this.anons.push(anon);
     }
   }
 
   removeAnon(id: string) {
-    const exist = this.findAnon(id);
+    const index = this.findAnon(id, true) as number;
 
-    if (exist) {
-      this.anons.delete(exist);
+    if (index > 1) {
+      this.anons.splice(index, 1);
     }
   }
 
@@ -113,7 +120,10 @@ export class Room implements RoomData {
   }
 
   addMessage(message: Message) {
-    this.messages.add(message);
+    if (!this.messages.some(m => m.id === message.id)) {
+      this.messages.push(message);
+    }
+
     return this;
   }
 }

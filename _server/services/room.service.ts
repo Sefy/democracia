@@ -96,20 +96,20 @@ export class RoomService {
       pub.userCount = r.userCount;
 
       if (loadOptions?.tags) {
-        pub.tags = Array.from(r.tags).map(t => t.toPublic());
+        pub.tags = (r.tags ?? []).map(t => t.toPublic());
       }
 
       if (loadOptions?.lastMessages) {
-        pub.messages = Array.from(r.messages ?? []).slice(-loadOptions.lastMessages).map(m => m.toPublic());
-        pub.mostVoted = Array.from(r.mostVoted ?? []).map(m => m.toPublic());
+        pub.messages = (r.messages ?? []).slice(-loadOptions.lastMessages).map(m => m.toPublic());
+        pub.mostVoted = (r.mostVoted ?? []).map(m => m.toPublic());
       }
 
       if (loadOptions?.users) {
-        pub.users = Array.from(r.users ?? []).map(u => this.userService.getPublicData(u));
+        pub.users = (r.users ?? []).map(u => this.userService.getPublicData(u));
       }
     } else {
       if (loadOptions?.tags) {
-        pub.tags = (r.tags as TagData[]);
+        pub.tags = r.tags;
       }
 
       if (loadOptions?.lastMessages) {

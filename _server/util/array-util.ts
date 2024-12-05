@@ -5,6 +5,7 @@ export class ArrayUtil {
         return item;
       }
     }
+
     return undefined;
   }
 

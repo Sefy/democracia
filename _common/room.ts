@@ -26,11 +26,10 @@ export interface RoomData {
   trendingScore?: number;
   messagesCount?: number;
 
-  // @TODO: tout repasser en [] et virer les magouilles partout de Array.from() ! la grosse merde les Set ... -_-
-  tags: Iterable<TagData>;
-  users?: Iterable<UserData>;
-  messages: Iterable<MessageData>;
-  mostVoted?: Iterable<MessageData | MessageId>; // ids only ?
+  tags: TagData[];
+  users?: UserData[];
+  messages: MessageData[];
+  mostVoted?: (MessageData | MessageId)[]; // ids only ?
 }
 
 // Shared with Client

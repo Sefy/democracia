@@ -119,7 +119,7 @@ export class ChatService {
 
       this.logService.info('Socket message : ', message);
 
-      const author = typeof socket.userId === 'number' ? room.getUser(socket.userId) : null;
+      const author = typeof socket.userId === 'number' ? <User>room.getUser(socket.userId) : null;
 
       // pas plus loin si user introuvable
       if (!author) {

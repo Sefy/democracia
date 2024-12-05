@@ -79,7 +79,7 @@ export class QueryBuilder {
   }
 
   getJoinQuery() {
-    return Array.from(this.joins).map(j => (j.left ? 'LEFT ' : '') + 'JOIN ' + j.join).join(' ');
+    return this.joins.map(j => (j.left ? 'LEFT ' : '') + 'JOIN ' + j.join).join(' ');
   }
 
   getCondQuery(withWhere = true) {

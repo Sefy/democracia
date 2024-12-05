@@ -55,7 +55,7 @@ export class MessageService {
     const messages = [];
 
     if (activeRoom) {
-      messages.push(...Array.from(activeRoom.messages).map(msg => this.getPublicMessage(msg)));
+      messages.push(...activeRoom.messages.map(msg => this.getPublicMessage(msg)));
     }
 
     messages.push(...(await this.getAll({
