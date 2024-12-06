@@ -14,6 +14,11 @@ export interface Join {
   left?: boolean;
 }
 
+export interface QueryColumnDef {
+  name: string;
+  alias?: string;
+}
+
 export class QueryBuilder {
   private _select: string[] = [];
   private _from?: string;
@@ -28,10 +33,10 @@ export class QueryBuilder {
   }
 
   // reset select to the single string passed
-  select(select: string) {{
+  select(select: string) {
     this._select = [select];
     return this;
-  }}
+  }
 
   addSelect(select: string) {
     this._select.push(select);

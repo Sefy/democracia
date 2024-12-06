@@ -165,7 +165,7 @@ export class ChatboxComponent implements OnInit, OnDestroy {
 
     const pubChat = {
       id: data.id!,
-      message: data.message!,
+      content: data.message!,
       author: author.id,
       date: new Date()
     };

@@ -6,35 +6,6 @@
   flex-direction: column;
   min-height: calc(100vh - var(--header-height));
 
-  .hero {
-    display: flex;
-    flex-direction: column;
-    place-items: center;
-    place-content: center;
-    min-height: 25vh;
-    padding: 3em;
-    gap: .25em;
-
-    img {
-      width: 300px;
-    }
-
-    .page-title {
-      margin-bottom: 0;
-    }
-
-    // @TODO: travailler sur parallax + blur + vidéo pour Hero
-    //background: url('/assets/img/background-blur.png');
-    //background-position: center;
-
-    //animation: bg-position-loop 15s infinite;
-    //
-    //background: linear-gradient(150deg, #2ecc71, white, #3498db, white, #9b59b6, #f39c12);
-    //background-size: 500%;
-    //background-clip: text;
-    //color: transparent;
-  }
-
   .home-rooms-container {
     max-width: min(100%, 1600px);
     min-width: 50vw;

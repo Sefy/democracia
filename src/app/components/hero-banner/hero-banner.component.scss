@@ -1,0 +1,17 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  place-items: center;
+  place-content: center;
+  min-height: 25vh;
+  padding: 3em;
+  gap: .25em;
+
+  img {
+    width: 300px;
+  }
+
+  .page-title {
+    margin-bottom: 0;
+  }
+}

@@ -91,14 +91,21 @@ export class MessageService {
     return this.repository.saveMessages(messages);
   }
 
-  getPublicMessage(message: MessageData) {
-    return {
+  getPublicMessage(message: MessageData, loadOptions?: LoadOptions) {
+    const pub = {
       id: message.id,
-      message: message.message,
-      author: message.author,
+      content: message.content,
       date: message.date,
-      likesCount: (message as Message|any).likesCount
     } as PublicMessage;
+
+    // si on veut le author, on le charge en objet
+    if (loadOptions?.author) {
+      pub.author = message.author; // en espérant qu'il a bien été chargé comme objet .. (:
+    } else {
+      pub.author = typeof message.author === 'object' ? message.author.id : message.author;
+    }
+
+    return pub;
   }
 
   get repository() {

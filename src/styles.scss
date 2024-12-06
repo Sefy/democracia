@@ -29,6 +29,8 @@ html {
     typography: 'Inter',
     density: 0
   ));
+
+  scrollbar-width: thin;
 }
 
 @include util.reset();

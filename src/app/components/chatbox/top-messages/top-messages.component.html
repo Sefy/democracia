@@ -4,8 +4,8 @@
 <div class="top-container">
   <div *ngFor="let message of messages; trackBy: trackById; let i = index" class="message-row">
     <!-- Le matTooltip pue du cul là ... @TODO: essayer de reprendre le "tooltip" du Wiki ? :) -->
-    <div class="bar" [style.background-color]="colors[i]" [style.width.%]="percents[i]" [matTooltip]="message.message">
-      {{ message.message }}
+    <div class="bar" [style.background-color]="colors[i]" [style.width.%]="percents[i]" [matTooltip]="message.content">
+      {{ message.content }}
     </div>
     <span class="count">{{ message.likesCount }}</span>
   </div>

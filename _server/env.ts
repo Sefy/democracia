@@ -14,4 +14,6 @@ export const env = {
 
   GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID || '',
   HUGGING_FACE_TOKEN: process.env.HUGGING_FACE_TOKEN || '',
+
+  LOGS_DIR: process.env.LOGS_DIR || 'logs'
 };

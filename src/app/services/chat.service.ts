@@ -37,12 +37,14 @@ export class ChatService {
     adapted.mine = adapted.author?.id === this.userService.currentUser?.id;
     adapted.formattedDate = this.getFormattedDate(m.date!);
 
+    console.log('TA RACE', adapted);
+
     return adapted;
   }
 
   newSystemMessage(message: string, type: ClientChatType = 'system') {
     return {
-      message,
+      content: message,
       type,
     } as ClientRoomMessage;
   }

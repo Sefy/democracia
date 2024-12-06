@@ -1,5 +1,5 @@
 import { EntityManager } from "./entity-manager";
-import { QueryBuilder } from "../../util/query-builder";
+import { QueryBuilder, QueryColumnDef } from "../../util/query-builder";
 import { LoadOptions, MessageFilters } from "../message-service";
 import { MessageData } from "@common/message";
 import { Message } from "../../object/message";
@@ -7,6 +7,24 @@ import { Message } from "../../object/message";
 class MessageQueryBuilder extends QueryBuilder {
   constructor(filters?: MessageFilters) {
     super(filters);
+  }
+
+  columns: QueryColumnDef[] = [
+    {name: 'id'},
+    {name: 'content'},
+    {name: 'created_at', alias: 'date'},
+    {name: 'user_id', alias: 'author'},
+    {name: 'room_id'},
+  ];
+
+  getAllColumns(alias = false) {
+    return this.columns.map(c => alias && c.alias ? `${c.name} AS ${c.alias}` : c.name);
+  }
+
+  selectAll() {
+    const select = this.getAllColumns(true).map(c => 'm.' + c).join(', ');
+
+    return this.addSelect(select);
   }
 
   addVotesJoins() {
@@ -33,13 +51,8 @@ export class MessageRepository {
   ) {
   }
 
-  // for group by .. x)
-  getAllColumns() {
-    return ['id', 'message', 'date', 'author_id', 'room_id'];
-  }
-
   buildQuery(filters?: MessageFilters, loadOptions?: LoadOptions) {
-    const qb = new MessageQueryBuilder(filters).from('messages m');
+    const qb = new MessageQueryBuilder(filters).from('messages m').selectAll();
 
     if (filters?.room) {
       qb.and('m.room_id = ' + qb.getCurrentParamIndex()).addParam(filters.room);
@@ -57,7 +70,7 @@ export class MessageRepository {
     // }
 
     if (loadOptions?.author) {
-      qb.join('users u ON u.id = m.author_id')
+      qb.join('users u ON u.id = m.user_id')
         .addSelect('u.username as author_name');
     }
 
@@ -121,12 +134,12 @@ export class MessageRepository {
 
     return this.em.transaction(async (client) => {
       const sql = `
-        INSERT INTO "messages" (id, content, created_at, user_id, room_id)
+        INSERT INTO "messages" (id, content, user_id, room_id)
         VALUES
-        ${this.getParamsArray(5, messages.length)}
+        ${this.getParamsArray(4, messages.length)}
       `;
 
-      const params = messages.map(m => [m.id, m.message, m.date, m.author?.id, m.room?.id]).flat();
+      const params = messages.map(m => [m.id, m.content, m.author?.id, m.room?.id]).flat();
 
       const result = await client.query(sql, params);
 

@@ -33,7 +33,7 @@ export class Vote implements VoteData {
 
 export class Message implements MessageData, Publishable<PublicMessage> {
   id!: MessageId;
-  message!: string;
+  content!: string;
   date?: Date;
 
   toxicity?: number;
@@ -47,7 +47,7 @@ export class Message implements MessageData, Publishable<PublicMessage> {
 
   constructor(data: MessageData) {
     this.id = data.id;
-    this.message = data.message;
+    this.content = data.content;
     this.date = data.date ?? new Date();
   }
 
@@ -84,7 +84,7 @@ export class Message implements MessageData, Publishable<PublicMessage> {
   toPublic(): PublicMessage {
     return {
       id: this.id,
-      message: this.message,
+      content: this.content,
       date: this.date,
       author: this.author?.toPublic(),
       likesCount: this.likesCount,

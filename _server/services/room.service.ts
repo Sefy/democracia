@@ -90,6 +90,9 @@ export class RoomService {
       startedAt: r.startedAt
     } as PublicRoom;
 
+    // @TODO: peut être que si on a loadOptions.users on peut envoyer des author: number
+    // @TODO: et le client se débrouille à faire les liens .. ? (évite les messages: [{author: {...}} x 100]
+
     if (r instanceof Room) {
       pub.isActive = true;
       pub.anonCount = r.anonCount;

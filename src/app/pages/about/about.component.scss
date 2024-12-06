@@ -1,18 +1,8 @@
 :host {
   .page-content {
-    padding: 1em 3%;
+    padding: 0 2%;
     max-width: min(100%, 1200px);
     margin: auto;
-  }
-
-  .header {
-    text-align: center;
-
-    img {
-      display: inline-block;
-      width: 300px;
-      margin-bottom: .75rem;
-    }
   }
 
   .discours {

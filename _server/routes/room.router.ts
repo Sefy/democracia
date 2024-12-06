@@ -33,7 +33,7 @@ export class RoomRouter {
     router.post('/', authenticateJWT, async (req: Request, resp: Response) => {
 
       // nul !
-      const authUser = await this.userService.get({email: (req.user as {email: string}).email}, {forAccount: true});
+      const authUser = await this.userService.get({email: (req.user as { email: string }).email}, {forAccount: true});
 
       if (!authUser || !this.userService.hasRole(authUser, 'MODERATOR')) {
         throw new Error('unauthorized');
@@ -113,7 +113,10 @@ export class RoomRouter {
 
         this.chatService.joinRoomAnon(room, anon);
 
-        const result = {ok: true, room: this.roomService.getPublicData(room, {users: true})} as any;
+        const result = {
+          ok: true,
+          room: this.roomService.getPublicData(room, {users: true, messagesOptions: {}})
+        } as any;
 
         if (newAnon) {
           result.token = this.userService.generateToken(anon);
@@ -150,7 +153,7 @@ export class RoomRouter {
 
         if (room) {
           this.chatService.joinRoomUser(room, user);
-          res.send({ok: true, room: this.roomService.getPublicData(room, {users: true})});
+          res.send({ok: true, room: this.roomService.getPublicData(room, {users: true, messagesOptions: {}})});
         } else {
           res.send({ok: false});
         }

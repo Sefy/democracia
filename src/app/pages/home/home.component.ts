@@ -16,6 +16,7 @@ import { MatSlideToggle } from "@angular/material/slide-toggle";
 import { FooterComponent } from "@app/components/_layout/footer/footer.component";
 import { RouterLink } from "@angular/router";
 import { AuthService } from "@app/services/auth.service";
+import { HeroBannerComponent } from "@app/components/hero-banner/hero-banner.component";
 
 const HOME_GRID_COUNT = 15;
 const LIVE_RELOAD_TIMER_SEC = 10;
@@ -34,7 +35,8 @@ const LIVE_RELOAD_TIMER_SEC = 10;
     RoomListHeaderComponent,
     MatSlideToggle,
     FooterComponent,
-    RouterLink
+    RouterLink,
+    HeroBannerComponent
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'

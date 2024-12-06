@@ -1,16 +1,9 @@
 import winston from "winston";
 import http from "http";
-import {Container} from "./container";
-import { SocketMessage, SocketMessageData } from "@common/socket";
+import { Container } from "./container";
 import { MessageData } from "@common/message";
-
-interface Log {
-  url: string;
-  ip: string;
-  timestamp: Date;
-}
-
-const LOG_FILE = 'log.txt';
+import { env } from "../env";
+import * as path from "node:path";
 
 export class LogService {
 
@@ -35,7 +28,7 @@ export class LogService {
       ),
       // Log to the console and a file
       transports: [
-        new winston.transports.File({filename: "logs/app.log"}),
+        new winston.transports.File({filename: path.join(env.LOGS_DIR, "democracia-server.log")}),
       ],
     });
 
@@ -55,7 +48,7 @@ export class LogService {
   }
 
   logMessage(message: MessageData) {
-    this.logger.info(`Message : ${message.message}, from ${message.author} in room ${message.room}`);
+    this.logger.info(`Message : ${message.content}, from ${message.author} in room ${message.room}`);
   }
 
   error(err: any, ...args: any[]) {

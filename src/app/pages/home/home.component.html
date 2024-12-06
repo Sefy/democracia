@@ -1,15 +1,4 @@
-<div class="hero">
-
-  <a routerLink="/about">
-    <img src="/assets/img/democracia-logo.png"/>
-  </a>
-
-  <h1 class="page-title">
-    Democracia Project
-  </h1>
-
-  <app-quote class="text-lg"/>
-</div>
+<app-hero-banner [imageLink]="'/about'" />
 
 <div class="home-rooms-container">
   <app-room-list-header (createRoom)="createRoom()" (searchChange)="searchSubject.next($event)">

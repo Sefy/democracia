@@ -16,7 +16,7 @@ export type MessageId = string | number;
 
 export interface MessageData {
   id: MessageId;
-  message: string;
+  content: string;
 
   room?: number | RoomData;
   date?: Date;

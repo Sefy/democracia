@@ -10,15 +10,15 @@
       <app-top-messages [messages]="$any(room)?.mostVoted"/>
     </mat-tab>
 
-    <mat-tab label="Votes en cours">
-      Changer le sujet de la room en ...
-    </mat-tab>
-
     <mat-tab label="Utilisateurs" bodyClass="user-tab">
       <!-- @TODO: ajouter des statuts, réputation, etc ... à afficher au hover de l'avatar ? -->
-      <app-user-avatar *ngFor="let user of room.users" [user]="user" />
+      <app-user-avatar *ngFor="let user of room.users" [user]="user"/>
 
       <div *ngIf="room.anonCount" class="anon-count">+ {{ room.anonCount }} anonymes</div>
+    </mat-tab>
+
+    <mat-tab label="Votes en cours">
+      <div class="text-italic">Fonctionnalité à venir !</div>
     </mat-tab>
   </mat-tab-group>
 </div>

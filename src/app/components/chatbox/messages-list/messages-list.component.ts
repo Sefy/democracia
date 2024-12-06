@@ -31,6 +31,7 @@ export class MessagesListComponent {
   constructor(
     protected userService: AuthService
   ) {
+    console.log('WAT', this.messages);
   }
 
   like(message: ClientRoomMessage) {

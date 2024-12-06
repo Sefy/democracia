@@ -2,4 +2,8 @@
   .cdk-overlay-backdrop {
     backdrop-filter: blur(4px);
   }
+
+  mat-dialog-content {
+    scrollbar-width: thin;
+  }
 }

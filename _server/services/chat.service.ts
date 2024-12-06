@@ -75,6 +75,10 @@ export class ChatService {
       return user;
     }
 
+    if (this.cachedUsers[id]) {
+      return this.cachedUsers[id];
+    }
+
     const userData = await this.userService.repository.findOne({id});
 
     if (userData) {
@@ -98,6 +102,7 @@ export class ChatService {
 
     const room = new Room(data);
 
+    // @TODO: peut être virer Promise.all : si on lance tous les load en même temps on ne bénéficie pas du cachedUsers
     room.messages = await Promise.all(data.messages.map(async (m) => this.loadChatMessage(m)));
 
     return room;
@@ -106,12 +111,16 @@ export class ChatService {
   async loadChatMessage(m: MessageData) {
     const msg = new Message(m);
 
+    msg.saved = true;
+
     const authorId = typeof m.author === 'object' ? m.author.id : m.author;
     const author = authorId ? await this.getOrLoadUser(authorId) : null;
 
     if (author) {
       msg.setAuthor(author);
     }
+
+    // @TODO: load votes
 
     return msg;
   }
@@ -182,7 +191,7 @@ export class ChatService {
   }
 
   newChatMessage(message: string, room: Room, author: User) {
-    return new Message({id: crypto.randomUUID(), message})
+    return new Message({id: crypto.randomUUID(), content: message})
       .setAuthor(author)
       .setRoom(room);
   }
@@ -297,7 +306,7 @@ export class ChatService {
   createSocketMessage(msg: Message) {
     return {
       type: SocketMessageType.MESSAGE,
-      data: {id: msg.id, message: msg.message, author: msg.author!.id}
+      data: {id: msg.id, message: msg.content, author: msg.author!.id}
     } as SocketMessage;
   }
 
