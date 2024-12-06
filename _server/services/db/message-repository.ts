@@ -1,8 +1,9 @@
 import { EntityManager } from "./entity-manager";
 import { QueryBuilder, QueryColumnDef } from "../../util/query-builder";
 import { LoadOptions, MessageFilters } from "../message-service";
-import { MessageData } from "@common/message";
-import { Message } from "../../object/message";
+import { MessageData, VoteData, VoteType } from "@common/message";
+import { Message, Vote } from "../../object/message";
+import { PoolClient } from "pg";
 
 class MessageQueryBuilder extends QueryBuilder {
   constructor(filters?: MessageFilters) {
@@ -75,15 +76,30 @@ export class MessageRepository {
     }
 
     if (loadOptions?.votes) {
-      // rien compris, merci l'IA ... :D
-      qb.addVotesJoins()
-        .addSelect(`
-              json_build_object(
-                'up', COALESCE(up_votes.count, 0),
-                'down', COALESCE(down_votes.count, 0)
-              ) as votes`
-        ).addGroupBy('m.id, m.created_at, up_votes.count, down_votes.count');
+      qb.leftJoin('message_votes mv ON mv.message_id = m.id')
+
+        // c'est beau le PSQL :o
+        .addSelect(`json_build_object(
+            'up', json_agg(mv.user_id) filter (where mv.vote_type = 'UP'),
+            'down', json_agg(mv.user_id) filter (where mv.vote_type = 'DOWN')
+        ) as votes`)
+        .addGroupBy('m.id');
+
+      // c'était faisable aussi comme ça (2 colonnes), mais autant sortir avec le meilleur format possible direct :)
+      // .addSelect(`COALESCE(json_agg(mv.user_id) filter (where mv.vote_type = 'UP'), '[]') as upVotes`)
+      // .addSelect(`COALESCE(json_agg(mv.user_id) filter (where mv.vote_type = 'DOWN'), '[]') as downVotes`)
     }
+
+    // if (loadOptions?.votes) {
+    //   // rien compris, merci l'IA ... :D
+    //   qb.addVotesJoins()
+    //     .addSelect(`
+    //           json_build_object(
+    //             'up', COALESCE(up_votes.count, 0),
+    //             'down', COALESCE(down_votes.count, 0)
+    //           ) as "votesCount"`
+    //     ).addGroupBy('m.id, m.created_at, up_votes.count, down_votes.count');
+    // }
 
     return qb;
   }
@@ -103,22 +119,23 @@ export class MessageRepository {
   }
 
   parseRow(row: any, loadOptions?: LoadOptions) {
-    return row as MessageData;
+    const parsed = {
+      ...row,
+      votes: [] as VoteData[]
+    } as MessageData;
 
-    // const parsed = row as Message & PublicMessage;
-    //
-    // if (parsed.voteCount !== undefined) {
-    //   parsed.voteCount = Number(row.likesCount);
-    // }
-    //
-    // if (loadOptions?.author) {
-    //   parsed.author = {
-    //     id: row.author_id,
-    //     username: row.author_name
-    //   };
-    // }
-    //
-    // return parsed;
+    if (loadOptions?.votes && row.votes) {
+      parsed.votes = [].concat(
+        (row.votes.up ?? []).map((v: number) => this.buildVoteData(v, 'UP')),
+        (row.votes.down ?? []).map((v: number) => this.buildVoteData(v, 'DOWN'))
+      );
+    }
+
+    return parsed;
+  }
+
+  buildVoteData(user: number, type: VoteType) {
+    return {user, type} as VoteData;
   }
 
   getParamsArray(paramsCount: number, rowCount: number) {
@@ -133,19 +150,60 @@ export class MessageRepository {
     }
 
     return this.em.transaction(async (client) => {
-      const sql = `
-        INSERT INTO "messages" (id, content, user_id, room_id)
-        VALUES
-        ${this.getParamsArray(4, messages.length)}
-      `;
+      const news = messages.filter(m => m.new);
 
-      const params = messages.map(m => [m.id, m.content, m.author?.id, m.room?.id]).flat();
+      if (news.length) {
+        const insert = `
+          INSERT INTO "messages" (id, content, user_id, room_id)
+          VALUES
+          ${this.getParamsArray(4, news.length)}
+        `;
 
-      const result = await client.query(sql, params);
+        const params = news.map(m => [m.id, m.content, m.author?.id, m.room?.id]).flat();
 
-      messages.forEach(m => m.saved = true);
+        await client.query(insert, params);
 
-      return result;
+        news.forEach(m => m.new = false);
+      }
+
+      const allVotes = messages.map(m => m.votes).flat();
+
+      await this.saveVotes(allVotes, client);
     });
+  }
+
+  // cradooooo ...
+  async saveVotes(votes: Vote[], trans?: PoolClient) {
+    const handle = async (trans: PoolClient) => {
+      const news = votes.filter(v => v.new);
+
+      if (news.length) {
+        const insert = `INSERT INTO message_votes (message_id, user_id, vote_type)
+        VALUES
+        ${this.getParamsArray(3, news.length)}`;
+        const insertParams = news.map(v => [v.message.id, v.user.id, v.type]).flat();
+
+        await trans.query(insert, insertParams);
+      }
+
+      // ne pas oublier de dire qu'ils ne sont plus nouveaux :)
+      news.forEach(v => v.new = false);
+
+      const edited = votes.filter(v => v.edited);
+
+      await Promise.all(edited.map(async (v) => {
+        const sql = `UPDATE message_votes
+                     SET vote_type = $1
+                     WHERE user_id = $2
+                       AND message_id = $3`;
+        const params = [v.type, v.user.id, v.message.id];
+
+        return trans.query(sql, params);
+      }));
+
+      votes.forEach(v => v.isNew(false).isEdited(false));
+    };
+
+    return trans ? handle(trans) : this.em.transaction(async (client) => handle(client));
   }
 }

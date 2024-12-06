@@ -6,7 +6,7 @@ import { LogService } from "./log.service";
 import { Room } from "../object/room";
 import { User } from "../object/user";
 import { Message, Vote } from "../object/message";
-import { MessageData, VoteType } from "@common/message";
+import { MessageData, VoteData } from "@common/message";
 import { AnonData, PublicUser, UserData } from "@common/user";
 import { ToxicityService } from "./toxicity-service";
 import { interval } from "rxjs";
@@ -111,8 +111,6 @@ export class ChatService {
   async loadChatMessage(m: MessageData) {
     const msg = new Message(m);
 
-    msg.saved = true;
-
     const authorId = typeof m.author === 'object' ? m.author.id : m.author;
     const author = authorId ? await this.getOrLoadUser(authorId) : null;
 
@@ -120,9 +118,25 @@ export class ChatService {
       msg.setAuthor(author);
     }
 
-    // @TODO: load votes
+    // même problème que pour les messages, sympa le Promise.all() mais en fait non x)
+    msg.votes = await Promise.all((m.votes ?? []).map(async (v) => this.loadChatVote(v, msg)));
 
     return msg;
+  }
+
+  async loadChatVote(data: VoteData, message: Message) {
+    const vote = new Vote(data);
+
+    vote.message = message;
+
+    const user = await this.getOrLoadUser(data.user as number);
+
+    // pas possible ? on devrait juste l'ignorer si on retrouve pas le User ...
+    if (user) {
+      vote.setUser(user);
+    }
+
+    return vote;
   }
 
   async startRoom(id: number) {
@@ -200,9 +214,14 @@ export class ChatService {
     const message = room.getMessage(data.target);
 
     if (message) {
-      const vote = new Vote({type: VoteType.LIKE, user: author, message});
+      const existingVote = message.findUserVote(author);
 
-      message.addVote(vote);
+      if (existingVote) {
+        existingVote.type = data.type;
+        existingVote.isEdited();
+      } else {
+        message.addVote(new Vote({type: data.type, user: author, message}).isNew());
+      }
 
       // @TODO: handle déjà voté !
       // if (message.likes.includes(author.id)) {
@@ -210,8 +229,10 @@ export class ChatService {
       // }
 
       this.sendMessage(room, {
-        type: SocketMessageType.LIKE,
-        data: {target: message.id, count: message.likesCount}
+        type: SocketMessageType.LIKE, data: {
+          target: message.id,
+          count: message.likesCount
+        }
       });
     }
   }
@@ -284,6 +305,7 @@ export class ChatService {
       const msg = this.newChatMessage(message, room, author);
 
       msg.setToxicity(toxicity);
+      msg.new = true;
 
       this.addMessage(room, msg);
     } catch (e) {

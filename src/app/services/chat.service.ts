@@ -37,8 +37,6 @@ export class ChatService {
     adapted.mine = adapted.author?.id === this.userService.currentUser?.id;
     adapted.formattedDate = this.getFormattedDate(m.date!);
 
-    console.log('TA RACE', adapted);
-
     return adapted;
   }
 

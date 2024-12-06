@@ -39,7 +39,9 @@ export class TopMessagesComponent implements OnChanges {
     const totalLikes = this.messages?.map(m => m.likesCount).reduce((prev, next) => (prev || 0) + (next || 0), 0) || 0;
 
     this.percents = this.messages?.map(m => {
-      return ((m.likesCount || 0) * 100 / totalLikes) * 2; // <= @TODO: complètement arbitraire, mais pour prendre plus de place ... Si le plus haut est < 50%, on peut multiplier par 2 ... trouver une formule
+      // <= @TODO: complètement arbitraire, mais pour prendre plus de place ...
+      // @TODO: Si le plus haut est < 50%, on peut multiplier par 2 ... trouver une formule
+      return ((m.likesCount || 0) * 100 / totalLikes) * 2;
     }) || [];
   }
 

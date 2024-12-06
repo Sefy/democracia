@@ -7,6 +7,7 @@ import { MatTooltipModule } from "@angular/material/tooltip";
 import { MatMiniFabAnchor } from "@angular/material/button";
 import { AuthService } from "@app/services/auth.service";
 import { UserAvatarComponent } from "@app/components/user/avatar/user-avatar.component";
+import { VoteType } from "@common/message";
 
 @Component({
   selector: 'app-messages-list',
@@ -25,18 +26,22 @@ export class MessagesListComponent {
   // check plus haut que pas null
   @Input() messages!: ClientRoomMessage[];
 
-
-  @Output() onLike = new EventEmitter<ClientRoomMessage>();
+  @Output() onVote = new EventEmitter<{message: ClientRoomMessage, type: VoteType}>();
 
   constructor(
     protected userService: AuthService
   ) {
-    console.log('WAT', this.messages);
   }
 
   like(message: ClientRoomMessage) {
     if (this.userService.isLogged) {
-      this.onLike.emit(message);
+      this.onVote.emit({message, type: 'UP'});
+    }
+  }
+
+  dislike(message: ClientRoomMessage) {
+    if (this.userService.isLogged) {
+      this.onVote.emit({message, type: 'DOWN'});
     }
   }
 }

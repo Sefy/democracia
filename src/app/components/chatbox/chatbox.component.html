@@ -18,20 +18,21 @@
     </mat-tab>
 
     <mat-tab label="Votes en cours">
-      <div class="text-italic">Fonctionnalité à venir !</div>
+      <div class="text-center text-italic">Fonctionnalité à venir !</div>
     </mat-tab>
   </mat-tab-group>
 </div>
 
 <div class="messages-container">
-  <app-messages-list *ngIf="room?.messages; else loader" [messages]="room.messages" (onLike)="sendLike($event)"/>
+  <app-messages-list *ngIf="room?.messages; else loader" [messages]="room.messages" (onVote)="onVote($event)"/>
 </div>
 
 <div class="input-message-container">
   <mat-form-field subscriptSizing="dynamic" [class.must-login]="!currentUser" (click)="onClickMessageInput($event)">
     <mat-label>{{ currentUser ? 'Votre message' : 'Connexion requise' }}</mat-label>
     <input matInput [(ngModel)]="message" (ngModelChange)="onMessageTyping($event)" (keyup.enter)="sendMessage()"
-           [disabled]="!socketConnected"/>
+           [disabled]="!socketConnected || waitingResponse"/>
+    <app-loader *ngIf="waitingResponse" matSuffix />
   </mat-form-field>
 </div>
 

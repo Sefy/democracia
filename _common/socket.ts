@@ -1,4 +1,4 @@
-import { MessageId } from "@common/message";
+import { MessageId, VoteType } from "@common/message";
 
 export const enum SocketMessageType {
   MESSAGE,
@@ -17,7 +17,8 @@ export interface SocketHandshakeData {
 
 export interface SocketLikeData {
   target: MessageId;
-  count?: number; // response from server only @TODO: bah ça dégage de là alors :p
+  type: VoteType;
+  count?: number; // response from server only
 }
 
 export interface SocketMessageData {

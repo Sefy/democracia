@@ -46,12 +46,15 @@
 
     &:hover {
       .hover-actions {
-        display: block;
+        display: flex;
       }
     }
 
     .hover-actions {
       display: none; // hidden by default, ofc :)
+
+      place-items: center;
+      gap: .75em;
 
       position: absolute;
       z-index: 100;
@@ -59,6 +62,13 @@
       right: 30px;
       border-radius: 1em;
       padding: 5px;
+
+      --icon-size: 28px;
+
+      .mat-mdc-mini-fab {
+        width: var(--icon-size);
+        height: var(--icon-size);
+      }
 
       a {
         font-size: 20px;

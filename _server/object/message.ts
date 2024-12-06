@@ -8,6 +8,10 @@ export class Vote implements VoteData {
   type!: VoteType;
   user!: User;
 
+  // bon ça va me saouler x) mieux gérer les états => dirty state ?
+  new?: boolean;
+  edited?: boolean;
+
   constructor(data: VoteData) {
     this.type = data.type;
 
@@ -29,6 +33,16 @@ export class Vote implements VoteData {
     this.message = message;
     return this;
   }
+
+  isNew(val = true) {
+    this.new = val;
+    return this;
+  }
+
+  isEdited(val = true) {
+    this.edited = val;
+    return this;
+  }
 }
 
 export class Message implements MessageData, Publishable<PublicMessage> {
@@ -43,7 +57,7 @@ export class Message implements MessageData, Publishable<PublicMessage> {
   author?: User;
   votes: Vote[] = [];
 
-  saved?: boolean;
+  new?: boolean;
 
   constructor(data: MessageData) {
     this.id = data.id;
@@ -61,6 +75,10 @@ export class Message implements MessageData, Publishable<PublicMessage> {
     return this;
   }
 
+  findUserVote(user: User) {
+    return this.votes.find(v => v.user.id === user.id);
+  }
+
   addVote(vote: Vote) {
     // pour l'instant on check ici, mais vaudrait mieux le faire plus en amont ...
     if (!this.votes.some(v => v.user.id === vote.user.id)) {
@@ -76,9 +94,17 @@ export class Message implements MessageData, Publishable<PublicMessage> {
   }
 
   // @TODO: maybe store and update on each addVote / removeVote ?
+  get votesCount() {
+    return {
+      up: this.votes.filter(v => v.type === 'UP').length,
+      down: this.votes.filter(v => v.type === 'DOWN').length
+    };
+  }
+
   get likesCount() {
-    return this.votes.filter(v => v.type === VoteType.LIKE).length -
-      this.votes.filter(v => v.type === VoteType.DISLIKE).length;
+    const votesCount = this.votesCount;
+
+    return votesCount.up - votesCount.down;
   }
 
   toPublic(): PublicMessage {

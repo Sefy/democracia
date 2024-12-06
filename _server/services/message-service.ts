@@ -42,7 +42,7 @@ export class MessageService {
 
     filters.count = filters.count ? Math.min(filters.count, DEFAULT_PAGE_SIZE) : DEFAULT_PAGE_SIZE;
 
-    return (await this.repository.findAll(filters, loadOptions)).map(msg => this.getPublicMessage(msg));
+    return await this.repository.findAll(filters, loadOptions);
   }
 
   async get(filters?: MessageFilters) {
@@ -59,7 +59,7 @@ export class MessageService {
     const messages = [];
 
     if (activeRoom) {
-      messages.push(...activeRoom.messages.map(msg => this.getPublicMessage(msg)));
+      messages.push(...activeRoom.messages);
     }
 
     const count = loadOptions?.count ?? DEFAULT_PAGE_SIZE;
@@ -91,18 +91,22 @@ export class MessageService {
     return this.repository.saveMessages(messages);
   }
 
-  getPublicMessage(message: MessageData, loadOptions?: LoadOptions) {
+  getPublicMessage(data: MessageData, loadOptions?: LoadOptions) {
     const pub = {
-      id: message.id,
-      content: message.content,
-      date: message.date,
+      id: data.id,
+      content: data.content,
+      date: data.date
     } as PublicMessage;
+
+    if (loadOptions?.votes && data instanceof Message) {
+      pub.likesCount = data.likesCount;
+    }
 
     // si on veut le author, on le charge en objet
     if (loadOptions?.author) {
-      pub.author = message.author; // en espérant qu'il a bien été chargé comme objet .. (:
+      pub.author = data.author; // en espérant qu'il a bien été chargé comme objet .. (:
     } else {
-      pub.author = typeof message.author === 'object' ? message.author.id : message.author;
+      pub.author = typeof data.author === 'object' ? data.author.id : data.author;
     }
 
     return pub;

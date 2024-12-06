@@ -1,9 +1,9 @@
-import { PublicRoom, RoomData, TagData } from "@common/room";
+import { PublicRoom, RoomData } from "@common/room";
 import { Container } from "./container";
 import { ChatService } from "./chat.service";
 import { UserService } from "./user.service";
 import { RoomFilters } from "./db/room-repository";
-import { MessageService, LoadOptions as MessageLoadOptions } from "./message-service";
+import { LoadOptions as MessageLoadOptions, MessageService } from "./message-service";
 import { Room } from "../object/room";
 import { MessageData } from "@common/message";
 import { MathUtil } from "../util/math-util";
@@ -42,12 +42,14 @@ export class RoomService {
     return (await this.getAll({id}, loadOptions))[0];
   }
 
+  // @TODO: bon, me casse les noix le passage en public automatiquement.
+  // @TODO: => virer cette logique de tous les services et refaire le map en Public à la fin (au renvoi au client, normal)
   async getAll(filters?: RoomFilters, loadOptions?: LoadOptions) {
     filters = Object.assign({}, defaultFilters, filters);
 
     filters.count = Math.min(filters.count!, MAX_PAGE_SIZE);
 
-    const rooms: (Room|RoomData)[] = (await this.repository.findAll(filters, loadOptions))
+    const rooms: (Room | RoomData)[] = (await this.repository.findAll(filters, loadOptions))
       .map(r => this.chatService.getRoom(r.id) ?? r);
 
     for (const room of rooms) {
@@ -66,7 +68,7 @@ export class RoomService {
     }
 
     // bon pour l'instant on laisse comme ça, c'est pas trop mal, mais on pourrait se passer de charger les trucs du dessus si on vérifiait avant ...
-    return rooms.map(room => this.getPublicData(room, loadOptions));
+    return rooms; //.map(room => this.getPublicData(room, loadOptions));
   }
 
   // getMostTrending(count: number, loadOptions?: LoadOptions) {
@@ -78,6 +80,8 @@ export class RoomService {
     return this.getAll({search: subject});
   }
 
+  // @TODO: c'est carrément assez complet, faut s'en servir uniquement avant retour au client.
+  // @TODO: Tant qu'on est sur le serveur ça sert à rien de gérer des PublicData ...
   getPublicData(r: RoomData, loadOptions?: LoadOptions): PublicRoom {
     const pub = {
       id: r.id,
@@ -93,37 +97,28 @@ export class RoomService {
     // @TODO: peut être que si on a loadOptions.users on peut envoyer des author: number
     // @TODO: et le client se débrouille à faire les liens .. ? (évite les messages: [{author: {...}} x 100]
 
+    // bon finalement c'est possible de mutualiser certaines choses on dirait :p
+    if (loadOptions?.messagesOptions) {
+      pub.messages = (r.messages ?? [])
+        .slice(-(loadOptions.messagesOptions.count ?? 0))
+        .map(m => this.messageService.getPublicMessage(m, loadOptions.messagesOptions));
+
+      pub.mostVoted = (r.mostVoted ?? [])
+        .map(m => this.messageService.getPublicMessage(m as MessageData, loadOptions.messagesOptions));
+    }
+
+    if (loadOptions?.tags) {
+      pub.tags = (r.tags ?? []).map(t => this.tagService.getPublicData(t));
+    }
+
+    if (loadOptions?.users) {
+      pub.users = (r.users ?? []).map(u => this.userService.getPublicData(u));
+    }
+
     if (r instanceof Room) {
       pub.isActive = true;
       pub.anonCount = r.anonCount;
       pub.userCount = r.userCount;
-
-      if (loadOptions?.tags) {
-        pub.tags = (r.tags ?? []).map(t => t.toPublic());
-      }
-
-      if (loadOptions?.messagesOptions) {
-        pub.messages = (r.messages ?? []).slice(-(loadOptions.messagesOptions.count ?? 0))
-          .map(m => this.messageService.getPublicMessage(m));
-        pub.mostVoted = (r.mostVoted ?? []).map(m => this.messageService.getPublicMessage(m));
-      }
-
-      if (loadOptions?.users) {
-        pub.users = (r.users ?? []).map(u => this.userService.getPublicData(u));
-      }
-    } else {
-      if (loadOptions?.tags) {
-        pub.tags = r.tags;
-      }
-
-      if (loadOptions?.messagesOptions) {
-        pub.messages = ((r.messages ?? []) as MessageData[]).slice(-(loadOptions.messagesOptions.count ?? 0)).map(m => this.messageService.getPublicMessage(m));
-        pub.mostVoted = ((r.mostVoted ?? []) as MessageData[]).map(m => this.messageService.getPublicMessage(m));
-      }
-
-      if (loadOptions?.users) {
-        pub.users = (r.users as UserData[] ?? []).map(u => this.userService.getPublicData(u));
-      }
     }
 
     return pub;
@@ -134,7 +129,7 @@ export class RoomService {
   }
 
   async saveRoom(r: Room) {
-    await this.messageService.saveMessages(Array.from(r.messages).filter(m => !m.saved));
+    await this.messageService.saveMessages(r.messages);
 
     r.messagesCount = await this.messageService.getCount({room: r.id});
     r.trendingScore = this.computeTrendingScore(r);

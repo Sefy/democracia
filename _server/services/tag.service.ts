@@ -17,8 +17,8 @@ export class TagService {
     return this.getAll({id});
   }
 
-  async getAll(filters?: TagFilters) {
-    return (await this.repository.findAll(filters)).map(t => this.getPublicData(t));
+  getAll(filters?: TagFilters) {
+    return this.repository.findAll(filters); //.map(t => this.getPublicData(t));
   }
 
   // @TODO: pour l'instant rien à faire .. ?

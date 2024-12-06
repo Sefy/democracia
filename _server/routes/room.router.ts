@@ -24,7 +24,9 @@ export class RoomRouter {
 
         // @TODO: récupérer d'abord uniquement des IDs, puis chercher dans ChatService.activeRooms si on a des match
         // @TODO: => charger les données de celles-ci en live, les autres depuis la DB
-        res.json(await this.roomService.getAll(filters, {tags: true, counts: true}));
+        const rooms = await this.roomService.getAll(filters, {tags: true, counts: true});
+
+        res.json(rooms.map(room => this.roomService.getPublicData(room)));
       } catch (e) {
         next(e);
       }
@@ -71,7 +73,7 @@ export class RoomRouter {
       try {
         const messages = await this.messageService.getAll({room: id, page});
 
-        resp.send({ok: true, messages});
+        resp.send({ok: true, messages: messages.map(m => this.messageService.getPublicMessage(m))});
       } catch (e) {
         next(e);
       }
@@ -82,7 +84,7 @@ export class RoomRouter {
         const room = await this.roomService.get(+req.params.room);
 
         if (room) {
-          resp.send({ok: true, room});
+          resp.send({ok: true, room: this.roomService.getPublicData(room)});
         } else {
           resp.send({ok: false});
         }
@@ -115,7 +117,7 @@ export class RoomRouter {
 
         const result = {
           ok: true,
-          room: this.roomService.getPublicData(room, {users: true, messagesOptions: {}})
+          room: this.roomService.getPublicData(room, {users: true, messagesOptions: {votes: true}})
         } as any;
 
         if (newAnon) {
@@ -153,7 +155,10 @@ export class RoomRouter {
 
         if (room) {
           this.chatService.joinRoomUser(room, user);
-          res.send({ok: true, room: this.roomService.getPublicData(room, {users: true, messagesOptions: {}})});
+          res.send({
+            ok: true,
+            room: this.roomService.getPublicData(room, {users: true, messagesOptions: {votes: true}})
+          });
         } else {
           res.send({ok: false});
         }

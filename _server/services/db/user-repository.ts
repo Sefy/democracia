@@ -81,19 +81,12 @@ export class UserRepository {
   // }
 
   async create(user: UserData) {
-    const now = new Date();
-
-    user.createdAt = now;
-    user.updatedAt = now;
-
     return this.em.transaction(async (client) => {
-      const sql = `INSERT INTO users (email, username, avatar, "googleId", "createdAt", "updatedAt")
-                   VALUES ($1, $2, $3, $4, $5, $6)
+      const sql = `INSERT INTO users (email, username, avatar, "googleId")
+                   VALUES ($1, $2, $3, $4)
                    RETURNING id`;
 
-      const params = [
-        user.email, user.username, user.avatarUrl, user.googleId, user.createdAt, user.updatedAt
-      ];
+      const params = [user.email, user.username, user.avatarUrl, user.googleId];
 
       const res = await client.query(sql, params);
 

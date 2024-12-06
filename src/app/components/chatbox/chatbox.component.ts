@@ -3,7 +3,7 @@ import { CommonModule } from "@angular/common";
 import { MatFormFieldModule, MatLabel } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { FormsModule } from "@angular/forms";
-import { map, Observable, Subject } from "rxjs";
+import { map, Observable, of, Subject } from "rxjs";
 import { MatDialog } from "@angular/material/dialog";
 import { LoginComponent } from "../login/login.component";
 import { ChatService, ClientChatRoom, ClientRoomMessage } from "@app/services/chat.service";
@@ -18,7 +18,7 @@ import { SocketLikeData, SocketMessage, SocketMessageData, SocketMessageType } f
 import { RoomService } from "@app/services/room.service";
 import { env } from "../../../environments/env";
 import { PublicUser } from "@common/user";
-import { MessageId } from "@common/message";
+import { MessageId, VoteType } from "@common/message";
 import { PublicMessage } from "@common/public";
 import { UserAvatarComponent } from "@app/components/user/avatar/user-avatar.component";
 
@@ -57,15 +57,16 @@ export class ChatboxComponent implements OnInit, OnDestroy {
   message = '';
   messageTyping$ = new Subject();
 
+  anonCount = 0;
+  waitingResponse = false;
+
+  onDestroy$ = new Subject();
+
   // @TODO: improve this, get a real state from SocketService (store socket here directly .. ?)
   socketConnected = false;
 
   // @TODO ! :D in a fancy "settings" button somewhere on the Room header :) => open popup with settings
   minimumLikeCount = 0;
-
-  onDestroy$ = new Subject();
-
-  anonCount = 0;
 
   constructor(
     private roomService: RoomService,
@@ -163,14 +164,18 @@ export class ChatboxComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const pubChat = {
+    const pubMsg = {
       id: data.id!,
       content: data.message!,
       author: author.id,
-      date: new Date()
-    };
+      date: new Date(),
+    } as PublicMessage;
 
-    const message = this.chatService.adaptMessage(pubChat, this.room);
+    const message = this.chatService.adaptMessage(pubMsg, this.room);
+
+    if (message.mine) {
+      this.waitingResponse = false;
+    }
 
     this.room.messages.push(message);
   }
@@ -218,6 +223,8 @@ export class ChatboxComponent implements OnInit, OnDestroy {
   }
 
   sendMessage() {
+    this.waitingResponse = true;
+
     this.socketSendMessage(this.message);
     this.message = '';
   }
@@ -230,10 +237,8 @@ export class ChatboxComponent implements OnInit, OnDestroy {
     }
   }
 
-  sendLike(message: ClientRoomMessage) {
-    console.log('Send like for : ', message);
-
-    this.socketSendLikeFor(message);
+  onVote(data: {message: ClientRoomMessage, type: VoteType}) {
+    this.socketSendVote(data.message, data.type);
   }
 
   setTitle(newTitle: string) {
@@ -278,8 +283,8 @@ export class ChatboxComponent implements OnInit, OnDestroy {
     this.socket?.send(JSON.stringify(this.buildSocketMessage(SocketMessageType.MESSAGE, {message})));
   }
 
-  socketSendLikeFor(target: PublicMessage) {
-    const data = {target: target.id};
+  socketSendVote(target: PublicMessage, type: VoteType) {
+    const data = {target: target.id, type} as SocketLikeData;
 
     this.socket?.send(JSON.stringify(this.buildSocketMessage(SocketMessageType.LIKE, data)));
   }

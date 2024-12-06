@@ -1,6 +1,6 @@
 import { WebSocketServer } from "ws";
 import { RoomData, TagData } from "@common/room";
-import { Publishable } from "@common/public";
+import { Publishable, VotesCount } from "@common/public";
 import { Message } from "./message";
 import { User } from "./user";
 import { MessageId } from "@common/message";
@@ -44,6 +44,8 @@ export class Room implements RoomData {
   // userCount?: number;
   trendingScore?: number;
   messagesCount?: number;
+
+  votesCount?: VotesCount;
 
   // Dates
   createdAt?: Date;

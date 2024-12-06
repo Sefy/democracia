@@ -1,15 +1,19 @@
 import { UserData } from "@common/user";
 import { RoomData } from "@common/room";
 
-export enum VoteType {
-  LIKE = 1,
-  DISLIKE = -1
-}
+export type VoteType = 'UP' | 'DOWN';
+
+// export enum VoteType {
+//   LIKE = 1,
+//   DISLIKE = -1
+// }
 
 export interface VoteData {
-  user: number | UserData;
-  message: number | MessageData;
   type: VoteType;
+  user: number | UserData;
+
+  // nullable, info pas toujours indispensable (si on est déjà rangé dans un Message)
+  message?: number | MessageData;
 }
 
 export type MessageId = string | number;
@@ -25,5 +29,5 @@ export interface MessageData {
 
   toxicity?: number;
 
-  saved?: boolean;
+  votes?: VoteData[];
 }

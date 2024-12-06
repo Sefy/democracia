@@ -6,6 +6,8 @@
 
 ## Bienvenue sur le projet Democracia.
 
+> Tourne sur https://democracia-project.com
+
 Projet Open Source grand public, dont l'objectif ultime est une plateforme citoyenne où l'on pourra :
 
 - débattre sereinement de tous les sujets sociétaux (toute forme de vulgarité, toxicité, ou violence sera évidemment filtrée et bannie)

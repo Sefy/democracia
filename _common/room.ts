@@ -1,6 +1,6 @@
 import { MessageData, MessageId } from "@common/message";
 import { PublicUser, UserData } from "@common/user";
-import { PublicData, PublicMessage } from "@common/public";
+import { PublicData, PublicMessage, VotesCount } from "@common/public";
 
 export interface TagData {
   id: number;
@@ -31,6 +31,8 @@ export interface RoomData {
   users?: UserData[];
   messages: MessageData[];
   mostVoted?: (MessageData | MessageId)[]; // ids only ?
+
+  votesCount?: VotesCount;
 }
 
 // Shared with Client

@@ -1,7 +1,8 @@
-<div *ngFor="let message of messages" class="chat-row" [class.mine]="message.mine" [class.system]="message.type === 'system'">
+<div *ngFor="let message of messages" class="chat-row" [class.mine]="message.mine"
+     [class.system]="message.type === 'system'">
   <ng-container *ngIf="message.type !== 'system' && message.type !== 'date'; else systemMessage">
     <div class="author">
-      <app-user-avatar *ngIf="message.author" [user]="message.author" />
+      <app-user-avatar *ngIf="message.author" [user]="message.author"/>
     </div>
 
     <div class="bulle" [matBadge]="!message.likesCount ? '' : '👍' + message.likesCount"
@@ -13,9 +14,9 @@
       <span class="date">{{ message.formattedDate }}</span>
 
       <!-- @TODO: move to self component ? -->
-      <div class="hover-actions">
-        <a mat-mini-fab (click)="like(message)" [class.not-allowed]="!userService.currentUser"
-           [matTooltip]="userService.currentUser ? '' : 'Connexion requise'">👍</a>
+      <div class="hover-actions" [matTooltip]="userService.currentUser ? '' : 'Connexion requise'">
+        <a mat-mini-fab (click)="dislike(message)" [class.not-allowed]="!userService.currentUser">👎</a>
+        <a mat-mini-fab (click)="like(message)" [class.not-allowed]="!userService.currentUser">👍</a>
       </div>
     </div>
   </ng-container>
