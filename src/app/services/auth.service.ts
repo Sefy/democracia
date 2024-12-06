@@ -1,14 +1,14 @@
-import {Injectable} from '@angular/core';
-import {BehaviorSubject, tap} from "rxjs";
-import { LoginData, PublicUser } from "@common/user";
-import {ApiService} from "@app/services/api.service";
-import {HttpClient} from "@angular/common/http";
-import { env } from "../../environments/env";
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, tap } from "rxjs";
+import { LoginData, PublicUser, UserRole } from "@common/user";
+import { ApiService } from "@app/services/api.service";
+import { HttpClient } from "@angular/common/http";
 
 const TOKEN_STORAGE_KEY = 'user_token';
 
 export interface CurrentUser extends PublicUser {
   token: string;
+  role?: UserRole;
 }
 
 interface LoginResponse {
@@ -51,6 +51,16 @@ export class AuthService extends ApiService {
   set currentToken(value: string) {
     this.currentToken$.next(value);
     this.setTokenInStorage(value);
+  }
+
+  hasRole(role: UserRole) {
+    const userRole = this.currentUser?.role;
+
+    console.log('HAS ROLE ?', userRole, role);
+
+    return (role === 'USER' && !!userRole) ||
+      (role === 'MODERATOR' && (userRole === 'MODERATOR' || userRole === 'ADMIN')) ||
+      (role === 'ADMIN' && userRole === 'ADMIN');
   }
 
   login(data: LoginData) {
@@ -99,6 +109,12 @@ export class AuthService extends ApiService {
   }
 
   setUsername(username: string) {
-    return this.post<{ok: boolean, error?: string}>('/set-username', {username});
+    return this.post<{ ok: boolean, error?: string }>('/set-username', {username}).pipe(
+      tap(res => {
+        if (res.ok && this.currentUser) {
+          this.currentUser.username = username;
+        }
+      })
+    )
   }
 }

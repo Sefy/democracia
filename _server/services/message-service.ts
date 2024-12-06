@@ -25,6 +25,10 @@ export interface MessageFilters extends BaseFilters {
 export interface LoadOptions {
   likesCount?: boolean;
   author?: boolean;
+  votes?: boolean;
+  // bon ça fait chier le doublon avec les BaseFilters -_-
+  // mais j'en ai besoin pour l'appel depuis les Rooms, et j'ai pas de bonne idée ...
+  count?: number;
 }
 
 export class MessageService {
@@ -49,7 +53,7 @@ export class MessageService {
     return this.repository.getCount(filters);
   }
 
-  async getRoomLatest(idRoom: number, count = DEFAULT_PAGE_SIZE) {
+  async getRoomLatest(idRoom: number, loadOptions?: LoadOptions) {
     const activeRoom = this.chatService.getRoom(idRoom);
 
     const messages = [];
@@ -58,12 +62,14 @@ export class MessageService {
       messages.push(...activeRoom.messages.map(msg => this.getPublicMessage(msg)));
     }
 
+    const count = loadOptions?.count ?? DEFAULT_PAGE_SIZE;
+
     messages.push(...(await this.getAll({
       room: idRoom,
       count: count - messages.length,
-      sort: 'date DESC',
+      sort: 'm.created_at DESC',
       exclude: messages.map(m => m.id)
-    })));
+    }, loadOptions)));
 
     return messages;
   }

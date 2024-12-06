@@ -4,9 +4,9 @@ import { Room } from "./room";
 import { User } from "./user";
 
 export class Vote implements VoteData {
-  user!: User;
   message!: Message;
   type!: VoteType;
+  user!: User;
 
   constructor(data: VoteData) {
     this.type = data.type;

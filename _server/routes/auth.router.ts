@@ -19,13 +19,11 @@ export class AuthRouter {
         return;
       }
 
-      // @TODO: ola, gros ménage ! :D d'accord on se sert du User Google, mais faut renvoyer le User de la base heinnn
-
       try {
         // Vérification du token Google
         const googleUser = await this.userService.verifyGoogleToken(googleToken);
 
-        let user = await this.userService.getOneByEmail(googleUser.email!);
+        let user = await this.userService.get({email: googleUser.email!});
 
         const firstLogin = !user;
 
@@ -36,7 +34,7 @@ export class AuthRouter {
 
         const token = this.userService.generateToken({id: user.id, email: googleUser.email});
 
-        const responseData = {token} as any;
+        const responseData = {ok: true, token} as any;
 
         // pour demander un Username (@TODO: prendre le nom
         if (firstLogin) {
@@ -63,10 +61,11 @@ export class AuthRouter {
           const authUserData = await this.userService.authentifyToken(token);
 
           if (authUserData?.email) {
-            const user = await this.userService.getOneByEmail(authUserData.email);
+            const user = await this.userService.get({email: authUserData.email});
 
             if (user) {
               resp.send({ok: true, user});
+              user.email = authUserData.email;
               return;
             }
           }

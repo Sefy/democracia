@@ -1,4 +1,4 @@
-import { AnonData, PublicUser, UserData } from "@common/user";
+import { AnonData, PublicUser, UserData, UserRole } from "@common/user";
 import { Container } from "./container";
 import { OAuth2Client } from "google-auth-library";
 import jwt, { JwtPayload } from "jsonwebtoken";
@@ -6,11 +6,14 @@ import { env } from "../env";
 import { ChatService } from "./chat.service";
 import { UserFilters } from "./db/user-repository";
 import { LogService } from "./log.service";
-import { User } from "../object/user";
 
 // const SALT_ROUNDS = 7;
 
 export type TokenData = Partial<UserData> | Partial<AnonData>;
+
+interface LoadOptions {
+  forAccount?: boolean;
+}
 
 export class UserService {
 
@@ -22,14 +25,10 @@ export class UserService {
     this.client = new OAuth2Client(env.GOOGLE_CLIENT_ID);
   }
 
-  async getOneBy(filters?: UserFilters) {
+  async get(filters?: UserFilters, loadOptions?: LoadOptions) {
     const user = await this.repository.findOne(filters);
 
-    return user ? this.getPublicData(user) : null;
-  }
-
-  async getOneByEmail(email: string) {
-    return this.getOneBy({email});
+    return user ? this.getPublicData(user, loadOptions) : null;
   }
 
   // async authenticate(email: string, password: string): Promise<User | null> {
@@ -66,13 +65,27 @@ export class UserService {
     }
   }
 
-  getPublicData(user: UserData) {
-    return {
+  hasRole(user: UserData, role: UserRole) {
+    const userRole = user.role;
+
+    return (role === 'USER' && !!userRole) ||
+      (role === 'MODERATOR' && (userRole === 'MODERATOR' || userRole === 'ADMIN')) ||
+      (role === 'ADMIN' && userRole === 'ADMIN');
+  }
+
+  getPublicData(user: UserData, loadOptions?: LoadOptions) {
+    const pub = {
       id: user.id,
       username: user.username,
-      email: user.email,
-      avatarUrl: user.avatarUrl
+      avatarUrl: user.avatarUrl,
+      role: user.role
     } as PublicUser;
+
+    if (loadOptions?.forAccount) {
+      pub.email = user.email;
+    }
+
+    return pub;
   }
 
   generateToken(payload: object) {
@@ -131,7 +144,7 @@ export class UserService {
       const authUserData = await this.authentifyToken(token);
 
       if (authUserData?.email) {
-        return await this.getOneByEmail(authUserData.email);
+        return await this.get({email: authUserData.email});
       }
     }
 

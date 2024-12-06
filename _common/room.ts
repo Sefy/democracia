@@ -5,8 +5,8 @@ import { PublicData, PublicMessage } from "@common/public";
 export interface TagData {
   id: number;
   name: string;
-  color?: string;
   icon?: string;
+  color?: string;
 }
 
 // Base
@@ -19,6 +19,7 @@ export interface RoomData {
   // DB
   createdAt?: Date;
   updatedAt?: Date;
+  createdBy?: UserData;
 
   lastActive: Date;
   startedAt?: Date;

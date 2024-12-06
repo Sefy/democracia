@@ -10,10 +10,11 @@ import { MatSlideToggleModule } from "@angular/material/slide-toggle";
 import { AuthService } from "@app/services/auth.service";
 import { SnackbarService } from "@app/services/snackbar.service";
 import { LoginData } from "@common/user";
-import { filter, first, interval, map, startWith } from "rxjs";
+import { filter, first, interval, map, of, startWith, switchMap, tap } from "rxjs";
 import { env } from "../../../environments/env";
 import { LoaderComponent } from "@app/components/_global/loader/loader.component";
 import { DialogHeaderComponent } from "@app/components/_dialog/dialog-header/dialog-header.component";
+import { DialogService } from "@app/services/dialog.service";
 
 @Component({
   selector: 'app-login',
@@ -54,7 +55,8 @@ export class LoginComponent implements AfterViewInit {
     private fb: FormBuilder,
     private userService: AuthService,
     private matDialogRef: MatDialogRef<any>,
-    private snackbarService: SnackbarService
+    private snackbarService: SnackbarService,
+    private dialogService: DialogService
   ) {
   }
 
@@ -115,19 +117,28 @@ export class LoginComponent implements AfterViewInit {
     // - [verify its integrity ?]
     // - check user exist, or create if not
     // - [store token ? maybe let us generate home tokens ?]
-    this.userService.loginWithGoogleAuth(jwt).subscribe(res => {
-      this.loading = false;
+    this.userService.loginWithGoogleAuth(jwt).pipe(
+      switchMap(res => res.token ? this.afterGoogleAuth(res) : of(null))
+    ).subscribe(() => this.loading = false);
+  }
 
-      console.log('Response : ', res);
+  afterGoogleAuth(res: {token?: string, firstLogin?: boolean}) {
+      // le JWT généré par le back, qu'on doit trimballer partout !
+      this.userService.currentToken = res.token!;
 
-      if (res.token) {
-        // le JWT généré par le back, qu'on doit trimballer partout !
-        this.userService.currentToken = res.token;
-        this.userService.loadUser().subscribe();
-      }
-    });
+      return this.userService.loadUser().pipe(
+        tap(authData => {
+          this.matDialogRef.close();
 
-    // ask for a username if not already exists ?
+          const username = authData.user?.username;
+
+          if (res.firstLogin) {
+            this.dialogService.openUsernamePrompt(username);
+          } else {
+            this.snackbarService.info(`Bienvenue ${username} !`, {duration: 2500});
+          }
+        })
+      );
   }
 
   parseJwt(token: string) {

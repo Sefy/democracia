@@ -3,7 +3,7 @@ import { Container } from "./container";
 import { ChatService } from "./chat.service";
 import { UserService } from "./user.service";
 import { RoomFilters } from "./db/room-repository";
-import { MessageService } from "./message-service";
+import { MessageService, LoadOptions as MessageLoadOptions } from "./message-service";
 import { Room } from "../object/room";
 import { MessageData } from "@common/message";
 import { MathUtil } from "../util/math-util";
@@ -14,7 +14,7 @@ export interface LoadOptions {
   tags?: boolean;
   counts?: boolean;
   users?: boolean;
-  lastMessages?: number;
+  messagesOptions?: MessageLoadOptions;
 }
 
 const MAX_PAGE_SIZE = 100;
@@ -59,8 +59,8 @@ export class RoomService {
         room.tags = await this.tagService.getAll({roomId: room.id});
       }
 
-      if (loadOptions?.lastMessages) {
-        room.messages = await this.messageService.getRoomLatest(room.id, loadOptions.lastMessages);
+      if (loadOptions?.messagesOptions) {
+        room.messages = await this.messageService.getRoomLatest(room.id, loadOptions.messagesOptions);
         room.mostVoted = await this.messageService.getRoomMostVoted(room.id);
       }
     }
@@ -99,9 +99,10 @@ export class RoomService {
         pub.tags = (r.tags ?? []).map(t => t.toPublic());
       }
 
-      if (loadOptions?.lastMessages) {
-        pub.messages = (r.messages ?? []).slice(-loadOptions.lastMessages).map(m => m.toPublic());
-        pub.mostVoted = (r.mostVoted ?? []).map(m => m.toPublic());
+      if (loadOptions?.messagesOptions) {
+        pub.messages = (r.messages ?? []).slice(-(loadOptions.messagesOptions.count ?? 0))
+          .map(m => this.messageService.getPublicMessage(m));
+        pub.mostVoted = (r.mostVoted ?? []).map(m => this.messageService.getPublicMessage(m));
       }
 
       if (loadOptions?.users) {
@@ -112,8 +113,8 @@ export class RoomService {
         pub.tags = r.tags;
       }
 
-      if (loadOptions?.lastMessages) {
-        pub.messages = ((r.messages ?? []) as MessageData[]).slice(-loadOptions.lastMessages).map(m => this.messageService.getPublicMessage(m));
+      if (loadOptions?.messagesOptions) {
+        pub.messages = ((r.messages ?? []) as MessageData[]).slice(-(loadOptions.messagesOptions.count ?? 0)).map(m => this.messageService.getPublicMessage(m));
         pub.mostVoted = ((r.mostVoted ?? []) as MessageData[]).map(m => this.messageService.getPublicMessage(m));
       }
 

@@ -19,6 +19,10 @@ type ContainerMap = {
 
 export class Container {
 
+  constructor() {
+    this.init();
+  }
+
   stuff: ContainerMap = {};
 
   get(name: keyof ContainerMap) {

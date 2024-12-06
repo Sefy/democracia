@@ -17,14 +17,15 @@ export class QuoteComponent {
 
   quotes: Quote[] = [
     {
-      text: 'Que la majorité silencieuse se fasse entendre'
+      text: 'Faire entendre la voix de la majorité silencieuse'
+      // text: 'Que la majorité silencieuse se fasse entendre'
     },
-    {
-      text: 'The only way to do great work is to love what you do.',
-    },
-    {
-      text: 'If you tell the truth, you don\'t have to remember anything.',
-    },
+    // {
+    //   text: 'The only way to do great work is to love what you do.',
+    // },
+    // {
+    //   text: 'If you tell the truth, you don\'t have to remember anything.',
+    // },
     {
       text: `Il n'y a pas de problème, il n'y a que des solutions`
     },
@@ -33,7 +34,7 @@ export class QuoteComponent {
       author: 'Tyler Durden'
     },
     {
-      text: "Inspiré des forums romains et des agoras grecques"
+      text: "Inspiré des forums romains et des agoras grecques, berceaux de la Démocratie"
     }
     // {
     //   text: `I am not in danger Skyler, I am the one who knocks.`,
@@ -44,7 +45,7 @@ export class QuoteComponent {
   quote: Quote;
 
   constructor() {
-    const index = Math.random() > .9 ? MathUtil.rand(0, this.quotes.length - 1) : 0;
+    const index = Math.random() > .5 ? MathUtil.rand(0, this.quotes.length - 1) : 0;
 
     this.quote = this.quotes[index];
   }

@@ -27,8 +27,6 @@ class Server {
     // bon, surement une bonne pratique, mais trop relou, surtout sur notre serveur fourre tout où les env vars vont être bien trop nombreuses / mélangées ...
     // dotenv.config({path: path.join("C:\\_projects\\democracia\\_server\\", '.env')});
 
-    this.container.init();
-
     this.app = express();
     this.app.use(express.json());
     this.app.use(session({secret: env.SECRET!}));

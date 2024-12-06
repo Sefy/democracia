@@ -8,7 +8,7 @@ CREATE TABLE users
   username    VARCHAR(255) UNIQUE NOT NULL,
 
 --   password    VARCHAR(255), -- Not needed for now ;x
-  "googleId"  INTEGER,
+  "googleId"  numeric,
   avatar      VARCHAR(255),
 
   role        user_role                DEFAULT 'USER',
@@ -49,7 +49,7 @@ CREATE TABLE room_tags
 
 CREATE TABLE messages
 (
-  id         SERIAL PRIMARY KEY,
+  id         VARCHAR PRIMARY KEY,
   room_id    INTEGER REFERENCES rooms (id) ON DELETE CASCADE,
   user_id    INTEGER REFERENCES users (id),
   content    TEXT NOT NULL,
@@ -60,7 +60,7 @@ CREATE TABLE messages
 
 CREATE TABLE message_votes
 (
-  message_id INTEGER REFERENCES messages (id) ON DELETE CASCADE,
+  message_id VARCHAR REFERENCES messages (id) ON DELETE CASCADE,
   user_id    INTEGER REFERENCES users (id),
   vote_type  vote_type NOT NULL,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,

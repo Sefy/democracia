@@ -30,22 +30,29 @@ export class RoomRouter {
       }
     });
 
-    // @TODO: filter on User Role !
-    // router.post('/', authenticateJWT, async (req: Request, resp: Response) => {
-    //   const roomData = req.body.room;
-    //
-    //   try {
-    //     roomData.tags = await this.tagService.getAll({ids: roomData.tags as number[]});
-    //
-    //     const newRoom = await this.roomService.createRoom(roomData);
-    //
-    //     resp.send({ok: true});
-    //   } catch (e) {
-    //     console.error(e);
-    //
-    //     resp.send({ok: false, error: e});
-    //   }
-    // });
+    router.post('/', authenticateJWT, async (req: Request, resp: Response) => {
+
+      // nul !
+      const authUser = await this.userService.get({email: (req.user as {email: string}).email}, {forAccount: true});
+
+      if (!authUser || !this.userService.hasRole(authUser, 'MODERATOR')) {
+        throw new Error('unauthorized');
+      }
+
+      const roomData = req.body.room;
+
+      try {
+        roomData.tags = await this.tagService.getAll({ids: roomData.tags as number[]});
+
+        const newRoom = await this.roomService.createRoom(roomData);
+
+        resp.send({ok: true});
+      } catch (e) {
+        console.error(e);
+
+        resp.send({ok: false, error: e});
+      }
+    });
 
     router.get('/search/:subject', async (req, resp, next) => {
       const subject = req.params.subject;
@@ -72,7 +79,7 @@ export class RoomRouter {
 
     router.get('/:id', async (req: Request, resp: Response, next) => {
       try {
-        const room = await this.roomService.get(+req.params.room, {lastMessages: 100});
+        const room = await this.roomService.get(+req.params.room);
 
         if (room) {
           resp.send({ok: true, room});
@@ -101,12 +108,12 @@ export class RoomRouter {
         let room = this.chatService.getRoom(id);
 
         if (!room) {
-          room = this.chatService.startRoom(await this.roomService.get(id, {tags: true}));
+          room = await this.chatService.startRoom(id);
         }
 
         this.chatService.joinRoomAnon(room, anon);
 
-        const result = {ok: true, room: this.roomService.getPublicData(room, {lastMessages: 100, users: true})} as any;
+        const result = {ok: true, room: this.roomService.getPublicData(room, {users: true})} as any;
 
         if (newAnon) {
           result.token = this.userService.generateToken(anon);
@@ -126,7 +133,7 @@ export class RoomRouter {
       // @TODO: if !reqUser => pas plus loin
 
       try {
-        const user = await this.userService.getOneByEmail(reqUser.email);
+        const user = await this.userService.get({email: reqUser.email});
 
         if (!user) {
           res.send({ok: false, errors: [`No user found`]});
@@ -138,12 +145,12 @@ export class RoomRouter {
         let room = this.chatService.getRoom(id);
 
         if (!room) {
-          room = this.chatService.startRoom(await this.roomService.get(id, {tags: true}));
+          room = await this.chatService.startRoom(id);
         }
 
         if (room) {
-          this.chatService.joinRoom(room, user);
-          res.send({ok: true, room: this.roomService.getPublicData(room, {lastMessages: 100, users: true})});
+          this.chatService.joinRoomUser(room, user);
+          res.send({ok: true, room: this.roomService.getPublicData(room, {users: true})});
         } else {
           res.send({ok: false});
         }

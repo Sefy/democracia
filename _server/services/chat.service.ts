@@ -1,30 +1,43 @@
 import { WebSocket, WebSocketServer } from "ws";
 import { Container } from "./container";
-import { RoomData } from "@common/room";
 import { SocketLikeData, SocketMessage, SocketMessageData, SocketMessageType } from "@common/socket";
 import http from "http";
 import { LogService } from "./log.service";
 import { Room } from "../object/room";
 import { User } from "../object/user";
 import { Message, Vote } from "../object/message";
-import { VoteType } from "@common/message";
-import { AnonData, UserData } from "@common/user";
+import { MessageData, VoteType } from "@common/message";
+import { AnonData, PublicUser, UserData } from "@common/user";
 import { ToxicityService } from "./toxicity-service";
 import { interval } from "rxjs";
 import { RoomService } from "./room.service";
+import { PublicMessage } from "@common/public";
+import { UserService } from "./user.service";
 
 export interface CustomSocket extends WebSocket {
   isAlive: boolean;
   userId?: number | string;
 }
 
+interface CacheData {
+  needsUpdate?: boolean;
+}
+
+interface CachedUser extends PublicUser, CacheData {
+}
+
+interface CachedMessage extends PublicMessage, CacheData {
+}
+
 // faire en sorte que ce timer s'adapte selon la charge du serveur ? (si trop de monde / rooms, on peut update moins souvent pour soulager .. ?)
 const ROOM_DATA_REFRESH_TIMER = 15;
 
 export class ChatService {
-  activeRooms: Room[] = [];
-  activeUsers: User[] = [];
-  activeAnons: AnonData[] = [];
+  rooms: Room[] = [];
+  users: User[] = [];
+  anons: AnonData[] = [];
+
+  cachedUsers: { [k: number]: User } = {};
 
   decoder = new TextDecoder('utf-8');
 
@@ -37,23 +50,74 @@ export class ChatService {
     // every x sec, updated rooms should refresh their stored values (message count, trending score, etc)
     // @TODO: la routine s'occupe uniquement des rooms actives : il faut mettre à jour ces données quand une room se ferme (quand le dernier user se barre : à faire aussi :p)
     interval(ROOM_DATA_REFRESH_TIMER * 1000).subscribe(() => {
-      this.activeRooms.forEach(r => this.roomService.saveRoom(r));
+      this.rooms.forEach(r => this.roomService.saveRoom(r));
     });
+  }
+
+  // ========== USER ========== //
+
+  getActiveUser(id: number) {
+    return this.users.find(u => (u.id && u.id === id));
+  }
+
+  findAnon(anon: AnonData) {
+    return this.anons.find(a => a.id === anon.id);
+  }
+
+  newUser(data: UserData) {
+    return new User(data);
+  }
+
+  async getOrLoadUser(id: number) {
+    const user = this.getActiveUser(id) ?? this.cachedUsers[id];
+
+    if (user) {
+      return user;
+    }
+
+    const userData = await this.userService.repository.findOne({id});
+
+    if (userData) {
+      this.cachedUsers[id] = new User(userData);
+
+      return this.cachedUsers[id];
+    }
+
+    return null;
   }
 
   // ========== ROOM ========== //
 
   getRoom(id: number) {
-    return this.activeRooms.find(r => r.id === id);
+    return this.rooms.find(r => r.id === id);
   }
 
-  // @TODO: initialiser toutes données enfants de la Room ici
-  loadChatRoom(data: RoomData) {
-    return new Room(data);
+  async loadChatRoom(id: number) {
+    // OK on en fout 500 en cache, après on nettoiera le cache progressivement, tout en updatant le résumé
+    const data = await this.roomService.get(id, {tags: true, messagesOptions: {count: 500, votes: true}});
+
+    const room = new Room(data);
+
+    room.messages = await Promise.all(data.messages.map(async (m) => this.loadChatMessage(m)));
+
+    return room;
   }
 
-  startRoom(data: RoomData) {
-    const activeRoom = this.getRoom(data.id);
+  async loadChatMessage(m: MessageData) {
+    const msg = new Message(m);
+
+    const authorId = typeof m.author === 'object' ? m.author.id : m.author;
+    const author = authorId ? await this.getOrLoadUser(authorId) : null;
+
+    if (author) {
+      msg.setAuthor(author);
+    }
+
+    return msg;
+  }
+
+  async startRoom(id: number) {
+    const activeRoom = this.getRoom(id);
 
     if (activeRoom) {
       // @TODO: peut être option pour force restart ?
@@ -61,9 +125,9 @@ export class ChatService {
       return activeRoom;
     }
 
-    const room = this.loadChatRoom(data);
+    const room = await this.loadChatRoom(id);
 
-    this.activeRooms.push(room);
+    this.rooms.push(room);
 
     this.openRoomSocket(room);
 
@@ -73,12 +137,12 @@ export class ChatService {
   }
 
   // @TODO: voir comment gérer au mieux la connexion "anonyme" ?
-  joinRoom(room: Room, user: UserData) {
-    let activeUser = this.findUser(user, this.activeUsers);
+  joinRoomUser(room: Room, user: UserData) {
+    let activeUser = this.getActiveUser(user.id);
 
     if (!activeUser) {
       activeUser = this.newUser(user);
-      this.activeUsers.push(activeUser);
+      this.users.push(activeUser);
     }
 
     if (!room.getUser(activeUser.id)) {
@@ -91,7 +155,7 @@ export class ChatService {
     let activeAnon = this.findAnon(anon);
 
     if (!activeAnon) {
-      this.activeAnons.push(anon);
+      this.anons.push(anon);
     }
 
     if (!room.findAnon(anon.id)) {
@@ -107,6 +171,43 @@ export class ChatService {
       this.handleConnection(ws as CustomSocket, room, req as any);
     });
   }
+
+  // ========== MESSAGE ========== //
+
+  addMessage(room: Room, msg: Message) {
+    // @TODO: incrémenter le room.messagesCount automatiquement du coup ?
+    room.addMessage(msg);
+
+    this.sendMessage(room, this.createSocketMessage(msg));
+  }
+
+  newChatMessage(message: string, room: Room, author: User) {
+    return new Message({id: crypto.randomUUID(), message})
+      .setAuthor(author)
+      .setRoom(room);
+  }
+
+  addLike(data: SocketLikeData, room: Room, author: User) {
+    const message = room.getMessage(data.target);
+
+    if (message) {
+      const vote = new Vote({type: VoteType.LIKE, user: author, message});
+
+      message.addVote(vote);
+
+      // @TODO: handle déjà voté !
+      // if (message.likes.includes(author.id)) {
+      //   return;
+      // }
+
+      this.sendMessage(room, {
+        type: SocketMessageType.LIKE,
+        data: {target: message.id, count: message.likesCount}
+      });
+    }
+  }
+
+  // ========== SOCKET ========== //
 
   handleConnection(socket: CustomSocket, room: Room, req: http.ClientRequest) {
     // const ip = req.socket?.remoteAddress;
@@ -154,22 +255,6 @@ export class ChatService {
     });
   }
 
-  // ========== USER ========== //
-
-  findUser(user: UserData, users: User[]) {
-    return users.find(u => (u.id && u.id === user.id) || (u.token && u.token === user.token));
-  }
-
-  findAnon(anon: AnonData) {
-    return this.activeAnons.find(a => a.id === anon.id);
-  }
-
-  newUser(data: UserData) {
-    return new User(data);
-  }
-
-  // ========== MESSAGE ========== //
-
   async handleMessageAction(message: string, room: Room, author: User, socket: WebSocket) {
     try {
       const toxicity = await this.toxicityService.evaluateToxicity(message);
@@ -201,13 +286,6 @@ export class ChatService {
     this.addLike(data, room, author);
   }
 
-  addMessage(room: Room, msg: Message) {
-    // @TODO: incrémenter le room.messagesCount automatiquement du coup ?
-    room.addMessage(msg);
-
-    this.sendMessage(room, this.createSocketMessage(msg));
-  }
-
   sendMessage(room: Room, message: SocketMessage) {
     room.socket?.clients.forEach(client => client.send(JSON.stringify(message)));
   }
@@ -223,32 +301,6 @@ export class ChatService {
     } as SocketMessage;
   }
 
-  newChatMessage(message: string, room: Room, author: User) {
-    return new Message({id: crypto.randomUUID(), message})
-      .setAuthor(author)
-      .setRoom(room);
-  }
-
-  addLike(data: SocketLikeData, room: Room, author: User) {
-    const message = room.getMessage(data.target);
-
-    if (message) {
-      const vote = new Vote({type: VoteType.LIKE, user: author, message});
-
-      message.addVote(vote);
-
-      // @TODO: handle déjà voté !
-      // if (message.likes.includes(author.id)) {
-      //   return;
-      // }
-
-      this.sendMessage(room, {
-        type: SocketMessageType.LIKE,
-        data: {target: message.id, count: message.likesCount}
-      });
-    }
-  }
-
   get logService() {
     return this.container.get('log.service') as LogService;
   }
@@ -259,5 +311,9 @@ export class ChatService {
 
   get roomService() {
     return this.container.get('room.service') as RoomService;
+  }
+
+  get userService() {
+    return this.container.get('user.service') as UserService;
   }
 }

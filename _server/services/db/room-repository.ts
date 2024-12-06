@@ -17,16 +17,16 @@ export class RoomRepository {
   }
 
   buildQuery(filters?: RoomFilters, loadOptions?: LoadOptions) {
-    const qb = new QueryBuilder(filters).from('room').addSelect('room.*');
+    const qb = new QueryBuilder(filters).from('rooms r').addSelect('r.*');
 
     if (filters?.id) {
-      qb.and('room.id = ' + qb.getCurrentParamIndex()).addParam(filters.id);
+      qb.and('r.id = ' + qb.getCurrentParamIndex()).addParam(filters.id);
     }
 
     if (filters?.search) {
       const paramIndex = qb.getCurrentParamIndex();
 
-      qb.and('(lower(room.title) LIKE ' + paramIndex + ' OR lower(room.description) LIKE ' + paramIndex + ')')
+      qb.and('(lower(r.title) LIKE ' + paramIndex + ' OR lower(r.description) LIKE ' + paramIndex + ')')
         .addParam('%' + filters.search.toLowerCase() + '%');
     }
 
@@ -48,12 +48,11 @@ export class RoomRepository {
 
   create(roomData: RoomData) {
     return this.em.transaction(async (client) => {
-      // @TODO: add createdBy when OK in DB
-      const sql = `INSERT INTO "room" (title, description) --, "createdBy")
-                   VALUES ($1, $2)
+      const sql = `INSERT INTO "rooms" (title, description, "createdBy")
+                   VALUES ($1, $2, $3)
                    RETURNING id`;
 
-      const params = [roomData.title, roomData.description];
+      const params = [roomData.title, roomData.description, roomData.createdBy?.id];
 
       const created = await client.query(sql, params);
 
@@ -78,7 +77,7 @@ export class RoomRepository {
     const tagValues = tags.map(t => `(${room.id}, ${t.id})`).join(', ');
 
     const sql = `
-          INSERT INTO room_tag (id_room, id_tag)
+          INSERT INTO room_tags (id_room, id_tag)
           VALUES ${tagValues}
     `;
 
@@ -89,7 +88,7 @@ export class RoomRepository {
     room.updatedAt = new Date();
 
     return this.em.transaction(async (client) => {
-      const sql = `UPDATE "room"
+      const sql = `UPDATE "rooms"
                    SET title           = $1,
                        description     = $2,
                        "updatedAt"     = $3,

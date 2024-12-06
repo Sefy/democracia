@@ -3,7 +3,7 @@ import { join } from 'path';
 import { Container } from "../../services/container";
 
 async function runMigrations() {
-  const container = new Container().init();
+  const container = new Container();
 
   try {
     const sql = readFileSync(join(__dirname, '001_initial_schema.sql'), 'utf8');

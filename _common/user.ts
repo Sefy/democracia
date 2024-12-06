@@ -23,8 +23,12 @@ export interface UserData {
 export interface PublicUser {
   id: number;
   username: string;
-  email?: string;
   avatarUrl?: string;
+
+  // finalement pas si public que ça ...
+  email?: string;
+  role?: UserRole;
+  reputation?: number;
 }
 
 export interface LoginData {

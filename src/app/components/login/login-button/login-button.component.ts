@@ -1,17 +1,16 @@
-import {Component, signal, ViewChild} from '@angular/core';
-import {CommonModule} from "@angular/common";
-import {MatIconModule} from "@angular/material/icon";
-import {MatButtonModule} from "@angular/material/button";
-import {MatMenuModule, MatMenuTrigger} from "@angular/material/menu";
-import {AuthService} from "@app/services/auth.service";
-import {MatDialog} from "@angular/material/dialog";
-import {LoginComponent} from "@app/components/login/login.component";
-import {UsernamePromptComponent} from "@app/components/login/username-prompt/username-prompt.component";
+import { Component, ViewChild } from '@angular/core';
+import { CommonModule } from "@angular/common";
+import { MatIconModule } from "@angular/material/icon";
+import { MatButtonModule } from "@angular/material/button";
+import { MatMenuModule, MatMenuTrigger } from "@angular/material/menu";
+import { AuthService } from "@app/services/auth.service";
+import { MatDialog } from "@angular/material/dialog";
+import { LoginComponent } from "@app/components/login/login.component";
 import { PublicUser } from "@common/user";
 import { UserAvatarComponent } from "@app/components/user/avatar/user-avatar.component";
 
 @Component({
-    selector: 'app-login-button',
+  selector: 'app-login-button',
   imports: [
     CommonModule,
     MatIconModule,
@@ -19,12 +18,12 @@ import { UserAvatarComponent } from "@app/components/user/avatar/user-avatar.com
     MatMenuModule,
     UserAvatarComponent
   ],
-    templateUrl: './login-button.component.html',
-    styleUrl: './login-button.component.scss'
+  templateUrl: './login-button.component.html',
+  styleUrl: './login-button.component.scss'
 })
 export class LoginButtonComponent {
 
-  user?: PublicUser|null;
+  user?: PublicUser | null;
 
   @ViewChild(MatMenuTrigger) trigger?: MatMenuTrigger;
 
@@ -32,16 +31,7 @@ export class LoginButtonComponent {
     private userService: AuthService,
     private matDialog: MatDialog
   ) {
-    this.userService.currentUser$.subscribe(u => {
-      this.user = u;
-
-      if (u && !u.username) {
-        this.matDialog.open(UsernamePromptComponent, {
-          disableClose: true,
-          minWidth: 350
-        });
-      }
-    });
+    this.userService.currentUser$.subscribe(u => this.user = u);
   }
 
   preventMenuClose(e: Event) {

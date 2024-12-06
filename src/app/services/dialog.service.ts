@@ -4,6 +4,7 @@ import { PublicRoom, RoomData } from "@common/room";
 import { RoomDialogComponent } from "@app/components/room/dialog/room-dialog.component";
 import { ErrorDialogComponent } from "@app/components/_dialog/error-dialog/error-dialog.component";
 import { RoomEditComponent } from "@app/components/room/edit/room-edit.component";
+import { UsernamePromptComponent } from "@app/components/login/username-prompt/username-prompt.component";
 
 @Injectable({
   providedIn: 'root'
@@ -35,6 +36,14 @@ export class DialogService {
     return this.matDialog.open(RoomEditComponent, {
       data: {room},
       minWidth: '600px'
+    });
+  }
+
+  openUsernamePrompt(username?: string) {
+    this.matDialog.open(UsernamePromptComponent, {
+      data: {username},
+      disableClose: true,
+      minWidth: 350
     });
   }
 }

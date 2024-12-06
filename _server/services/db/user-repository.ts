@@ -27,7 +27,7 @@ export class UserRepository {
   }
 
   createQuery(filters?: UserFilters) {
-    const qb = new QueryBuilder(filters).from('"user" u').select('u.*');
+    const qb = new QueryBuilder(filters).from('users u').select('u.*, u.avatar as "avatarUrl"');
 
     if (filters?.id) {
       qb.and('u.id = ' + qb.getCurrentParamIndex()).addParam(filters.id);
@@ -87,7 +87,7 @@ export class UserRepository {
     user.updatedAt = now;
 
     return this.em.transaction(async (client) => {
-      const sql = `INSERT INTO "user" (email, username, "avatarUrl", "googleId", "createdAt", "updatedAt")
+      const sql = `INSERT INTO users (email, username, avatar, "googleId", "createdAt", "updatedAt")
                    VALUES ($1, $2, $3, $4, $5, $6)
                    RETURNING id`;
 
@@ -109,11 +109,11 @@ export class UserRepository {
     user.updatedAt = new Date();
 
     return this.em.transaction(async (client) => {
-      const sql = `UPDATE "user"
+      const sql = `UPDATE users
                    SET username    = $1,
                        email       = $2,
                        "googleId"  = $3,
-                       "avatarUrl" = $4,
+                       avatar      = $4,
                        "updatedAt" = $5
                    WHERE id = $6`;
 

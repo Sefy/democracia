@@ -65,7 +65,9 @@ export class Room implements RoomData {
 
   constructor(data?: RoomData) {
     if (data) {
-      Object.assign(this, data);
+      // @TODO: trouver une lib / astuce pour copier rapidement / efficacement des attributs, sans faire du {... ;_;}
+      // don't copy arrays of interfaces in arrays of objects, seems to cause crash :x
+      Object.assign(this, {...data, messages: []});
 
       if (data.tags) {
         this.tags = (data.tags as TagData[]).map(t => new Tag(t));

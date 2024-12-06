@@ -15,6 +15,7 @@ import { DialogService } from "@app/services/dialog.service";
 import { MatSlideToggle } from "@angular/material/slide-toggle";
 import { FooterComponent } from "@app/components/_layout/footer/footer.component";
 import { RouterLink } from "@angular/router";
+import { AuthService } from "@app/services/auth.service";
 
 const HOME_GRID_COUNT = 15;
 const LIVE_RELOAD_TIMER_SEC = 10;
@@ -46,6 +47,7 @@ export class HomeComponent implements OnInit {
   searchSubject = new Subject<string>();
 
   constructor(
+    private authService: AuthService,
     private roomService: RoomService,
     private dialogService: DialogService
   ) {
@@ -79,6 +81,10 @@ export class HomeComponent implements OnInit {
   }
 
   createRoom() {
+    if (!this.authService.hasRole('ADMIN')) {
+      return;
+    }
+
     this.dialogService.openRoomEdit().afterClosed().pipe(
       switchMap(() => this.loadData())
     ).subscribe();

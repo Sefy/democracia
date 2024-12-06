@@ -11,7 +11,7 @@ export class TagRepository {
   }
 
   buildQuery(filters?: TagFilters, loadOptions?: LoadOptions) {
-    const qb = new QueryBuilder(filters).from('tag t').addSelect('t.*');
+    const qb = new QueryBuilder(filters).from('tags t').addSelect('t.*');
 
     if (filters?.id) {
       qb.and('t.id = ' + qb.getCurrentParamIndex()).addParam(filters.id);
@@ -22,7 +22,7 @@ export class TagRepository {
     }
 
     if (filters?.roomId) {
-      qb.join('room_tag rt ON rt.id_tag = t.id AND rt.id_room = ' + qb.getCurrentParamIndex())
+      qb.join('room_tags rt ON rt.id_tag = t.id AND rt.id_room = ' + qb.getCurrentParamIndex())
         .addParam(filters.roomId);
     }
 
@@ -39,5 +39,15 @@ export class TagRepository {
     const qb = this.buildQuery({roomId: id});
 
     return this.em.query<TagData>(qb.getQuery(), qb.getParams()).then(res => res.rows);
+  }
+
+  create(tag: Omit<TagData, 'id'>) {
+    const sql = `
+      INSERT INTO tags (name, color, icon) VALUES ($1, $2, $3)
+    `;
+
+    const params = [tag.name, tag.color, tag.icon];
+
+    return this.em.transaction(client => client.query(sql, params));
   }
 }
