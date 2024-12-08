@@ -17,6 +17,7 @@ import { FooterComponent } from "@app/components/_layout/footer/footer.component
 import { RouterLink } from "@angular/router";
 import { AuthService } from "@app/services/auth.service";
 import { HeroBannerComponent } from "@app/components/hero-banner/hero-banner.component";
+import { IconComponent } from '@app/components/_global/icon/icon.component';
 
 const HOME_GRID_COUNT = 15;
 const LIVE_RELOAD_TIMER_SEC = 10;
@@ -36,7 +37,8 @@ const LIVE_RELOAD_TIMER_SEC = 10;
     MatSlideToggle,
     FooterComponent,
     RouterLink,
-    HeroBannerComponent
+    HeroBannerComponent,
+    IconComponent
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
@@ -56,7 +58,7 @@ export class HomeComponent implements OnInit {
     this.searchSubject.pipe(
       debounceTime(300),
       map(s => s?.trim()),
-      switchMap(search => this.roomService.getRooms({search}))
+      switchMap(search => this.roomService.getRooms({ search }))
     ).subscribe(rooms => this.rooms = rooms);
   }
 
@@ -67,7 +69,7 @@ export class HomeComponent implements OnInit {
   }
 
   loadData() {
-    return this.roomService.getRooms({order: 'trending', count: HOME_GRID_COUNT}).pipe(
+    return this.roomService.getRooms({ order: 'trending', count: HOME_GRID_COUNT }).pipe(
       tap(rooms => this.rooms = rooms)
     );
   }
