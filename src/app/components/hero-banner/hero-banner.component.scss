@@ -1,24 +1,22 @@
 @use 'util';
 
 :host {
-  display: flex;
-  flex-direction: column;
-  place-items: center;
-  place-content: center;
+  display: block;
   min-height: 25vh;
-  padding: 3em;
-  gap: .25em;
+  width: fit-content;
+  margin: 1.5rem auto;
+  text-align: center;
 
   .title {
     margin: 1.5em auto;
     text-align: center;
-    padding: 2em 0;
-    animation: color-loop 10s infinite;
+    animation: bg-position-loop 10s infinite;
     background: linear-gradient(120deg, var(--primary-light), white, var(--secondary-light), #3498db, #9b59b6, var(--secondary-base));
     background-size: 500%;
     background-clip: text;
     color: transparent;
     line-height: 1;
+    padding: 2em 0;
 
     h1 {
       font-size: 5em;
@@ -42,21 +40,11 @@
     }
   }
 
-  img {
-    width: 500px;
-  }
-}
+  a {
+    display: inline-block;
 
-@keyframes color-loop {
-  0% {
-    background-position: 0 100%;
-  }
-
-  50% {
-    background-position: 100% 0;
-  }
-
-  100% {
-    background-position: 0 100%;
+    img {
+      max-width: min(480px, 80vw);
+    }
   }
 }

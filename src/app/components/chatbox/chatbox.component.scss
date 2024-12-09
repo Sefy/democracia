@@ -63,6 +63,11 @@
           cursor: inherit;
         }
       }
+
+      app-loader {
+        display: block;
+        margin: 0 1em;
+      }
     }
   }
 

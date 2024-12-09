@@ -20,13 +20,32 @@
     place-items: center;
     place-content: center;
 
-    // Ca me plait paaaaaaaaaas, fuck je vire tous les fonds pour l'instant ...
-    // => beaucoup mieux avec un fond global sur tout le bloc parent
-    &:first-of-type .bg-overlay {
+    // connerie temporaire .. :D
+    .vs {
+      display: flex;
+      place-items: center;
+      place-content: center;
+      font-weight: 700;
+      font-size: 30px;
+      font-style: italic;
+      color: gray;
+      margin: 10px;
+
+      &:after, &:before {
+        content: "";
+        border: 1px solid rgba(0, 0, 0, .1);
+        margin: 1em;
+        width: 100%;
+      }
+    }
+
+    // Ca me plait paaaaaaaaaas
+    // => sûrement beaucoup mieux avec un fond global sur tout le bloc parent
+    &.blue .bg-overlay {
       background: linear-gradient(120deg, transparent, var(--primary-light));
     }
 
-    &:nth-of-type(3) .bg-overlay {
+    &.red .bg-overlay {
       background: linear-gradient(120deg, transparent, var(--secondary-light));
     }
 
@@ -66,33 +85,55 @@
       /* font-family: Helvetica; */
     }
 
-    p {
+    p, div {
       font-family: ui-sans-serif, system-ui, sans-serif;
-      font-size: 1.25rem;
-      line-height: 2rem;
+      font-size: 1.2rem;
+      line-height: 1.75;
       text-align: justify;
+
+      b {
+        font-weight: 500;
+      }
+
+      ul {
+        margin: 1em 0;
+        padding-left: 1.75rem;
+        list-style: disc;
+
+        li {
+          padding-left: .75rem;
+          line-height: 1.75;
+
+          .label {
+            font-weight: 500;
+          }
+        }
+      }
     }
 
     &.last {
       overflow: hidden;
       max-width: min(75%, 1000px);
-      border-radius: var(--container-radius);
-      margin: auto;
+      border-radius: 2em;
+      margin: 3em auto 6em;
 
       @include util.respond-to(lg) {
         max-width: 80%;
       }
 
+      .bg-overlay {
+        opacity: .1;
+
+        @media (prefers-color-scheme: dark) {
+          opacity: .4;
+        }
+
+        background: var(--bg-flag-linear);
+      }
+
       .block-content {
         max-width: unset;
-      }
-
-      h2 {
-        font-size: 2rem;
-      }
-
-      .bg-overlay {
-        //background: linear-gradient(to right, var(--primary-base), white, var(--secondary-base));
+        padding: 1em 2em;
       }
 
       p {
@@ -119,24 +160,3 @@
     }
   }
 }
-
-// :host {
-//   display: flex;
-//   flex-direction: column;
-//   min-height: calc(100vh - var(--header-height));
-
-//   .home-rooms-container {
-//     max-width: min(100%, 1600px);
-//     min-width: 50vw;
-//     margin: auto;
-//     padding: 0 3% 1em;
-//   }
-
-//   app-room-list {
-//     margin: 2em auto;
-//   }
-
-//   app-loader {
-//     margin: 5em auto;
-//   }
-// }

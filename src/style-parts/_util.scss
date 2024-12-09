@@ -62,18 +62,11 @@
   --shadow-small: 0 1px 2px 0;
   --shadow-medium: 0 4px 6px 0;
   --shadow-large: 0 6px 8px 0;
+
+  --bg-flag-linear: #{bg-flag-linear()};
 }
 
 @mixin style() {
-  .gradient-bg {
-    @include gradient-bg();
-  }
-
-  .gradient-text {
-    @include gradient-bg();
-    background-clip: text;
-    color: transparent;
-  }
 
   .secondary-glow {
     box-shadow: var(--glow-box-shadow, 0 0 10px 0) var(--secondary-base);
@@ -175,8 +168,8 @@
   }
 }
 
-@mixin gradient-bg() {
-  background: linear-gradient(to right, var(--primary-base), var(--secondary-base));
+@function bg-flag-linear() {
+  @return linear-gradient(160deg, var(--primary-light), white, var(--secondary-light));
 }
 
 @mixin animations() {
