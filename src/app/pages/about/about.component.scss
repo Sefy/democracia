@@ -16,4 +16,21 @@
   gap: .5rem;
   font-weight: 500;
   font-size: 22px;
+  margin-bottom: 1.5em;
+}
+
+h3 {
+  margin-bottom: 1rem;
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 1;
+}
+
+app-prez-block {
+  display: block;
+  margin: 3em 0;
+
+  .small-margin {
+    margin-bottom: .5rem;
+  }
 }
