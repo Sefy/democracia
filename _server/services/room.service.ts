@@ -7,7 +7,6 @@ import { LoadOptions as MessageLoadOptions, MessageService } from "./message-ser
 import { Room } from "../object/room";
 import { MessageData } from "@common/message";
 import { MathUtil } from "../util/math-util";
-import { UserData } from "@common/user";
 import { TagService } from "./tag.service";
 
 export interface LoadOptions {
@@ -94,6 +93,12 @@ export class RoomService {
       startedAt: r.startedAt
     } as PublicRoom;
 
+    pub.tags = (r.tags ?? []).map(t => this.tagService.getPublicData(t));
+
+    if (loadOptions?.users) {
+      pub.users = (r.users ?? []).map(u => this.userService.getPublicData(u));
+    }
+
     // @TODO: peut être que si on a loadOptions.users on peut envoyer des author: number
     // @TODO: et le client se débrouille à faire les liens .. ? (évite les messages: [{author: {...}} x 100]
 
@@ -105,14 +110,6 @@ export class RoomService {
 
       pub.mostVoted = (r.mostVoted ?? [])
         .map(m => this.messageService.getPublicMessage(m as MessageData, loadOptions.messagesOptions));
-    }
-
-    if (loadOptions?.tags) {
-      pub.tags = (r.tags ?? []).map(t => this.tagService.getPublicData(t));
-    }
-
-    if (loadOptions?.users) {
-      pub.users = (r.users ?? []).map(u => this.userService.getPublicData(u));
     }
 
     if (r instanceof Room) {

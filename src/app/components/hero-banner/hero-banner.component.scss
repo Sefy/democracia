@@ -1,3 +1,5 @@
+@use 'util';
+
 :host {
   display: flex;
   flex-direction: column;
@@ -7,17 +9,54 @@
   padding: 3em;
   gap: .25em;
 
-  img {
-    width: 300px;
+  .title {
+    margin: 1.5em auto;
+    text-align: center;
+    padding: 2em 0;
+    animation: color-loop 10s infinite;
+    background: linear-gradient(120deg, var(--primary-light), white, var(--secondary-light), #3498db, #9b59b6, var(--secondary-base));
+    background-size: 500%;
+    background-clip: text;
+    color: transparent;
+    line-height: 1;
+
+    h1 {
+      font-size: 5em;
+      font-weight: bold;
+
+      margin-bottom: .25em;
+    }
+
+    h2 {
+      font-size: 2em;
+    }
+
+    @include util.respond-to('sm') {
+      h1 {
+        font-size: 3.5em;
+      }
+
+      h2 {
+        font-size: 1.5em;
+      }
+    }
   }
 
-  .page-title {
-    margin-bottom: 0;
+  img {
+    width: 500px;
+  }
+}
 
-    // background: linear-gradient(90deg, purple, light-dark(black, white), indigo);
-    // background-clip: text;
-    // color: transparent;
+@keyframes color-loop {
+  0% {
+    background-position: 0 100%;
+  }
 
-    // box-shadow: 0 0 10px purple, 0 0 10px indigo;
+  50% {
+    background-position: 100% 0;
+  }
+
+  100% {
+    background-position: 0 100%;
   }
 }

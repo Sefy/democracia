@@ -1,90 +1,122 @@
 @use '@angular/material' as mat;
 @use 'util';
 
-.block {
-  position: relative;
-  padding: 2rem 0;
-
-  &:nth-of-type(1) .bg-overlay {
-    background: linear-gradient(45deg, transparent, var(--primary-light));
+:host {
+  .home-rooms-container {
+    max-width: min(100%, 1600px);
+    min-width: 50vw;
+    margin: auto;
+    padding: 0 3% 1em;
   }
 
-  &:nth-of-type(3) .bg-overlay {
-    background: linear-gradient(45deg, transparent, var(--secondary-light));
+  app-room-list {
+    margin: 2em auto;
   }
 
-  &.last {
-    max-width: 60%;
-    margin: 1.5rem auto;
-    overflow: hidden;
-    border-radius: var(--container-radius);
-    padding: 1.5rem 2.5rem;
+  .block {
+    position: relative;
+    padding: 3rem 0;
+    display: flex;
+    place-items: center;
+    place-content: center;
 
-    .block-content {
-      max-width: unset;
+    // Ca me plait paaaaaaaaaas, fuck je vire tous les fonds pour l'instant ...
+    // => beaucoup mieux avec un fond global sur tout le bloc parent
+    &:first-of-type .bg-overlay {
+      background: linear-gradient(120deg, transparent, var(--primary-light));
     }
 
-    h2 {
-      font-size: 2rem;
+    &:nth-of-type(3) .bg-overlay {
+      background: linear-gradient(120deg, transparent, var(--secondary-light));
     }
 
     .bg-overlay {
-      background: linear-gradient(45deg, transparent, gold);
+      z-index: -10;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      opacity: .4;
+      filter: blur(5px);
+    }
+
+    // utile ? ou voir pour utiliser du padding .. ?
+    // => A mon avis le padding offre moins de possibilité
+    .block-content {
+      max-width: min(1200px, 75%);
+      margin: auto;
+
+      @include util.respond-to('md') {
+        max-width: 90%;
+      }
+    }
+
+    h2 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      letter-spacing: -0.025rem;
+      font-weight: 700;
+      text-align: center;
+      line-height: 1.25;
+
+      @include util.respond-to(md) {
+        font-size: 2rem;
+      }
+
+      /* font-family: ui-sans-serif; */
+      /* font-family: Helvetica; */
     }
 
     p {
-      text-align: center;
+      font-family: ui-sans-serif, system-ui, sans-serif;
+      font-size: 1.25rem;
+      line-height: 2rem;
+      text-align: justify;
     }
 
-    .button-group {
-      margin: 1.5rem auto 0;
-      display: block;
-      text-align: center;
+    &.last {
+      overflow: hidden;
+      max-width: min(75%, 1000px);
+      border-radius: var(--container-radius);
+      margin: auto;
 
-      button {
-        background: linear-gradient(120deg,
-            var(--primary-light-trans-50),
-            transparent, var(--secondary-light-trans-50));
+      @include util.respond-to(lg) {
+        max-width: 80%;
+      }
 
-        ::ng-deep .mdc-button__label {
-          display: flex;
-          place-items: center;
-          gap: .5rem;
+      .block-content {
+        max-width: unset;
+      }
+
+      h2 {
+        font-size: 2rem;
+      }
+
+      .bg-overlay {
+        //background: linear-gradient(to right, var(--primary-base), white, var(--secondary-base));
+      }
+
+      p {
+        text-align: center;
+      }
+
+      .button-group {
+        margin: 1.5rem auto 0;
+        display: block;
+        text-align: center;
+
+        button {
+          //background: linear-gradient(120deg,
+          //  var(--primary-light-trans-50),
+          //  transparent, var(--secondary-light-trans-50));
+
+          ::ng-deep .mdc-button__label {
+            display: flex;
+            place-items: center;
+            gap: .5rem;
+          }
         }
       }
     }
-  }
-
-  .bg-overlay {
-    z-index: -10;
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    top: 0;
-    opacity: .4;
-  }
-
-  // utile ? ou voir pour utiliser du padding .. ?
-  // => A mon avis le padding offre moins de possibilité
-  .block-content {
-    max-width: 75%;
-    margin: auto;
-  }
-
-  h2 {
-    font-size: 2.5rem;
-    /* font-family: ui-sans-serif; */
-    margin-bottom: 1rem;
-    /* font-family: Helvetica; */
-    letter-spacing: -0.025rem;
-    font-weight: 700;
-    text-align: center;
-  }
-
-  p {
-    font: var(--mat-sys-body-large);
-    text-align: justify;
   }
 }
 

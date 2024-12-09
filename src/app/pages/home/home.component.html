@@ -1,86 +1,97 @@
-<app-hero-banner />
+<app-hero-banner/>
 
-<div class="block">
-  <div class="bg-overlay"></div>
-  <div class="block-content">
-    <h2>Reprendre le pouvoir citoyen</h2>
-
-    <p>
-      Dans une société où les décisions politiques semblent souvent éloignées des préoccupations réelles des citoyens,
-      Democracia Project offre une nouvelle façon de faire entendre votre voix. Nous croyons que la démocratie ne doit
-      pas
-      se limiter à un vote tous les X années, mais qu'elle doit être un processus continu, accessible et participatif.
-      Grâce à notre plateforme, chaque citoyen peut débattre, proposer et voter sur les sujets qui orientent l'avenir de
-      notre société.
-    </p>
-  </div>
+<div class="home-rooms-container">
+  <app-room-list-header (createRoom)="createRoom()" (searchChange)="searchSubject.next($event)">
+    <mat-slide-toggle (change)="toggleAutoRefresh($event.checked)" [checked]="true">Refresh auto</mat-slide-toggle>
+  </app-room-list-header>
+  <app-room-list *ngIf="rooms; else loader" [rooms]="rooms" [options]="{grid: true}"/>
 </div>
 
-<div class="block">
-  <div class="bg-overlay"></div>
-  <div class="block-content">
-    <h2>Un espace de débat ouvert et structuré</h2>
-    <p>
-      Democracia Project est une place publique (d'où la fontaine 😊) numérique où chacun peut s’exprimer librement,
-      dans
-      le respect des autres. Organisés par thèmes majeurs comme l’écologie, l’éducation, la santé ou encore la sécurité,
-      nos espaces de débat permettent à toutes les opinions d'être entendues. Pour garantir des échanges constructifs,
-      nous avons intégré
-      des outils innovants, comme une IA de modération et un système de résumés automatiques des discussions. Vous
-      arrivez
-      en cours de route ? Pas de problème, nous vous mettons rapidement à jour sur les points clés.
-    </p>
+<div class="landing">
+  <div class="block">
+    <div class="bg-overlay"></div>
+    <div class="block-content">
+      <h2>Reprendre le pouvoir citoyen</h2>
+
+      <p>
+        Dans une société où les décisions politiques semblent souvent éloignées des préoccupations réelles des citoyens,
+        Democracia Project offre une nouvelle façon de faire entendre votre voix. Nous croyons que la démocratie ne doit
+        pas se limiter à un vote toutes les X années, mais qu'elle doit être un processus continu, accessible et
+        participatif. Grâce à notre plateforme, chaque citoyen peut débattre, proposer et voter sur les sujets qui
+        orientent l'avenir de notre société.
+      </p>
+    </div>
   </div>
-</div>
 
-<div class="block">
-  <div class="bg-overlay"></div>
-  <div class="block-content">
-    <h2>Des décisions prises ensemble</h2>
-    <p>
-      Les débats les plus populaires aboutissent à des votes clairs et transparents, où chaque utilisateur peut
-      participer. Ces consultations régulières permettent de co-construire des solutions pour les grands enjeux de
-      société. À travers Democracia Project, nous remettons le pouvoir entre les mains des citoyens, en donnant à chacun
-      l'opportunité d'influencer directement les choix qui façonnent notre avenir.
-    </p>
+  <div class="block">
+    <div class="bg-overlay"></div>
+    <div class="block-content">
+      <h2>Un espace de débat ouvert et structuré</h2>
+      <p>
+        Democracia Project est une place publique (d'où la fontaine 😊) numérique où chacun peut s’exprimer librement,
+        dans
+        le respect des autres. Organisés par thèmes majeurs comme l’écologie, l’éducation, la santé ou encore la
+        sécurité,
+        nos espaces de débat permettent à toutes les opinions d'être entendues. Pour garantir des échanges constructifs,
+        nous avons intégré
+        des outils innovants, comme une IA de modération et un système de résumés automatiques des discussions. Vous
+        arrivez
+        en cours de route ? Pas de problème, nous vous mettons rapidement à jour sur les points clés.
+      </p>
+    </div>
   </div>
-</div>
 
-<div class="block">
-  <div class="bg-overlay"></div>
-  <div class="block-content">
-    <h2>Une nouvelle ère démocratique</h2>
-    <p>
-      Democracia Project est plus qu'une plateforme : c'est un outil pour réinventer la démocratie. Une démocratie
-      continue, où les citoyens ne sont plus spectateurs, mais acteurs. Rejoignez-nous pour bâtir un système politique
-      plus représentatif, inclusif et respectueux des attentes de chacun.
-    </p>
+  <div class="block">
+    <div class="bg-overlay"></div>
+    <div class="block-content">
+      <h2>Des décisions prises ensemble</h2>
+      <p>
+        Les débats les plus populaires aboutissent à des votes clairs et transparents, où chaque utilisateur peut
+        participer. Ces consultations régulières permettent de co-construire des solutions pour les grands enjeux de
+        société. À travers Democracia Project, nous remettons le pouvoir entre les mains des citoyens, en donnant à
+        chacun
+        l'opportunité d'influencer directement les choix qui façonnent notre avenir.
+      </p>
+    </div>
   </div>
-</div>
 
-<div class="block last">
-  <div class="bg-overlay"></div>
-  <div class="block-content">
-    <h2>Participez dès aujourd’hui</h2>
-    <p>
-      L’avenir de la démocratie commence avec vous. Explorez les débats, exprimez vos idées, votez sur des solutions
-      concrètes, et contribuez à construire un monde plus juste et équitable. Democracia Project, c'est la voix de tous,
-      pour des décisions partagées.
-    </p>
+  <div class="block">
+    <div class="bg-overlay"></div>
+    <div class="block-content">
+      <h2>Une nouvelle ère démocratique</h2>
+      <p>
+        Democracia Project est plus qu'une plateforme : c'est un outil pour réinventer la démocratie. Une démocratie
+        continue, où les citoyens ne sont plus spectateurs, mais acteurs. Rejoignez-nous pour bâtir un système politique
+        plus représentatif, inclusif et respectueux des attentes de chacun.
+      </p>
+    </div>
+  </div>
 
-    <div class="button-group">
-      <button mat-raised-button class="flex items-center gap-2">
-        <app-icon icon="chat" />
-        Voir les salles de discussion
-      </button>
+  <div class="block last">
+    <div class="bg-overlay"></div>
+    <div class="block-content">
+      <h2>Participez dès aujourd’hui</h2>
+      <p>
+        L’avenir de la démocratie commence avec vous. Explorez les débats, exprimez vos idées, votez sur des solutions
+        concrètes, et contribuez à construire un monde plus juste et équitable. Democracia Project, c'est la voix de
+        tous,
+        pour des décisions partagées.
+      </p>
+
+      <div class="button-group">
+        <button mat-raised-button class="flex items-center gap-2">
+          <app-icon icon="chat"/>
+          Voir les salles de discussion
+        </button>
+      </div>
     </div>
   </div>
 </div>
 
 <div class="flex-1"></div>
 
-<app-footer />
+<app-footer/>
 
 <ng-template #loader>
-  <app-loader [size]="80" class="center" message="Chargement ..." />
+  <app-loader [size]="80" class="center" message="Chargement ..."/>
 </ng-template>
