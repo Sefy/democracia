@@ -142,14 +142,12 @@
 
       .button-group {
         margin: 1.5rem auto 0;
-        display: block;
-        text-align: center;
+        display: flex;
+        place-items: center;
+        place-content: center;
+        gap: 1em;
 
         button {
-          //background: linear-gradient(120deg,
-          //  var(--primary-light-trans-50),
-          //  transparent, var(--secondary-light-trans-50));
-
           ::ng-deep .mdc-button__label {
             display: flex;
             place-items: center;
