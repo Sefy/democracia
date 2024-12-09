@@ -1,92 +1,171 @@
-<div class="page-content">
-  <app-hero-banner/>
+<app-hero-banner/>
 
-  <div class="discours">
-    <p>
-      La France va mal. Les problèmes s'accumulent, et personne ne fait rien pour que cela change ... Le premier réflexe
-      pourrait bien sûr être de blâmer les dirigeants, mais personnellement je ne leur en veux pas, et je ne pense pas
-      qu'on puisse uniquement pointer quelques personnes comme responsables, c'est tout le système qui s'est grippé.
-      Les politiques sont un peu comme nous au fond, enfermés dans ce système (qui les arrange plus que nous, certes),
-      mais au final assez impuissants : combien de fois on les a vu essayer de changer quelque chose, et se heurter
-      soit à une directive européenne, soit à des manifestations des gens concernés, etc ... Leur pouvoir est lié à la
-      légitimité que leur accorde le peuple, et celle ci s'est égrenée avec la hausse de l'abstention, le rejet du monde
-      politique, qui semble toujours plus déconnecté du monde réel. On a tous conscience que cela ne fonctionne plus,
-      sans entrevoir de solution, d'où le malaise ambiant.
-    </p>
+<div class="blocks">
 
-    <p>
-      (J'irais même plus loin en théorisant sur le malaise et la déconnexion ressenti par une grande partie de la
-      jeunesse : je pense et je comprends qu'ils ressentent plus que quiconque que l'on vit dans un système
-      vieillissant, qui n'avance plus, mais maintenu en vie grâce à des artifices de plus en plus grotesques, et défendu
-      par des anciens privilégiés qui croient encore tout savoir ... Mettez face à cela l'impression que le vrai monde
-      autour évolue plus vite que jamais, et vous obtenez une certaine sensation de tourni, de malaise ... Je pense en
-      effet que le monde évolue très vite, et qu'il est temps qu'on ait les moyens de le suivre.)
-    </p>
+  <app-prez-block blockTitle="C'est quoi cette fontaine ? 🤔">
+    Il y a évidemment plusieurs raisons derrière le choix de cette illustration, dont voici une liste non exhaustive :
 
-    <p>
-      En y réfléchissant, est ce qu'on trouve cela normal de continuer, à l'ère du tout numérique (et à l'aube de
-      l'avènement de l'IA), de devoir encore se déplacer à son petit bureau de vote tous les 5 ans pour mettre un papier
-      dans une boîte pour dire à quel homme politique on accepte de confier les rênes du pays ? Tout en sachant qu'on
-      n'est pas d'accord à 100% avec lui (impossible), qu'il ne fera pas la moitié de ce qu'il a promis (parfois même
-      l'inverse), et qu'il n'arrivera jamais à faire les réformes qui devraient être faites depuis des décennies déjà ?
-      On appelle cela la démocratie représentative, elle avait certainement un sens quand on ne pouvait pas faire
-      autrement (on ne pouvait pas demander aux gens leur avis toutes les semaines avant l'apparition des technologies
-      de communication moderne), et quand les élus avaient des valeurs et voulaient vraiment servir l'intérêt
-      général (je ne parlerai pas des débats stériles dans les institutions publiques, des guerres de chapelle inutiles,
-      des querelles puériles surmédiatisées, et autres scandales douteux dont nous ont glorifié les personnalités
-      politiques ces derniers temps, le but étant d'élever le niveau du débat) ...
-    </p>
+    <ul>
+      <li>
+        <span class="label">Place publique :</span> En pensant à une place publique, un lieu qui rassemble, cette idée
+        est venue assez naturellement. Et pour sa forme ronde car, comme dans la légende d'Arthur, cela permet d'être
+        également répartis autour, réduisant les oppositions.
+      </li>
+
+      <li>
+        <span class="label">L'Histoire :</span> Le côté historique souvent associé à ces monuments, qui permet de nous
+        rappeler que notre époque n'est que la suite de nombreuses autres, et que nous devrions garder du respect pour
+        ces temps passés, et ces ancêtres, en la mémoire desquels nous devrions continuer de guider le monde de la
+        meilleure manière, vers la justice et la paix. Si nous pensions plus souvent à eux, à l'Histoire (sincèrement,
+        pas juste comme un slogan) peut être que nous agirions de manière plus bienveillante et réfléchie.
+      </li>
+
+      <li>
+        <span class="label">La sérénité :</span> On peut voir dans la fontaine un symbole de sérénité, l'eau qui en
+        coule représentant à la fois la source de toute vie, et son cycle éternel.
+      </li>
+    </ul>
+  </app-prez-block>
+
+  <app-prez-block [blockTitle]="'Qui est derrière ce projet ?'" id="sefy">
+    <div class="profile-picture"></div>
 
     <p>
-      Aujourd'hui, je pense qu'on doit pouvoir faire mieux, autrement, et que c'est au peuple de se réveiller, et d'où
-      la solution doit émerger.
+      Salut, moi c'est <b>Sefy</b> (Sef pour les intimes 😉). J'ai connu les débuts d'Internet, et depuis lors fasciné
+      par cette révolution et les possibilités qu'elle offrait, j'étais persuadé qu'elle allait faire avancer le monde
+      dans le bon sens ...
     </p>
+
+    <div class="fast-forward-lol">
+      <app-loader [size]="25"/>
+      ⏭️
+      👇
+
+      (Petite Avance Rapide 😅)
+
+      👇
+      ⏭️
+      <app-loader [size]="25"/>
+    </div>
 
     <p>
-      Mais dire tout cela n'est qu'une des énièmes fois où aura été posé le constat d'un des innombrables problèmes
-      de notre société. Tout le monde a plus ou moins conscience de tous ces problèmes, on en discute tous fréquemment,
-      entre nous, aux dîners de famille, entre amis, à la machine à café, au comptoir, sur les plateaux TV, etc ... Mais
-      à quoi bon ?
-      Le lendemain on est passés à autre chose ... Si on ne fait que discuter ponctuellement des problèmes, c'est
-      passif, inutile ... Il faut noter les idées et pouvoir voter pour elles. J'aimerais que la France se remette en
-      action. Une action apaisée, respectueuse, qui va dans le bon sens. Alors si on trouvait le moyen de
-      mesurer l'opinion publique, en discutant et en votant, sujet après sujet, citoyen après citoyen ... On pourrait
-      créer là un outil formidable ouvrant sur une nouvelle façon de gérer un pays ? Je ne sais pas si c'est
-      possible, mais je crois qu'aujourd'hui plus que jamais, grace aux évolutions technologiques, les possibilités sont
-      quasi infinies ... Alors je propose ce projet, afin d'explorer cette piste.
+      Nous voilà 20 ans après et je me réveille avec une certaine gueule de bois ... Car finalement, à part quelques
+      géants américains qui ont bien surfé sur la vague (créant au passage les plus grandes fortunes), force est de
+      constater que les innovations à vocation de rendre le monde meilleur sont, au mieux, minoritaires. Des réseaux
+      sociaux anti-sociaux, des plateformes e-commerce anti commerce, du contenu pas toujours pertinent ni utile en
+      scroll infini, et des jeux pour des jeunes toujours plus blasés ... J'exagère un peu exprès, mais bref, la
+      technologie a bien changé le monde, mais était ce bien dans le bon sens ? Je pense qu'on peut au moins se poser
+      la question ...
     </p>
+
+    <!--    <p>-->
+    <!--      Ce constat en amène certains (et pourrait en amener d'autres) à se détourner complètement de ce "nouveau monde",-->
+    <!--      tenant responsables "les nouvelles technologies", mais c'est faux. C'est, comme souvent, l'utilisation que l'Homme-->
+    <!--      en fait qui est questionnable, pas le moyen en lui même.-->
+    <!--    </p>-->
 
     <p>
-      Je vais essayer de donner un petit message d'espoir et de positif, au milieu de tout cette atmosphère négative et
-      déprimante. J'ai commencé à travailler sur ce projet, Democracia. J'imagine une plateforme citoyenne ("pour les
-      citoyens, par les citoyens" car les sources du projet seront accessibles et ouvertes à contribution), où chacun
-      pourra s'exprimer sur chaque sujet et défis auxquels nous sommes confrontés, dans le but de trouver la meilleure
-      solution ensemble, à chaque fois.
-    </p>
+      Personnellement je trouve qu'on a trop oublié cette valeur de <b>bon sens</b> dans la création de site webs,
+      applications, et autre logiciel, et qu'il serait temps aujourd'hui d'y revenir, en créant de nouvelles solutions
+      qui répondent au mieux à des vrais problèmes de société. Alors quoi ? On continue comme ça et on attend que
+      d'autres se décident à le faire à notre place ?
+      <br><br>
+<!--      Dans cette nouvelle ère technologique où les seules limites sont l'imagination, je pense que le moment est bien-->
+<!--      choisi pour essayer de créer quelque chose. Et ça tombe bien car j'ai récemment retrouvé mon imagination, et donc-->
+<!--      une multitude d'idées.-->
+<!--      <br><br>-->
 
-    <p>
-      Plus en détail, il y aura des salons de discussion à thème, la parole sera distribué à tour de rôle, et on pourra
-      voter pour les idées que l'on trouve les plus pertinentes. Les messages les plus votées seront "épinglés" (plus
-      visibles). Les discussions les plus populaires donneront lieu à des votes hebdomadaires ou mensuels, mis en avant
-      sur l'application et sur lesquels on pourra récolter l'avis de la majorité. Car il me semble que c'est la règle
-      n°1 en démocratie : la majorité l'emporte. Nous pourrons ainsi conserver une trace des revendications de tout un
-      peuple, sur chaque sujet.
+      Mon objectif est aujourd'hui d'initier un mouvement, pour essayer de créer un <b>fleuron français</b> du code et
+      de l'artisanat du logiciel, pour remettre les technologies <b>au service du bien commun</b>. Car je crois ce pays
+      profondément doué de talents et de bon sens, et je pense qu'il ne faut plus attendre, qu'il faut agir, ensemble,
+      pour un avenir meilleur.
     </p>
-
-    <p>
-      C'est une vraie belle occasion pour la France de briller, et de se remettre en marche, après des décennies
-      tellement à l'arrêt qu'on dirait qu'on recule ... Car pourtant je reste convaincu que notre pays est doué de
-      talents, de bon sens, de valeurs et de principes, de goût pour le débat et la politique ... On a tout pour s'en
-      sortir, il suffit d'arrêter d'attendre que la solution vienne d'en haut, car comme on dit ça tombera pas du
-      ciel ... Et pour finir on a un avantage énorme : c'est qu'on a vraiment touché le fond, c'est le meilleur moment
-      pour remonter.
-    </p>
-
-    <p class="text-center">
-      Je me suis réveillé en me disant que finalement "je ne suis pas le problème, je suis la solution", et j'aimerais
-      que tout le monde puisse se dire cela un jour.
-    </p>
-  </div>
+  </app-prez-block>
 </div>
+
+<!--    <p>-->
+<!--      La France va mal. Les problèmes s'accumulent, et personne ne fait rien pour que cela change ... Le premier réflexe-->
+<!--      pourrait bien sûr être de blâmer les dirigeants, mais personnellement je ne leur en veux pas, et je ne pense pas-->
+<!--      qu'on puisse uniquement pointer quelques personnes comme responsables, c'est tout le système qui s'est grippé.-->
+<!--      Les politiques sont un peu comme nous au fond, enfermés dans ce système (qui les arrange plus que nous, certes),-->
+<!--      mais au final assez impuissants : combien de fois on les a vu essayer de changer quelque chose, et se heurter-->
+<!--      soit à une directive européenne, soit à des manifestations des gens concernés, etc ... Leur pouvoir est lié à la-->
+<!--      légitimité que leur accorde le peuple, et celle ci s'est égrenée avec la hausse de l'abstention, le rejet du monde-->
+<!--      politique, qui semble toujours plus déconnecté du monde réel. On a tous conscience que cela ne fonctionne plus,-->
+<!--      sans entrevoir de solution, d'où le malaise ambiant.-->
+<!--    </p>-->
+
+<!--    <p>-->
+<!--      (J'irais même plus loin en théorisant sur le malaise et la déconnexion ressenti par une grande partie de la-->
+<!--      jeunesse : je pense et je comprends qu'ils ressentent plus que quiconque que l'on vit dans un système-->
+<!--      vieillissant, qui n'avance plus, mais maintenu en vie grâce à des artifices de plus en plus grotesques, et défendu-->
+<!--      par des anciens privilégiés qui croient encore tout savoir ... Mettez face à cela l'impression que le vrai monde-->
+<!--      autour évolue plus vite que jamais, et vous obtenez une certaine sensation de tourni, de malaise ... Je pense en-->
+<!--      effet que le monde évolue très vite, et qu'il est temps qu'on ait les moyens de le suivre.)-->
+<!--    </p>-->
+
+<!--    <p>-->
+<!--      En y réfléchissant, est ce qu'on trouve cela normal de continuer, à l'ère du tout numérique (et à l'aube de-->
+<!--      l'avènement de l'IA), de devoir encore se déplacer à son petit bureau de vote tous les 5 ans pour mettre un papier-->
+<!--      dans une boîte pour dire à quel homme politique on accepte de confier les rênes du pays ? Tout en sachant qu'on-->
+<!--      n'est pas d'accord à 100% avec lui (impossible), qu'il ne fera pas la moitié de ce qu'il a promis (parfois même-->
+<!--      l'inverse), et qu'il n'arrivera jamais à faire les réformes qui devraient être faites depuis des décennies déjà ?-->
+<!--      On appelle cela la démocratie représentative, elle avait certainement un sens quand on ne pouvait pas faire-->
+<!--      autrement (on ne pouvait pas demander aux gens leur avis toutes les semaines avant l'apparition des technologies-->
+<!--      de communication moderne), et quand les élus avaient des valeurs et voulaient vraiment servir l'intérêt-->
+<!--      général (je ne parlerai pas des débats stériles dans les institutions publiques, des guerres de chapelle inutiles,-->
+<!--      des querelles puériles surmédiatisées, et autres scandales douteux dont nous ont glorifié les personnalités-->
+<!--      politiques ces derniers temps, le but étant d'élever le niveau du débat) ...-->
+<!--    </p>-->
+
+<!--    <p>-->
+<!--      Aujourd'hui, je pense qu'on doit pouvoir faire mieux, autrement, et que c'est au peuple de se réveiller, et d'où-->
+<!--      la solution doit émerger.-->
+<!--    </p>-->
+
+<!--    <p>-->
+<!--      Mais dire tout cela n'est qu'une des énièmes fois où aura été posé le constat d'un des innombrables problèmes-->
+<!--      de notre société. Tout le monde a plus ou moins conscience de tous ces problèmes, on en discute tous fréquemment,-->
+<!--      entre nous, aux dîners de famille, entre amis, à la machine à café, au comptoir, sur les plateaux TV, etc ... Mais-->
+<!--      à quoi bon ?-->
+<!--      Le lendemain on est passés à autre chose ... Si on ne fait que discuter ponctuellement des problèmes, c'est-->
+<!--      passif, inutile ... Il faut noter les idées et pouvoir voter pour elles. J'aimerais que la France se remette en-->
+<!--      action. Une action apaisée, respectueuse, qui va dans le bon sens. Alors si on trouvait le moyen de-->
+<!--      mesurer l'opinion publique, en discutant et en votant, sujet après sujet, citoyen après citoyen ... On pourrait-->
+<!--      créer là un outil formidable ouvrant sur une nouvelle façon de gérer un pays ? Je ne sais pas si c'est-->
+<!--      possible, mais je crois qu'aujourd'hui plus que jamais, grace aux évolutions technologiques, les possibilités sont-->
+<!--      quasi infinies ... Alors je propose ce projet, afin d'explorer cette piste.-->
+<!--    </p>-->
+
+<!--    <p>-->
+<!--      Je vais essayer de donner un petit message d'espoir et de positif, au milieu de tout cette atmosphère négative et-->
+<!--      déprimante. J'ai commencé à travailler sur ce projet, Democracia. J'imagine une plateforme citoyenne ("pour les-->
+<!--      citoyens, par les citoyens" car les sources du projet seront accessibles et ouvertes à contribution), où chacun-->
+<!--      pourra s'exprimer sur chaque sujet et défis auxquels nous sommes confrontés, dans le but de trouver la meilleure-->
+<!--      solution ensemble, à chaque fois.-->
+<!--    </p>-->
+
+<!--    <p>-->
+<!--      Plus en détail, il y aura des salons de discussion à thème, la parole sera distribué à tour de rôle, et on pourra-->
+<!--      voter pour les idées que l'on trouve les plus pertinentes. Les messages les plus votées seront "épinglés" (plus-->
+<!--      visibles). Les discussions les plus populaires donneront lieu à des votes hebdomadaires ou mensuels, mis en avant-->
+<!--      sur l'application et sur lesquels on pourra récolter l'avis de la majorité. Car il me semble que c'est la règle-->
+<!--      n°1 en démocratie : la majorité l'emporte. Nous pourrons ainsi conserver une trace des revendications de tout un-->
+<!--      peuple, sur chaque sujet.-->
+<!--    </p>-->
+
+<!--    <p>-->
+<!--      C'est une vraie belle occasion pour la France de briller, et de se remettre en marche, après des décennies-->
+<!--      tellement à l'arrêt qu'on dirait qu'on recule ... Car pourtant je reste convaincu que notre pays est doué de-->
+<!--      talents, de bon sens, de valeurs et de principes, de goût pour le débat et la politique ... On a tout pour s'en-->
+<!--      sortir, il suffit d'arrêter d'attendre que la solution vienne d'en haut, car comme on dit ça tombera pas du-->
+<!--      ciel ... Et pour finir on a un avantage énorme : c'est qu'on a vraiment touché le fond, c'est le meilleur moment-->
+<!--      pour remonter.-->
+<!--    </p>-->
+
+<!--    <p class="text-center">-->
+<!--      Je me suis réveillé en me disant que finalement "je ne suis pas le problème, je suis la solution", et j'aimerais-->
+<!--      que tout le monde puisse se dire cela un jour.-->
+<!--    </p>-->
 
 <app-footer/>

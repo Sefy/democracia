@@ -4,13 +4,13 @@
   display: block;
   min-height: 25vh;
   width: fit-content;
-  margin: 1.5rem auto;
+  margin: 1.5rem auto 2.5rem;
   text-align: center;
 
   .title {
     margin: 1.5em auto;
     text-align: center;
-    animation: bg-position-loop 10s infinite;
+    animation: bg-position-loop 7s infinite;
     background: linear-gradient(120deg, var(--primary-light), white, var(--secondary-light), #3498db, #9b59b6, var(--secondary-base));
     background-size: 500%;
     background-clip: text;

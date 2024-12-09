@@ -1,17 +1,19 @@
-:host {
-  .page-content {
-    padding: 0 2%;
-    max-width: min(100%, 1200px);
-    margin: auto;
-  }
+.profile-picture {
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 2em auto;
 
-  .discours {
-    max-width: 1280px;
-    margin: auto;
-    text-align: justify;
+  width: 300px;
+  height: 300px;
 
-    p {
-      margin: 1.5rem .5rem;
-    }
-  }
+  background: url('https://avatars.githubusercontent.com/u/2862295?v=4') center top;
+}
+
+.fast-forward-lol {
+  display: flex;
+  place-items: center;
+  place-content: center;
+  gap: .5rem;
+  font-weight: 500;
+  font-size: 22px;
 }
