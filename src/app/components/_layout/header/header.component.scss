@@ -21,8 +21,14 @@
       width: 50px;
     }
 
-    @include util.respond-to(sm) {
-      h1 {
+    h1 {
+      font-family: 'Inter';
+      font-weight: 700;
+      background: var(--bg-flag-linear);
+      background-clip: text;
+      color: transparent;
+
+      @include util.respond-to(sm) {
         display: none;
       }
     }

@@ -21,6 +21,7 @@ import { PublicUser } from "@common/user";
 import { MessageId, VoteType } from "@common/message";
 import { PublicMessage } from "@common/public";
 import { UserAvatarComponent } from "@app/components/user/avatar/user-avatar.component";
+import { MatTooltip } from "@angular/material/tooltip";
 
 const ROOM_SOCKET_PREFIX = 'room-';
 
@@ -37,7 +38,8 @@ const ROOM_SOCKET_PREFIX = 'room-';
     MatTabsModule,
     MessagesListComponent,
     LoaderComponent,
-    UserAvatarComponent
+    UserAvatarComponent,
+    MatTooltip
   ],
   templateUrl: './chatbox.component.html',
   styleUrl: './chatbox.component.scss'

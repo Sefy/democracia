@@ -1,17 +1,50 @@
-:host {
-  display: flex;
-  flex-direction: column;
-  place-items: center;
-  place-content: center;
-  min-height: 25vh;
-  padding: 3em;
-  gap: .25em;
+@use 'util';
 
-  img {
-    width: 300px;
+:host {
+  display: block;
+  min-height: 25vh;
+  width: fit-content;
+  margin: 1.5rem auto 2.5rem;
+  text-align: center;
+
+  .title {
+    margin: 1.5em auto;
+    text-align: center;
+    animation: bg-position-loop 7s infinite;
+    background: linear-gradient(120deg, var(--primary-light), white, var(--secondary-light), #3498db, #9b59b6, var(--secondary-base));
+    background-size: 500%;
+    background-clip: text;
+    color: transparent;
+    line-height: 1;
+    padding: 2em 0;
+
+    h1 {
+      font-size: 5em;
+      font-weight: bold;
+
+      margin-bottom: .25em;
+    }
+
+    h2 {
+      font-size: 2em;
+    }
+
+    @include util.respond-to('sm') {
+      h1 {
+        font-size: 3.5em;
+      }
+
+      h2 {
+        font-size: 1.5em;
+      }
+    }
   }
 
-  .page-title {
-    margin-bottom: 0;
+  a {
+    display: inline-block;
+
+    img {
+      max-width: min(480px, 80vw);
+    }
   }
 }

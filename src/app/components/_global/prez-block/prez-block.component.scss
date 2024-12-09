@@ -1,0 +1,70 @@
+@use 'util';
+
+:host {
+  position: relative;
+
+  .block-content {
+    max-width: min(1200px, 75%);
+    margin: auto;
+
+    @include util.respond-to('md') {
+      max-width: 90%;
+    }
+  }
+
+  h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    letter-spacing: -0.025rem;
+    font-weight: 700;
+    text-align: center;
+    line-height: 1.25;
+
+    @include util.respond-to(md) {
+      font-size: 2rem;
+    }
+
+    /* font-family: ui-sans-serif; */
+    /* font-family: Helvetica; */
+  }
+
+  // because we want to reach stuff inside ng-content .. :/
+  ::ng-deep {
+    p, div {
+      font-family: ui-sans-serif, system-ui, sans-serif;
+      font-size: 1.2rem;
+      line-height: 1.75;
+      text-align: justify;
+      margin-bottom: 1.5em;
+    }
+
+    b {
+      font-weight: 500;
+    }
+
+    ul {
+      margin: 1em 0;
+      padding-left: 1.75rem;
+      list-style: disc;
+
+      li {
+        padding-left: .75rem;
+        line-height: 1.75;
+        margin: .5rem 0;
+
+        .label {
+          font-weight: 500;
+        }
+      }
+    }
+  }
+
+  .bg-overlay {
+    z-index: -10;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: .4;
+    filter: blur(5px);
+  }
+}
