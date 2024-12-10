@@ -96,18 +96,14 @@
       overflow: hidden;
       max-width: min(75%, 1000px);
       border-radius: 2em;
-      margin: 3em auto 6em;
+      margin: 2em auto;
 
       @include util.respond-to(lg) {
         max-width: 80%;
       }
 
       .bg-overlay {
-        opacity: .1;
-
-        @media (prefers-color-scheme: dark) {
-          opacity: .4;
-        }
+        opacity: .2;
 
         background: var(--bg-flag-linear);
       }
@@ -138,4 +134,8 @@
       }
     }
   }
+}
+
+::ng-deep body.dark-theme .block.last .bg-overlay {
+  opacity: .4 !important;
 }

@@ -51,6 +51,7 @@ export class AppComponent implements OnInit {
 
   updateHtmlColorScheme(theme: Theme) {
     document.documentElement.style.colorScheme = theme;
+    document.body.classList.toggle('dark-theme', theme === 'dark');
   }
 
   getRouteAnimationData() {

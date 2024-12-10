@@ -3,7 +3,7 @@ import { BehaviorSubject } from "rxjs";
 
 const THEME_STORAGE_KEY = 'theme';
 
-export type Theme = 'light'|'dark';
+export type Theme = 'light' | 'dark';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +11,8 @@ export type Theme = 'light'|'dark';
 export class ThemeService {
   currentTheme$ = new BehaviorSubject<Theme>('light');
 
-  constructor() {}
+  constructor() {
+  }
 
   init() {
     this.setTheme(this.loadFromStorage() ?? 'light');
