@@ -23,6 +23,10 @@ $theme: theme.build(#002654, #CE1126);
   }
 }
 
+@include util.reset();
+@include util.style();
+@include util.animations();
+
 html {
   @include mat.theme((
     color: $mat-theme,
@@ -32,18 +36,7 @@ html {
 
   scrollbar-width: thin;
   scroll-behavior: smooth;
-
-  //--mat-sidenav-content-background-color: light-dark(#faf9fd, #222);
 }
-
-@include util.reset();
-@include util.style();
-@include util.animations();
-
-// components
-@include button.style();
-@include dialog.style();
-@include mat-vars.overrides();
 
 // @TODO: move to something like "_container.scss" or "_global.scss" ...
 
@@ -51,4 +44,9 @@ body {
   // global initial settings : background and font
   font-family: "Inter", ui-sans-serif, sytem-ui, sans-serif;
   font-feature-settings: 'cv11';
+
+  // components
+  @include button.style();
+  @include dialog.style();
+  @include mat-vars.overrides();
 }

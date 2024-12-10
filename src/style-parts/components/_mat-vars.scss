@@ -5,4 +5,10 @@
     track-height: 28px,
     with-icon-handle-size: 21px
   ));
+
+  // j'arrive pas à me décider à changer ce fond hyper dark .. :/
+  //--mat-sys-background: light-dark(#faf9fd, #151518);
+
+  // concerne les boutons, les dialogs ... beaucoup de choses, peut-être trop d'un coup ?
+  --mat-sys-surface: light-dark(#faf9fd, #26262c);
 }

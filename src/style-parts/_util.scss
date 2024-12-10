@@ -201,6 +201,12 @@ $breakpoints: (
   }
 }
 
+@mixin mat-button-label() {
+  ::ng-deep .mdc-button__label {
+    @content;
+  }
+}
+
 //// carré à peu près OK
 //// -8px -8px 10px -5px var(--primary-base),      8px -8px 10px -5px,      0px 8px 10px -5px var(--secondary-base)
 //@mixin rotate-shadow-animation($colors) {

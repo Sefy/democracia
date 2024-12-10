@@ -10,8 +10,11 @@
   }
 
   fa-icon {
+    display: inherit;
+
     ::ng-deep svg {
       height: var(--icon-size);
+      width: var(--icon-size);
     }
   }
 }
