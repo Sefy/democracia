@@ -33,7 +33,7 @@
     <input matInput [(ngModel)]="message" (ngModelChange)="onMessageTyping($event)" (keyup.enter)="sendMessage()"
            [disabled]="!socketConnected || waitingResponse"/>
     <!-- Super le tooltip impossible à garder au hover .. c'est quoi cette connerie encore -_- -->
-    <app-loader *ngIf="true" matSuffix [size]="30" matTooltip="Analyse du message ... (peut être long la 1ère fois)" />
+    <app-loader *ngIf="waitingResponse" matSuffix [size]="30" matTooltip="Analyse du message ... (peut être long la 1ère fois)" />
   </mat-form-field>
 </div>
 

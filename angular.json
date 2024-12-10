@@ -62,7 +62,11 @@
                   "replace": "src/environments/env.ts",
                   "with": "src/environments/env.prod.ts"
                 }
-              ]
+              ],
+              "index": {
+                "input": "src/index-prod.html",
+                "output": "index.html"
+              }
             },
             "development": {
               "optimization": false,

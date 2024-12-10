@@ -18,7 +18,6 @@
     letter-spacing: -0.025rem;
     font-weight: 700;
     text-align: center;
-    line-height: 1.25;
 
     @include util.respond-to(md) {
       font-size: 2rem;
@@ -33,9 +32,12 @@
     p, div {
       font-family: ui-sans-serif, system-ui, sans-serif;
       font-size: 1.2rem;
-      line-height: 1.75;
-      text-align: justify;
       margin-bottom: 1.5em;
+      line-height: 1.75;
+
+      &.small-margin {
+        margin-bottom: .5rem;
+      }
     }
 
     b {

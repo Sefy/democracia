@@ -20,25 +20,6 @@
     place-items: center;
     place-content: center;
 
-    // connerie temporaire .. :D
-    .vs {
-      display: flex;
-      place-items: center;
-      place-content: center;
-      font-weight: 700;
-      font-size: 30px;
-      font-style: italic;
-      color: gray;
-      margin: 10px;
-
-      &:after, &:before {
-        content: "";
-        border: 1px solid rgba(0, 0, 0, .1);
-        margin: 1em;
-        width: 100%;
-      }
-    }
-
     // Ca me plait paaaaaaaaaas
     // => sûrement beaucoup mieux avec un fond global sur tout le bloc parent
     &.blue .bg-overlay {

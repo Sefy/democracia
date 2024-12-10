@@ -17,7 +17,7 @@ export const appConfig: ApplicationConfig = {
       withViewTransitions(),
       withInMemoryScrolling({
         anchorScrolling: 'enabled',
-        scrollPositionRestoration: 'top'
+        scrollPositionRestoration: 'enabled'
       })
     ),
     provideHttpClient(
