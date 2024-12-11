@@ -54,7 +54,9 @@
       display: none; // hidden by default, ofc :)
 
       place-items: center;
-      gap: .75em;
+      gap: 3px;
+
+      background: var(--mat-sys-surface-bright);
 
       position: absolute;
       z-index: 100;
@@ -72,6 +74,9 @@
 
       a {
         font-size: 20px;
+        background: none;
+        border: none;
+        box-shadow: none;
       }
     }
 

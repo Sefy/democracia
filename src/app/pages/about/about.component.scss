@@ -37,10 +37,27 @@ app-prez-block {
   }
 }
 
+.contact {
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+  text-align: center;
+  font-size: .9em;
+
+  p {
+    margin: 0;
+    font-size: 1em;
+  }
+}
+
 button {
   @include util.mat-button-label() {
     display: flex;
     place-items: center;
     gap: .5rem;
   }
+}
+
+app-footer ::ng-deep footer {
+  margin-top: 0 !important;
 }

@@ -1,17 +1,26 @@
-<app-dialog-header title="Connexion"/>
+<app-dialog-header title="Connexion" icon="account_circle" />
 
 <div style="position: relative">
-  <app-loader *ngIf="loading" [overlay]="true" />
+  <app-loader *ngIf="loading" [overlay]="true"/>
 
-  <mat-dialog-content>
-    <form (submit)="submit()" [formGroup]="form">
+  <mat-dialog-content style="max-height: 85vh">
+
+    <app-dialog-banner/>
+
+    <app-flash-message type="warn">
+      Pour l'instant seule la connexion Google est proposée, pour éviter de stocker des mots de passe, et l'application
+      étant actuellement en phase d'<b>Alpha</b> (développement initial), les données seront régulièrement
+      réinitialisées.
+    </app-flash-message>
+
+    <hr>
+
+    <form (submit)="submit()" [formGroup]="form" style="margin-bottom: .75em">
       <ul *ngIf="errors?.length" class="form-errors">
         <li *ngFor="let err of errors">{{ err }}</li>
       </ul>
 
-      <!-- Connexion Google only pour l'instant, pas envie de stocker des mots de paaaaaaasse -->
-
-      <div style="margin: auto" #googleButtonContainer></div>
+      <div class="google-button-container" #googleButtonContainer></div>
 
       <!-- Kind of clear to avoid scroll after GAuth is included .. weird -->
       <div></div>
@@ -20,10 +29,4 @@
       <button style="display: none"></button>
     </form>
   </mat-dialog-content>
-
-<!--  <mat-dialog-actions align="end">-->
-<!--    <button mat-raised-button color="primary" (click)="submit()">-->
-<!--      OK-->
-<!--    </button>-->
-<!--  </mat-dialog-actions>-->
 </div>

@@ -1,10 +1,14 @@
 <div class="chatroom-header">
   <h3 *ngIf="!noTitle" class="chatroom-title">{{ ($any(room) ?? roomInfo).title }}</h3>
 
-  <p class="chatroom-desc">{{ ($any((room)) ?? roomInfo).description }}</p>
-
   <!-- mat-tabs : messages les plus votés, votes en cours, users connectés ... -->
   <mat-tab-group *ngIf="room">
+    <mat-tab label="Infos">
+      <p class="chatroom-desc">{{ ($any((room)) ?? roomInfo).description }}</p>
+
+      <!-- @TODO: add trending score ? live update ? messages count ? ... summarization ! :) -->
+    </mat-tab>
+
     <mat-tab label="Top messages">
 
       <app-top-messages [messages]="$any(room)?.mostVoted"/>
@@ -33,7 +37,8 @@
     <input matInput [(ngModel)]="message" (ngModelChange)="onMessageTyping($event)" (keyup.enter)="sendMessage()"
            [disabled]="!socketConnected || waitingResponse"/>
     <!-- Super le tooltip impossible à garder au hover .. c'est quoi cette connerie encore -_- -->
-    <app-loader *ngIf="waitingResponse" matSuffix [size]="30" matTooltip="Analyse du message ... (peut être long la 1ère fois)" />
+    <app-loader *ngIf="waitingResponse" matSuffix [size]="30"
+                matTooltip="Analyse du message ... (peut être long la 1ère fois)"/>
   </mat-form-field>
 </div>
 

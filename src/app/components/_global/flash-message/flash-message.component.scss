@@ -1,0 +1,25 @@
+:host {
+  --warn-color: rgb(255 231 161);
+  --warn-text: black;
+
+  display: block;
+
+  padding: var(--container-padding);
+  border-radius: var(--component-radius);
+  box-shadow: inset 0 0 3px -2px;
+
+  &.warn {
+    background: var(--warn-color);
+    color: var(--warn-text);
+  }
+
+  &.error {
+    background: var(--mat-sys-error);
+    color: var(--mat-sys-on-error);
+  }
+
+  &.info {
+    background: var(--primary-extra-light);
+    color: var(--primary-extra-light-contrast);
+  }
+}

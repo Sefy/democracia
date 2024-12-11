@@ -15,6 +15,8 @@ import { env } from "../../../environments/env";
 import { LoaderComponent } from "@app/components/_global/loader/loader.component";
 import { DialogHeaderComponent } from "@app/components/_dialog/dialog-header/dialog-header.component";
 import { DialogService } from "@app/services/dialog.service";
+import { FlashMessageComponent } from "@app/components/_global/flash-message/flash-message.component";
+import { DialogBannerComponent } from "@app/components/_dialog/dialog-banner/dialog-banner.component";
 
 @Component({
   selector: 'app-login',
@@ -29,7 +31,9 @@ import { DialogService } from "@app/services/dialog.service";
     MatToolbarModule,
     MatSlideToggleModule,
     DialogHeaderComponent,
-    LoaderComponent
+    LoaderComponent,
+    FlashMessageComponent,
+    DialogBannerComponent
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'

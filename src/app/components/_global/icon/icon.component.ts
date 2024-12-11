@@ -16,5 +16,5 @@ export type IconType = 'mat' | 'fa' | 'fas' | 'fab';
 export class IconComponent {
   @Input() icon?: string|any;
   @Input() type: IconType = 'mat'; // IconType ?
-  @Input() @HostBinding('style.--icon-size') size = '21px';
+  @Input() @HostBinding('style.--icon-size') size?: string;
 }

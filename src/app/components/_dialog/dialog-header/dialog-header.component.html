@@ -7,7 +7,9 @@
 </mat-toolbar>
 
 <ng-template #content>
-  <span class="flex-1">{{ title }}</span>
+  <h2 class="title">
+    <app-icon *ngIf="icon" [icon]="icon" /> {{ title }}
+  </h2>
 
   <ng-content />
 

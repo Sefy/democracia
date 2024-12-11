@@ -9,6 +9,14 @@ mat-toolbar {
 
   --mdc-icon-button-icon-color: currentColor;
 
+  .title {
+    flex: 1;
+
+    display: flex;
+    place-items: center;
+    gap: .5rem;
+  }
+
   button[mat-dialog-close] {
     margin-left: auto;
   }
