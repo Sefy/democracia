@@ -269,6 +269,10 @@ export class ChatService {
       }
     });
 
+    socket.on('error', e => {
+      console.log('Socket error : ', e);
+    });
+
     socket.on('close', (code, data) => {
       this.logService.info('Socket close in room ' + room.id, code, data);
       // @TODO: probablement virer le user des actives et de la room ?

@@ -8,7 +8,6 @@ import { RoomService } from "@app/services/room.service";
 import { RoomListComponent } from "@app/components/room/list/room-list.component";
 import { LoaderComponent } from "@app/components/_global/loader/loader.component";
 import { PublicRoom } from "@common/room";
-import { QuoteComponent } from "@app/components/quote/quote.component";
 import { debounceTime, interval, map, Subject, Subscription, switchMap, tap } from "rxjs";
 import { RoomListHeaderComponent } from "@app/components/room/list-header/room-list-header.component";
 import { DialogService } from "@app/services/dialog.service";
@@ -32,7 +31,6 @@ const LIVE_RELOAD_TIMER_SEC = 10;
     MatFormFieldModule,
     RoomListComponent,
     LoaderComponent,
-    QuoteComponent,
     RoomListHeaderComponent,
     MatSlideToggle,
     FooterComponent,
@@ -58,7 +56,7 @@ export class HomeComponent implements OnInit {
     this.searchSubject.pipe(
       debounceTime(300),
       map(s => s?.trim()),
-      switchMap(search => this.roomService.getRooms({ search }))
+      switchMap(search => this.roomService.getRooms({search}))
     ).subscribe(rooms => this.rooms = rooms);
   }
 
@@ -69,7 +67,7 @@ export class HomeComponent implements OnInit {
   }
 
   loadData() {
-    return this.roomService.getRooms({ order: 'trending', count: HOME_GRID_COUNT }).pipe(
+    return this.roomService.getRooms({order: 'trending', count: HOME_GRID_COUNT}).pipe(
       tap(rooms => this.rooms = rooms)
     );
   }

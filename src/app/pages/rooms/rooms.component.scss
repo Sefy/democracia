@@ -1,9 +1,10 @@
-.table-header {
-  display: flex;
-  place-items: center;
-  margin-bottom: 7px;
+:host {
+  display: block;
+  max-width: min(95%, 1280px);
+  margin: auto;
+  padding: 1em;
 
-  .buttons {
-    margin-left: auto;
+  app-room-list-header {
+    margin-bottom: 1em;
   }
 }

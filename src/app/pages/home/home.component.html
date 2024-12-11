@@ -4,7 +4,7 @@
   <app-room-list-header (createRoom)="createRoom()" (searchChange)="searchSubject.next($event)">
     <mat-slide-toggle (change)="toggleAutoRefresh($event.checked)" [checked]="true">Refresh auto</mat-slide-toggle>
   </app-room-list-header>
-  <app-room-list *ngIf="rooms; else loader" [rooms]="rooms" [options]="{grid: true}"/>
+  <app-room-list *ngIf="rooms; else loader" [rooms]="rooms" [options]="{grid: true}" (needUpdate)="loadData().subscribe()" />
 </div>
 
 <div class="landing">

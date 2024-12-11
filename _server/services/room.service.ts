@@ -136,12 +136,16 @@ export class RoomService {
 
   computeTrendingScore(room: Room) {
     const messagesScore = room.messagesCount ?? 0; // @TODO : + average time between messages in the last x time (1 hour ?)
-    const votesScore = 0; // @TODO: same but for votes
+    const votesScore = this.getRoomNewVotes(room)?.length ?? 0; // @TODO: same but for votes
     const favoriteScore = 0; // @TODO: un score basé sur le nombre de "follow" de la room (nombre de gens qui suivent le sujet)
     const activeScore = 0; // @TODO: nombre de gens connectés dans la dernière heure
 
     // une moyenne, pour alléger le stockage ? :) après on pourrait pondérer les scores ... (* 2 pour le favoris ?)
     return Math.round(MathUtil.sum(messagesScore, votesScore, favoriteScore, activeScore) / 4);
+  }
+
+  getRoomNewVotes(room: Room) {
+    return room.messages.map(m => m.votes.filter(v => v.new)).flat();
   }
 
   get repository() {

@@ -7,16 +7,16 @@ import { LoaderComponent } from "@app/components/_global/loader/loader.component
 import { CommonModule } from "@angular/common";
 
 @Component({
-  selector: 'app-room-page',
+  selector: 'app-room-detail',
   imports: [
     CommonModule,
     ChatboxComponent,
     LoaderComponent
   ],
-  templateUrl: './room-page.component.html',
-  styleUrl: './room-page.component.scss'
+  templateUrl: './room-detail.component.html',
+  styleUrl: './room-detail.component.scss'
 })
-export class RoomPageComponent {
+export class RoomDetailComponent {
 
   room?: PublicRoom;
 

@@ -45,8 +45,6 @@ export class Room implements RoomData {
   trendingScore?: number;
   messagesCount?: number;
 
-  votesCount?: VotesCount;
-
   // Dates
   createdAt?: Date;
   updatedAt?: Date;

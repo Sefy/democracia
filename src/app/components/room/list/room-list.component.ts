@@ -1,4 +1,4 @@
-import { Component, HostBinding, Input, OnChanges } from '@angular/core';
+import { Component, EventEmitter, HostBinding, Input, OnChanges, Output } from '@angular/core';
 import { PublicRoom } from "@common/room";
 import { CommonModule } from "@angular/common";
 import { MatCardModule } from "@angular/material/card";
@@ -33,6 +33,8 @@ export class RoomListComponent implements OnChanges {
   @Input() rooms!: PublicRoom[];
   @Input() options?: RoomListOptions;
 
+  @Output() needUpdate = new EventEmitter();
+
   @HostBinding('class.grid') isGrid?: boolean;
 
   constructor(
@@ -41,7 +43,7 @@ export class RoomListComponent implements OnChanges {
   }
 
   openDetail(room: PublicRoom) {
-    this.dialogService.openRoomDetail(room);
+    this.dialogService.openRoomDetail(room).afterClosed().subscribe(() => this.needUpdate.emit());
   }
 
   ngOnChanges() {

@@ -1,11 +1,68 @@
+@use 'util';
+
 :host {
+  --ranking-color-1: #b254f7;
+  --ranking-color-2: #ad88da;
+  --ranking-color-3: #5853d3;
+  --ranking-color-4: #39619c;
+  --ranking-color-5: #3d92e8;
+  --ranking-color-6: #56b8a9;
+  --ranking-color-7: #2c973f;
 
   &.grid {
     grid-template-columns: repeat(auto-fill, minmax(max(20%, 400px), 1fr));
     gap: 1em;
   }
 
-  .room-item {
+  &:not(.grid) {
+    display: flex;
+    flex-direction: column;
+    gap: .5em;
+
+    .room-row {
+      display: flex;
+      place-items: center;
+
+      .position {
+        display: block;
+        white-space: nowrap;
+        margin-right: 1.2rem;
+        font-size: 1.75rem;
+        width: 60px;
+        text-align: center;
+
+        color: var(--color);
+
+        @include util.respond-to('sm') {
+          font-size: 1.25rem;
+        }
+      }
+    }
+
+    app-card {
+      flex-direction: row;
+      place-items: center;
+      width: 100%;
+      max-height: 100px;
+      padding: .3rem 1.25rem;
+
+      app-tag-list {
+        font-size: 13px;
+        margin-left: .75rem;
+
+        ::ng-deep app-tag-item {
+          padding: 0.25em 0.7em;
+        }
+      }
+    }
+
+    .icons-list {
+      flex-direction: column;
+      gap: .25rem !important;
+    }
+  }
+
+  app-card {
     cursor: pointer;
 
     app-card-header {

@@ -1,38 +1,35 @@
 import { Component, OnInit } from '@angular/core';
 import { RoomService } from "@app/services/room.service";
 import { PublicRoom } from "@common/room";
-import { RoomListComponent } from "@app/components/room/list/room-list.component";
 import { CommonModule } from "@angular/common";
 import { LoaderComponent } from "@app/components/_global/loader/loader.component";
 import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
-import { MatDialog } from "@angular/material/dialog";
-import { AuthService } from "@app/services/auth.service";
+import { RoomListHeaderComponent } from "@app/components/room/list-header/room-list-header.component";
+import { DialogService } from "@app/services/dialog.service";
+import { RoomListComponent, RoomListOptions } from "@app/components/room/list/room-list.component";
 
 @Component({
   selector: 'app-rooms',
   imports: [
     CommonModule,
-    RoomListComponent,
     LoaderComponent,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    RoomListHeaderComponent,
+    RoomListComponent
   ],
   templateUrl: './rooms.component.html',
   styleUrl: './rooms.component.scss'
 })
 export class RoomsComponent implements OnInit {
-  options: any;
+  listOptions: RoomListOptions = {};
   rooms?: PublicRoom[];
-
-  canAddRoom = false;
 
   constructor(
     private roomService: RoomService,
-    private matDialog: MatDialog,
-    private authService: AuthService
+    private dialogService: DialogService
   ) {
-    // this.authService.currentUser$.subscribe(() => this.canAddRoom = this.authService.can(Role.ADD_ROOM));
   }
 
   ngOnInit() {
@@ -41,5 +38,9 @@ export class RoomsComponent implements OnInit {
 
   reload() {
     this.roomService.getRooms().subscribe(rooms => this.rooms = rooms);
+  }
+
+  createRoom() {
+    this.dialogService.openRoomEdit();
   }
 }

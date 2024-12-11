@@ -1,24 +1,6 @@
-<ng-container *ngIf="rooms; else loader">
-  <div class="table-header">
-    <div class="buttons">
-    </div>
-  </div>
+<app-room-list-header (createRoom)="createRoom()" />
 
-  <app-room-list *ngIf="rooms.length; else noResult" [rooms]="rooms" [options]="options"/>
+<app-room-list *ngIf="rooms && rooms.length" [rooms]="rooms" [options]="listOptions" (needUpdate)="reload()"/>
 
-  <div class="text-center" style="margin-top: 24px">
-    <!-- @TODO: revoir le style x) -->
-<!--    <button mat-raised-button (click)="createRoom()" [disabled]="!canAddRoom">-->
-<!--      <mat-icon>add</mat-icon>-->
-<!--      Nouvelle room-->
-<!--    </button>-->
-  </div>
-</ng-container>
-
-<ng-template #loader>
-  <app-loader class="center" message="Chargement ..."/>
-</ng-template>
-
-<ng-template #noResult>
-  Aucun résultat !
-</ng-template>
+<app-loader *ngIf="!rooms" class="center" message="Chargement ..." />
+<span *ngIf="rooms && !rooms.length">Aucun résultat !</span>
