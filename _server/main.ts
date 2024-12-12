@@ -11,6 +11,7 @@ import { env } from "./env";
 import { TagFilters, TagService } from "./services/tag.service";
 import { RoomRouter } from "./routes/room.router";
 import { AuthRouter } from "./routes/auth.router";
+import { VoteRouter } from "./routes/vote.router";
 
 class Server {
 
@@ -84,6 +85,7 @@ class Server {
 
     this.app.use('/api/auth', new AuthRouter(this.container).build());
     this.app.use('/api/rooms', new RoomRouter(this.container).build());
+    this.app.use('/api/votes', new VoteRouter(this.container).build());
 
     this.app.get('/api/tags', async (req, resp, next) => {
       try {

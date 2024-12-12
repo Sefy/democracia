@@ -1,9 +1,11 @@
 import { EntityManager } from "./entity-manager";
 import { QueryBuilder, QueryColumnDef } from "../../util/query-builder";
 import { LoadOptions, MessageFilters } from "../message-service";
-import { MessageData, VoteData, VoteType } from "@common/message";
-import { Message, Vote } from "../../object/message";
+import { MessageData, LikeData, VoteType } from "@common/message";
+import { Message, Like } from "../../object/message";
 import { PoolClient } from "pg";
+
+// @TODO: rename all "vote" occurrence here in "like"
 
 class MessageQueryBuilder extends QueryBuilder {
   constructor(filters?: MessageFilters) {
@@ -26,23 +28,6 @@ class MessageQueryBuilder extends QueryBuilder {
     const select = this.getAllColumns(true).map(c => 'm.' + c).join(', ');
 
     return this.addSelect(select);
-  }
-
-  addVotesJoins() {
-    return this
-      .leftJoin(`(
-              SELECT message_id, COUNT(*) as count
-              FROM message_votes
-              WHERE vote_type = 'UP'
-              GROUP BY message_id
-              ) up_votes ON m.id = up_votes.message_id`
-      ).leftJoin(`(
-              SELECT message_id, COUNT(*) as count
-              FROM message_votes
-              WHERE vote_type = 'DOWN'
-              GROUP BY message_id
-            ) down_votes ON m.id = down_votes.message_id`
-      );
   }
 }
 
@@ -121,7 +106,7 @@ export class MessageRepository {
   parseRow(row: any, loadOptions?: LoadOptions) {
     const parsed = {
       ...row,
-      votes: [] as VoteData[]
+      votes: [] as LikeData[]
     } as MessageData;
 
     if (loadOptions?.votes && row.votes) {
@@ -135,7 +120,7 @@ export class MessageRepository {
   }
 
   buildVoteData(user: number, type: VoteType) {
-    return {user, type} as VoteData;
+    return {user, type} as LikeData;
   }
 
   getParamsArray(paramsCount: number, rowCount: number) {
@@ -173,7 +158,7 @@ export class MessageRepository {
   }
 
   // cradooooo ...
-  async saveVotes(votes: Vote[], trans?: PoolClient) {
+  async saveVotes(votes: Like[], trans?: PoolClient) {
     const handle = async (trans: PoolClient) => {
       const news = votes.filter(v => v.new);
 

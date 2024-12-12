@@ -5,6 +5,7 @@ import { Container } from "../container";
 import { TagRepository } from "./tag-repository";
 import { MessageRepository } from "./message-repository";
 import { env } from "../../env";
+import { VoteRepository } from "./vote-repository";
 
 // ca reste bien chiant ... @TODO: retry ORM, pour de bon, une fois clarifié la distinction entre chat et DB lol
 
@@ -19,6 +20,7 @@ export class EntityManager {
     room: new RoomRepository(this),
     message: new MessageRepository(this),
     tag: new TagRepository(this),
+    vote: new VoteRepository(this)
   };
 
   constructor(
@@ -60,5 +62,9 @@ export class EntityManager {
 
   get tag() {
     return this.repositories.tag;
+  }
+
+  get vote() {
+    return this.repositories.vote;
   }
 }

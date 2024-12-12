@@ -1,0 +1,9 @@
+<app-base-input label="Recherche ..." iconPrefix="search" class="search" [ngModel]="''"
+                (ngModelChange)="searchChange.next($event)" />
+
+<button *appHasRole="'USER'" mat-raised-button class="center-inner" (click)="create.next($event)">
+  <app-icon icon="add"/>
+  Nouveau vote
+</button>
+
+<ng-content />

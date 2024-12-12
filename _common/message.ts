@@ -8,7 +8,7 @@ export type VoteType = 'UP' | 'DOWN';
 //   DISLIKE = -1
 // }
 
-export interface VoteData {
+export interface LikeData {
   type: VoteType;
   user: number | UserData;
 
@@ -29,5 +29,5 @@ export interface MessageData {
 
   toxicity?: number;
 
-  votes?: VoteData[];
+  votes?: LikeData[];
 }

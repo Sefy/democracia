@@ -1,23 +1,26 @@
-mat-toolbar {
-  display: flex;
-  place-items: center;
-  padding: 0 1em;
-  font-size: 20px;
-
-  background: var(--mat-sys-primary);
-  --mat-sys-on-surface: var(--mat-sys-on-primary);
-
-  --mdc-icon-button-icon-color: currentColor;
-
-  .title {
-    flex: 1;
-
+:host {
+  mat-toolbar {
     display: flex;
     place-items: center;
-    gap: .5rem;
-  }
+    font-size: 20px;
+    height: 50px;
+    padding: 0 1rem;
 
-  button[mat-dialog-close] {
-    margin-left: auto;
+    background: var(--mat-sys-primary);
+    --mat-sys-on-surface: var(--mat-sys-on-primary);
+    --mdc-icon-button-icon-color: currentColor;
+
+    .title {
+      flex: 1;
+
+      display: flex;
+      place-items: center;
+      gap: .5rem;
+      font-size: 1.2rem;
+    }
+
+    ::ng-deep button {
+      --icon-size: 21px;
+    }
   }
 }

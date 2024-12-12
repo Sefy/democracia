@@ -1,9 +1,9 @@
 import { PublicMessage, Publishable } from "@common/public";
-import { MessageData, MessageId, VoteData, VoteType } from "@common/message";
+import { MessageData, MessageId, LikeData, VoteType } from "@common/message";
 import { Room } from "./room";
 import { User } from "./user";
 
-export class Vote implements VoteData {
+export class Like implements LikeData {
   message!: Message;
   type!: VoteType;
   user!: User;
@@ -12,7 +12,7 @@ export class Vote implements VoteData {
   new?: boolean;
   edited?: boolean;
 
-  constructor(data: VoteData) {
+  constructor(data: LikeData) {
     this.type = data.type;
 
     if (data.user instanceof User) {
@@ -55,7 +55,7 @@ export class Message implements MessageData, Publishable<PublicMessage> {
   // Join data
   room?: Room;
   author?: User;
-  votes: Vote[] = [];
+  votes: Like[] = [];
 
   new?: boolean;
 
@@ -79,7 +79,7 @@ export class Message implements MessageData, Publishable<PublicMessage> {
     return this.votes.find(v => v.user.id === user.id);
   }
 
-  addVote(vote: Vote) {
+  addVote(vote: Like) {
     // pour l'instant on check ici, mais vaudrait mieux le faire plus en amont ...
     if (!this.votes.some(v => v.user.id === vote.user.id)) {
       this.votes.push(vote);

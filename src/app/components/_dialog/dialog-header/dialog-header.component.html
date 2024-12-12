@@ -11,9 +11,10 @@
     <app-icon *ngIf="icon" [icon]="icon" /> {{ title }}
   </h2>
 
+  <!-- Allow to put additional stuff after title -->
   <ng-content />
 
   <button *ngIf="!noClose" mat-icon-button mat-dialog-close tabindex="-1">
-    <mat-icon>close</mat-icon>
+    <app-icon icon="close" />
   </button>
 </ng-template>

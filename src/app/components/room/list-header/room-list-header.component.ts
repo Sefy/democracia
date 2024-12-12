@@ -19,26 +19,6 @@ import { HasRoleDirective } from "@app/directives/has-role.directive";
   styleUrl: './room-list-header.component.scss'
 })
 export class RoomListHeaderComponent {
-
   @Output() searchChange = new EventEmitter();
   @Output() createRoom = new EventEmitter();
-
-  // searchSubject = new Subject<string>();
-  //
-  // filteredRooms$: Observable<PublicRoom[]> = this.searchSubject.pipe(
-  //   debounceTime(300),
-  //   map(s => s?.trim()),
-  //   switchMap(search => {
-  //     return search.length ? this.roomService.search(search) : of([] as any);
-  //   })
-  // );
-
-  constructor(
-    private roomService: RoomService
-  ) {
-  }
-
-  // searchValueChange($event: any) {
-  //   this.
-  // }
 }

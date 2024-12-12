@@ -1,0 +1,18 @@
+<app-card>
+  <app-card-header>
+    <h3 class="title primary">{{ vote.title }}</h3>
+    <span *ngIf="vote.expiresAt" class="expire-date">Finit le : {{ vote.expiresAt|date }}</span>
+  </app-card-header>
+
+  <app-card-content>
+    <ul *ngIf="options" class="options-list">
+      <li *ngFor="let opt of options; let i = index" [style.--percent]="opt.percent">
+        {{ opt.count }}
+
+        <div class="bar" [style.background-color]="colors[i]"></div>
+
+        {{ opt.title }}
+      </li>
+    </ul>
+  </app-card-content>
+</app-card>

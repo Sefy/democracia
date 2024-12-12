@@ -1,0 +1,66 @@
+@use '@angular/material' as mat;
+
+:host {
+  display: contents;
+
+  app-card {
+    max-width: 300px;
+
+    app-card-header {
+      .title {
+        flex: 1;
+      }
+
+      .expire-date {
+        font-size: .75rem;
+      }
+    }
+
+    app-card-content {
+      place-content: flex-end;
+    }
+
+    ul.options-list {
+      display: flex;
+      place-items: flex-end;
+      place-content: space-between;
+      gap: .75em;
+
+      height: 170px;
+
+      li {
+        display: flex;
+        flex-direction: column;
+        place-items: center;
+        place-content: flex-end;
+        flex: 1;
+        gap: .25em;
+        white-space: nowrap;
+
+        height: 100%;
+
+        .bar {
+          width: 75%;
+          padding: 10px;
+          border-radius: 10px 10px 0 0;
+          cursor: pointer;
+
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+
+          transition: height 0.3s ease;
+
+          height: calc(var(--percent) * 1%);
+          animation: grow .8s ease forwards;
+        }
+      }
+    }
+  }
+}
+
+@keyframes grow {
+  to {
+    height: calc(var(--percent) * 1%);
+  }
+}

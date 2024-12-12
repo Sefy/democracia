@@ -5,8 +5,8 @@ import http from "http";
 import { LogService } from "./log.service";
 import { Room } from "../object/room";
 import { User } from "../object/user";
-import { Message, Vote } from "../object/message";
-import { MessageData, VoteData } from "@common/message";
+import { Message, Like } from "../object/message";
+import { MessageData, LikeData } from "@common/message";
 import { AnonData, PublicUser, UserData } from "@common/user";
 import { ToxicityService } from "./toxicity-service";
 import { interval } from "rxjs";
@@ -124,8 +124,8 @@ export class ChatService {
     return msg;
   }
 
-  async loadChatVote(data: VoteData, message: Message) {
-    const vote = new Vote(data);
+  async loadChatVote(data: LikeData, message: Message) {
+    const vote = new Like(data);
 
     vote.message = message;
 
@@ -220,7 +220,7 @@ export class ChatService {
         existingVote.type = data.type;
         existingVote.isEdited();
       } else {
-        message.addVote(new Vote({type: data.type, user: author, message}).isNew());
+        message.addVote(new Like({type: data.type, user: author, message}).isNew());
       }
 
       // @TODO: handle déjà voté !

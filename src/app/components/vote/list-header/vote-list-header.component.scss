@@ -1,0 +1,11 @@
+:host {
+  display: flex;
+  place-items: center;
+  flex-wrap: wrap;
+  place-content: center;
+  gap: 1em;
+
+  .search {
+    flex: 1;
+  }
+}

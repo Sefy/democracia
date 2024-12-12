@@ -6,6 +6,10 @@
     with-icon-handle-size: 21px
   ));
 
+  @include mat.dialog-overrides((
+    container-shape: 12px
+  ));
+
   // j'arrive pas à me décider à changer ce fond hyper dark .. :/
   //--mat-sys-background: light-dark(#faf9fd, #151518);
 

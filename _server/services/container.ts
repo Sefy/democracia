@@ -6,6 +6,7 @@ import {RoomService} from "./room.service";
 import { MessageService } from "./message-service";
 import { ToxicityService } from "./toxicity-service";
 import { TagService } from "./tag.service";
+import { VoteService } from "./vote.service";
 
 type ContainerMap = {
   'user.service'?: UserService,
@@ -36,6 +37,8 @@ export class Container {
   }
 
   init() {
+    this.put('entity.manager', new EntityManager(this));
+
     this.put('user.service', new UserService(this));
     this.put('log.service', new LogService(this));
     this.put('room.service', new RoomService(this));
@@ -43,8 +46,7 @@ export class Container {
     this.put('message.service', new MessageService(this));
     this.put('toxicity.service', new ToxicityService(this));
     this.put('tag.service', new TagService(this));
-
-    this.put('entity.manager', new EntityManager(this));
+    this.put('vote.service', new VoteService(this));
 
     return this;
   }

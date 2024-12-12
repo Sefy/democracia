@@ -84,6 +84,15 @@
     text-align: center;
   }
 
+  .primary {
+    color: var(--mat-sys-primary);
+  }
+
+  .primary-bg {
+    color: var(--mat-sys-on-primary);
+    background: var(--mat-sys-primary);
+  }
+
   // solution temporaire pcq déconne en prod, et je l'utilise finalement pas tant que ça @TODO: voir ce qu'on fait ...
   // juste à commenter quand on est en local ...
   @include tw-polyfill();
@@ -169,6 +178,8 @@
 }
 
 @function bg-flag-linear() {
+  // @TODO: handle boolean + two vars for case when we need to be readable on white bg .. ?
+  //@return linear-gradient(160deg, var(--primary-light), light-dark(#9690c7, white), var(--secondary-light));
   @return linear-gradient(160deg, var(--primary-light), white, var(--secondary-light));
 }
 
