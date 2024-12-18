@@ -6,6 +6,8 @@
     <app-base-input formControlName="title" label="Titre" [required]="true"/>
     <app-base-input formControlName="description" label="Description"/>
 
+    <app-base-input formControlName="expirationDate" label="Date d'expiration" />
+
     <div formArrayName="options" class="options flex column gap-2">
       <div class="flex items-center">
         <h3 class="flex-1">Options</h3>
@@ -19,9 +21,13 @@
       <div
         *ngFor="let option of options.controls; let i = index"
         [formGroupName]="i"
+        class="option-row"
       >
         <app-base-input formControlName="text" [label]="'Option ' + (i + 1)"
                         [deleteBtnSuffix]="options.length > 2" (delete)="removeOption(i)"/>
+        <div class="color-picker" [style.--color]="colors[i]">
+<!--          <input type="color" [formControlName]="'color'"> &lt;!&ndash; (change)="updateColor(i, $event.target.value)"> &ndash;&gt;-->
+        </div>
       </div>
     </div>
   </mat-dialog-content>

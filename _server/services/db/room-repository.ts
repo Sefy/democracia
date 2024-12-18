@@ -8,6 +8,7 @@ import { PoolClient } from "pg";
 export interface RoomFilters extends BaseFilters {
   id?: number;
   search?: string;
+  vote?: number;
 }
 
 export class RoomRepository {
@@ -28,6 +29,12 @@ export class RoomRepository {
 
       qb.and('(lower(r.title) LIKE ' + paramIndex + ' OR lower(r.description) LIKE ' + paramIndex + ')')
         .addParam('%' + filters.search.toLowerCase() + '%');
+    }
+
+    if (filters?.vote) {
+      qb.join('vote_rooms vr ON vr.room_id = r.id')
+        .and('vr.vote_id = ' + qb.getCurrentParamIndex())
+        .addParam(filters.vote);
     }
 
     return qb;
@@ -77,8 +84,9 @@ export class RoomRepository {
     const tagValues = tags.map(t => `(${room.id}, ${t.id})`).join(', ');
 
     const sql = `
-          INSERT INTO room_tags (id_room, id_tag)
-          VALUES ${tagValues}
+      INSERT INTO room_tags (id_room, id_tag)
+      VALUES
+      ${tagValues}
     `;
 
     return client ? client.query(sql) : this.em.query(sql);

@@ -12,11 +12,12 @@ import {
 import { VoteEditComponent } from "@app/components/vote/edit/vote-edit.component";
 import { VotePub } from "@common/vote";
 import { VoteDetailComponent } from "@app/components/vote/detail/vote-detail.component";
+import { IDialogService } from "@app/services/interfaces/dialog-service";
 
 @Injectable({
   providedIn: 'root'
 })
-export class DialogService {
+export class DialogService implements IDialogService {
   errorDialogRef?: MatDialogRef<ErrorDialogComponent>;
 
   constructor(

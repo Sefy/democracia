@@ -1,4 +1,4 @@
-import { Component, EventEmitter, HostBinding, Input, OnChanges, Output } from '@angular/core';
+import { Component, EventEmitter, HostBinding, Inject, Input, OnChanges, Output } from '@angular/core';
 import { PublicRoom } from "@common/room";
 import { CommonModule } from "@angular/common";
 import { MatCardModule } from "@angular/material/card";
@@ -9,6 +9,7 @@ import { CardComponent } from "@app/components/_global/card/card.component";
 import { CardHeaderComponent } from "@app/components/_global/card/header/card-header.component";
 import { CardContentComponent } from "@app/components/_global/card/card-content/card-content.component";
 import { DialogService } from "@app/services/dialog.service";
+import { DIALOG_SERVICE, IDialogService } from "@app/services/interfaces/dialog-service";
 
 export interface RoomListOptions {
   grid?: boolean;
@@ -38,7 +39,7 @@ export class RoomListComponent implements OnChanges {
   @HostBinding('class.grid') isGrid?: boolean;
 
   constructor(
-    private dialogService: DialogService
+    @Inject(DIALOG_SERVICE) private dialogService: IDialogService
   ) {
   }
 

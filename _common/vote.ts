@@ -31,6 +31,7 @@ export interface VoteOption {
     id: number;
     text: string;
     count: number;
+    color?: string;
 
     // on server : can assign votechoices
 }
@@ -38,6 +39,7 @@ export interface VoteOption {
 export interface VotePub extends Omit<VoteData, 'updatedAt' | 'data' | 'room'> {
     options?: VoteOptionPub[];
     totalCount?: number;
+    debatesCount?: number;
 }
 
 export interface VoteOptionPub extends VoteOption {

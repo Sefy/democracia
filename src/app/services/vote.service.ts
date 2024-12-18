@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from "@app/services/api.service";
 import { VoteOptionPub, VotePub } from "@common/vote";
+import { CommonFilters } from "@app/types";
 
-export interface VoteFilters {
-  search?: string;
+export interface VoteFilters extends CommonFilters {
 }
 
 const API_URL = '/votes';

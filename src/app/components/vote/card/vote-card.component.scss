@@ -3,6 +3,10 @@
 :host {
   display: contents;
 
+  .btn {
+    cursor: pointer;
+  }
+
   app-card {
     app-card-header {
       margin-bottom: .5rem;
@@ -49,7 +53,7 @@
           height: 2rem;
           background: light-dark(rgb(0 0 0 / .1), rgb(255 255 255 / .1));
           overflow: hidden;
-          filter: drop-shadow(0 0 1px var(--color));
+          //filter: drop-shadow(0 0 1px var(--color));
 
           .fill {
             min-width: 5px;
@@ -65,14 +69,18 @@
     }
 
     .vote-footer {
+      width: 100%;
       position: absolute;
       bottom: 0;
+      display: flex;
+      place-items: center;
+      place-content: space-between;
+      white-space: nowrap;
 
       a.btn {
         display: flex;
         place-items: center;
         gap: .3rem;
-        cursor: pointer;
       }
     }
   }

@@ -1,0 +1,23 @@
+:host {
+  h2 {
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+  }
+
+  .rooms-container {
+    margin-bottom: 1rem;
+
+    app-room-list-header {
+      margin-bottom: .5rem;
+    }
+  }
+
+  .chart-container {
+    min-height: 100px;
+    display: flex;
+    place-items: center;
+    place-content: center;
+    font-weight: 500;
+  }
+}

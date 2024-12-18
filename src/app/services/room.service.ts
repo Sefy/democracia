@@ -4,12 +4,11 @@ import { map, tap } from "rxjs";
 import { ChatService, ClientChatRoom } from "@app/services/chat.service";
 import { ApiService } from "@app/services/api.service";
 import { AuthService } from "@app/services/auth.service";
+import { CommonFilters } from "@app/types";
 
 // Actually these are "BaseFilters" ? :)
-export interface RoomFilters {
-  order?: string;
-  count?: number;
-  search?: string;
+export interface RoomFilters extends CommonFilters {
+  vote?: number;
 }
 
 const API_URL = '/rooms';

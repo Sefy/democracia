@@ -59,6 +59,9 @@ export class VoteCardComponent implements OnInit {
   }
 
   select(option: VoteOptionPub, e: Event) {
+    e.preventDefault();
+    e.stopPropagation();
+
     this.dialogService.confirm({
       title: 'A voté ?',
       message: `Voulez vous voter "${option.text}" ?`
@@ -69,7 +72,7 @@ export class VoteCardComponent implements OnInit {
     ).subscribe();
   }
 
-  showVoteChart() {
+  openVoteDetail() {
     this.dialogService.openVoteDetail(this.vote);
   }
 }

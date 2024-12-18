@@ -2,6 +2,9 @@
   <app-card-header>
     <h3 class="title primary">{{ vote.title }}</h3>
     <span *ngIf="vote.expiresAt" class="expire-date">Finit le : {{ vote.expiresAt|date }}</span>
+    <span class="expand-view btn" style="color: rgba(0, 0, 0, .5)" (click)="openVoteDetail()">
+      <app-icon icon="expand_content"/>
+    </span>
   </app-card-header>
 
   <app-card-content>
@@ -22,9 +25,14 @@
     </ul>
 
     <div class="vote-footer">
-      <a class="btn" (click)="showVoteChart()">
-        <app-icon icon="show_chart" />
+      <a class="btn" (click)="openVoteDetail()">
+        <app-icon icon="show_chart"/>
         {{ vote.totalCount }} votes au total
+      </a>
+
+      <a class="btn" (click)="openVoteDetail()">
+        <app-icon icon="question_mark"/>
+        {{ vote.debatesCount ?? 0 }} questions en cours
       </a>
     </div>
   </app-card-content>

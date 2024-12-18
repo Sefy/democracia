@@ -2,10 +2,12 @@
   <mat-label *ngIf="label">{{ label }}</mat-label>
   <app-icon *ngIf="iconPrefix" matIconPrefix [icon]="iconPrefix"/>
   <input matInput
+         [type]="type"
          [ngModel]="value"
          (ngModelChange)="_onChange($event)"
          [required]="required"
          [placeholder]="placeholder ?? ''"
+         [disabled]="disabled"
   />
 
   @if (deleteBtnSuffix) {

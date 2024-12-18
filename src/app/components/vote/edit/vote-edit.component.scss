@@ -1,6 +1,4 @@
 :host {
-  --mat-dialog-actions-padding: 0 1rem .75rem;
-  --mat-dialog-with-actions-content-padding: .75rem 1rem;
   --mat-protected-button-horizontal-padding: .75rem;
   --mdc-protected-button-container-height: 32px;
 
@@ -17,9 +15,41 @@
 
     min-width: 370px;
 
+    h3 {
+      font-size: 1rem;
+    }
+
     .options {
       button.add {
         margin: 1rem auto;
+      }
+
+      .option-row {
+        display: flex;
+        place-items: center;
+        gap: 1rem;
+
+        app-base-input {
+          flex: 1;
+        }
+
+        // temp ! @TODO: faire mieux ...
+        .color-picker {
+          width: 20px;
+          height: 20px;
+          border-radius: 5px;
+          position: relative;
+          overflow: hidden;
+          background: var(--color);
+
+          input {
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            left: -25%;
+            top: -25%;
+          }
+        }
       }
     }
   }

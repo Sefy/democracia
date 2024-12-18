@@ -1,12 +1,13 @@
-import {ApplicationConfig, provideZoneChangeDetection} from '@angular/core';
+import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter, withInMemoryScrolling, withViewTransitions } from '@angular/router';
 
-import {routes} from './app.routes';
-import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
-import {provideHttpClient, withInterceptors, withInterceptorsFromDi} from "@angular/common/http";
-import {authInterceptor} from "@app/interceptors/auth.interceptor";
-import {errorInterceptor} from "@app/interceptors/error.interceptor";
-import { MAT_ICON_DEFAULT_OPTIONS } from "@angular/material/icon";
+import { routes } from './app.routes';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { provideHttpClient, withInterceptors } from "@angular/common/http";
+import { authInterceptor } from "@app/interceptors/auth.interceptor";
+import { errorInterceptor } from "@app/interceptors/error.interceptor";
+import { DialogService } from "@app/services/dialog.service";
+import { DIALOG_SERVICE } from "@app/services/interfaces/dialog-service";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -25,6 +26,11 @@ export const appConfig: ApplicationConfig = {
         authInterceptor,
         errorInterceptor
       ])
-    )
+    ),
+
+    {
+      provide: DIALOG_SERVICE,
+      useClass: DialogService
+    }
   ]
 };

@@ -32,6 +32,15 @@ export class VoteEditComponent {
   form: FormGroup;
   loading = false;
 
+  colors = [
+    '#9b20d9',
+    '#7010f9',
+    '#4c46db',
+    '#3667c9',
+    '#1693b1',
+    '#00f194',
+  ];
+
   constructor(
     private fb: FormBuilder,
     private voteService: VoteService,
@@ -42,10 +51,12 @@ export class VoteEditComponent {
       description: [''],
       expirationDate: [''],
       options: this.fb.array([
-        this.fb.group({text: ['Oui', Validators.required]}),
-        this.fb.group({text: ['Non', Validators.required]}),
+        this.fb.group({text: ['Oui', Validators.required], color: [this.colors[0]]}),
+        this.fb.group({text: ['Non', Validators.required], color: [this.colors[1]]}),
       ])
     });
+
+    this.form.get('expirationDate')?.disable();
   }
 
   get options(): FormArray {
@@ -53,7 +64,7 @@ export class VoteEditComponent {
   }
 
   addOption(): void {
-    this.options.push(this.fb.group({text: ['', Validators.required]}));
+    this.options.push(this.fb.group({text: ['', Validators.required], color: [this.colors[this.options.length % this.colors.length]]}));
   }
 
   removeOption(index: number): void {

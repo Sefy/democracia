@@ -45,6 +45,7 @@ interface AutocompleteOptions {
 })
 export class BaseInputComponent implements ControlValueAccessor {
 
+  @Input() type = 'text';
   @Input() label?: string;
   @Input() required = false;
   @Input() placeholder?: string;

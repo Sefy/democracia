@@ -54,8 +54,6 @@ export class VotesComponent {
 
   createVote() {
     this.dialogService.openVoteEdit().afterClosed().subscribe(res => {
-      console.log('CERTES ? enculerie', res);
-
       if (res) {
         this.reload().subscribe();
       }

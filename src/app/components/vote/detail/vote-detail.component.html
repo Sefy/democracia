@@ -1,5 +1,21 @@
 <app-dialog-header title="Salut"/>
 
 <mat-dialog-content>
-  A suivre : l'évolution des votes
+  <h2>Débats et questions autour du vote :</h2>
+
+  <div *ngIf="!!rooms; else loader" class="rooms-container">
+    <app-room-list *ngIf="rooms?.length; else noResult" [rooms]="rooms"/>
+
+    <ng-template #noResult>Aucun résultat</ng-template>
+  </div>
+
+  <h2>Evolution du vote :</h2>
+
+  <div class="chart-container">
+    A suivre ...
+  </div>
 </mat-dialog-content>
+
+<ng-template #loader>
+  <app-loader [size]="75" message="Chargement ..."/>
+</ng-template>

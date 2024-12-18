@@ -8,7 +8,7 @@ import { RoomService } from "@app/services/room.service";
 import { RoomListComponent } from "@app/components/room/list/room-list.component";
 import { LoaderComponent } from "@app/components/_global/loader/loader.component";
 import { PublicRoom } from "@common/room";
-import { debounceTime, interval, map, Subject, Subscription, switchMap, tap } from "rxjs";
+import { debounceTime, forkJoin, interval, map, Subject, Subscription, switchMap, tap } from "rxjs";
 import { RoomListHeaderComponent } from "@app/components/room/list-header/room-list-header.component";
 import { DialogService } from "@app/services/dialog.service";
 import { MatSlideToggle } from "@angular/material/slide-toggle";
@@ -17,6 +17,10 @@ import { RouterLink } from "@angular/router";
 import { AuthService } from "@app/services/auth.service";
 import { HeroBannerComponent } from "@app/components/hero-banner/hero-banner.component";
 import { IconComponent } from '@app/components/_global/icon/icon.component';
+import { VoteListHeaderComponent } from "@app/components/vote/list-header/vote-list-header.component";
+import { VoteService } from "@app/services/vote.service";
+import { VotePub } from "@common/vote";
+import { VotesComponent } from "@app/pages/votes/votes.component";
 
 const HOME_GRID_COUNT = 15;
 const LIVE_RELOAD_TIMER_SEC = 10;
@@ -36,13 +40,16 @@ const LIVE_RELOAD_TIMER_SEC = 10;
     FooterComponent,
     RouterLink,
     HeroBannerComponent,
-    IconComponent
+    IconComponent,
+    VoteListHeaderComponent,
+    VotesComponent
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss'
 })
 export class HomeComponent implements OnInit {
   rooms?: PublicRoom[];
+  votes?: VotePub[];
 
   liveReload?: Subscription;
 
@@ -51,6 +58,7 @@ export class HomeComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private roomService: RoomService,
+    private voteService: VoteService,
     private dialogService: DialogService
   ) {
     this.searchSubject.pipe(
@@ -67,8 +75,21 @@ export class HomeComponent implements OnInit {
   }
 
   loadData() {
+    return forkJoin([
+      this.loadRooms(),
+      this.loadVotes()
+    ]);
+  }
+
+  loadRooms() {
     return this.roomService.getRooms({order: 'trending', count: HOME_GRID_COUNT}).pipe(
       tap(rooms => this.rooms = rooms)
+    );
+  }
+
+  loadVotes() {
+    return this.voteService.getAll({order: 'voteCount', count: HOME_GRID_COUNT}).pipe(
+      tap(data => this.votes = data)
     );
   }
 
@@ -90,5 +111,13 @@ export class HomeComponent implements OnInit {
     this.dialogService.openRoomEdit().afterClosed().pipe(
       switchMap(() => this.loadData())
     ).subscribe();
+  }
+
+  createVote() {
+    this.dialogService.openVoteEdit().afterClosed().subscribe(res => {
+      if (res) {
+        this.loadVotes().subscribe();
+      }
+    });
   }
 }

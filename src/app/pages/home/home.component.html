@@ -1,12 +1,5 @@
 <app-hero-banner imageLink="/about"/>
 
-<div class="home-rooms-container">
-  <app-room-list-header (createRoom)="createRoom()" (searchChange)="searchSubject.next($event)">
-    <mat-slide-toggle (change)="toggleAutoRefresh($event.checked)" [checked]="true">Refresh auto</mat-slide-toggle>
-  </app-room-list-header>
-  <app-room-list *ngIf="rooms; else loader" [rooms]="rooms" [options]="{grid: true}" (needUpdate)="loadData().subscribe()" />
-</div>
-
 <div class="landing">
 
   <div class="bg-overlay main blue"></div>
@@ -30,6 +23,22 @@
     <div class="block-content">
       <h2>Redonner la parole aux citoyens</h2>
 
+<!--      En réalité, le système actuel est à bout de souffle, et montre continuellement ses limites : abstention en-->
+<!--      hausse, perte de confiance envers les représentants politiques toujours plus perdus, et sentiment croissant que-->
+<!--      les décisions sont déconnectées des réalités. De toute évidence, nous avons besoin de rénover et moderniser-->
+<!--      notre démocratie, et pour cela je propose de revenir aux fondamentaux, en se basant sur la définition littéral du mot : le pouvoir au peuple (merci Wikipedia :)). Et pour cela elle repose sur une règle fondamentale : <b>la majorité l'emporte</b>. C'est les idées et l'opinion de la majorité du peuple-->
+<!--      qui doit pouvoir orienter la manière dont évolue le pays. Et pour cela il faut un outil adapté à la consultation-->
+<!--      de l'opinion publique.-->
+<!--      </p>-->
+
+<!--      <p>-->
+<!--        Aujourd’hui, nous avons une opportunité unique. À l’ère du numérique, nous disposons enfin des moyens-->
+<!--        nécessaires pour rendre la démocratie plus vivante et participative. <b>Democracia Project</b> ambitionne de-->
+<!--        redonner un rôle central à chaque citoyen, en sortant enfin de la place de spectateur, condamné à critiqué sans-->
+<!--        pouvoir agir, grace à une plateforme alternative où chacun peut contribuer activement à la construction de-->
+<!--        l’avenir.-->
+<!--      </p>-->
+
       <p>
         Le système actuel montre ses limites : abstention en hausse, défiance généralisée envers les représentants
         politiques, et sentiment croissant que les décisions sont déconnectées des réalités. Pourtant, au cœur de la
@@ -38,9 +47,42 @@
         <br><br>
         Aujourd’hui, nous avons une opportunité unique. À l’ère du numérique, nous disposons enfin des outils
         nécessaires pour rendre la démocratie plus vivante et participative. <b>Democracia Project</b> ambitionne de
-        redonner un rôle central à chaque citoyen, non pas en critiquant, mais en construisant une alternative où chacun
-        peut contribuer activement à l’avenir.
+        redonner un rôle central à chaque citoyen, en sortant enfin de la place de spectateur, condamné à critiqué sans
+        pouvoir agir, grace à une plateforme alternative où chacun peut contribuer activement à la construction de
+        l’avenir.
       </p>
+    </div>
+  </div>
+
+  <div class="tiles-component-container">
+    <app-votes />
+  </div>
+
+  <div class="block">
+    <div class="block-content">
+      <h2>Des décisions prises ensemble</h2>
+
+      <div>
+        Les débats les plus actifs mènent à des consultations citoyennes sous forme de votes clairs et transparents. Ces
+        votes permettent :
+
+        <ul>
+          <li>
+            <span class="label">Une légitimité renforcée :</span> Les décisions, validées par une majorité citoyenne,
+            gagnent en crédibilité.
+          </li>
+
+          <li>
+            <span class="label">Un suivi démocratique :</span> Chaque opinion exprimée contribue à un véritable tableau
+            des aspirations du peuple, sujet par sujet.
+          </li>
+
+          <li>
+            <span class="label">Une continuité dans l’action :</span> Les consultations régulières permettent d’agir en
+            fonction des priorités identifiées par tous.
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 
@@ -76,32 +118,11 @@
     </div>
   </div>
 
-  <div class="block">
-    <div class="block-content">
-      <h2>Des décisions prises ensemble</h2>
-
-      <div>
-        Les débats les plus actifs mènent à des consultations citoyennes sous forme de votes clairs et transparents. Ces
-        votes permettent :
-
-        <ul>
-          <li>
-            <span class="label">Une légitimité renforcée :</span> Les décisions, validées par une majorité citoyenne,
-            gagnent en crédibilité.
-          </li>
-
-          <li>
-            <span class="label">Un suivi démocratique :</span> Chaque opinion exprimée contribue à un véritable tableau
-            des aspirations du peuple, sujet par sujet.
-          </li>
-
-          <li>
-            <span class="label">Une continuité dans l’action :</span> Les consultations régulières permettent d’agir en
-            fonction des priorités identifiées par tous.
-          </li>
-        </ul>
-      </div>
-    </div>
+  <div class="tiles-component-container">
+    <app-room-list-header (createRoom)="createRoom()" (searchChange)="searchSubject.next($event)">
+      <mat-slide-toggle (change)="toggleAutoRefresh($event.checked)" [checked]="true">Refresh auto</mat-slide-toggle>
+    </app-room-list-header>
+    <app-room-list *ngIf="rooms; else loader" [rooms]="rooms" [options]="{grid: true}" (needUpdate)="loadData().subscribe()" />
   </div>
 
   <div class="block">
