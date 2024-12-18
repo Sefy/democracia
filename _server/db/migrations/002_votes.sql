@@ -26,6 +26,20 @@ CREATE TABLE vote_choices
   PRIMARY KEY (vote_option_id, user_id)
 );
 
+CREATE TABLE vote_tags
+(
+  vote_id INTEGER REFERENCES votes (id) ON DELETE CASCADE,
+  tag_id  INTEGER REFERENCES tags (id) ON DELETE CASCADE,
+  PRIMARY KEY (vote_id, tag_id)
+);
+
+CREATE TABLE vote_rooms
+(
+  vote_id INTEGER REFERENCES votes (id) ON DELETE CASCADE,
+  room_id INTEGER REFERENCES rooms (id) ON DELETE CASCADE,
+  PRIMARY KEY (vote_id, room_id)
+);
+
 -- Indexes
 CREATE INDEX idx_votes_created_by ON votes (created_by);
 CREATE INDEX idx_vote_options_vote_id ON vote_options (vote_id);

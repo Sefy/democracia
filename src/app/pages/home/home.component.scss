@@ -2,6 +2,11 @@
 @use 'util';
 
 :host {
+  display: block;
+  overflow: hidden;
+
+  --flag-line-height: max(400px, min(500px, 50vh));
+
   .home-rooms-container {
     max-width: min(100%, 1600px);
     min-width: 50vw;
@@ -13,31 +18,40 @@
     margin: 2em auto;
   }
 
+  .bg-overlay {
+    z-index: -10;
+    position: absolute;
+    opacity: 0.4;
+    filter: blur(1px);
+
+    &.main {
+      rotate: 330deg; // formerly 323 lol .. dunno which looks better -_-
+      height: var(--flag-line-height);
+      width: 200%;
+      left: -50%;
+
+      &.blue {
+        background: linear-gradient(120deg, transparent, var(--primary-light));
+        top: var(--flag-line-height);
+      }
+
+      &.red {
+        background: linear-gradient(120deg, transparent, var(--secondary-light));
+        top: calc(var(--flag-line-height) * 3 + 100px);
+      }
+    }
+  }
+
+  .landing {
+    position: relative;
+  }
+
   .block {
     position: relative;
     padding: 3rem 0;
     display: flex;
     place-items: center;
     place-content: center;
-
-    // Ca me plait paaaaaaaaaas
-    // => sûrement beaucoup mieux avec un fond global sur tout le bloc parent
-    &.blue .bg-overlay {
-      background: linear-gradient(120deg, transparent, var(--primary-light));
-    }
-
-    &.red .bg-overlay {
-      background: linear-gradient(120deg, transparent, var(--secondary-light));
-    }
-
-    .bg-overlay {
-      z-index: -10;
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      opacity: .4;
-      filter: blur(5px);
-    }
 
     // utile ? ou voir pour utiliser du padding .. ?
     // => A mon avis le padding offre moins de possibilité
@@ -104,8 +118,9 @@
 
       .bg-overlay {
         opacity: .2;
-
         background: var(--bg-flag-linear);
+        width: 100%;
+        height: 100%;
       }
 
       .block-content {
