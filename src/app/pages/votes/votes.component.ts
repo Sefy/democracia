@@ -1,17 +1,17 @@
 import { Component } from '@angular/core';
-import { VoteComponent } from "@app/components/vote/vote/vote.component";
 import { CommonModule } from "@angular/common";
 import { VotePub } from "@common/vote";
 import { VoteFilters, VoteService } from "@app/services/vote.service";
 import { debounceTime, distinctUntilChanged, Subject, switchMap, tap } from "rxjs";
 import { VoteListHeaderComponent } from "@app/components/vote/list-header/vote-list-header.component";
 import { DialogService } from "@app/services/dialog.service";
+import { VoteCardComponent } from "@app/components/vote/card/vote-card.component";
 
 @Component({
   selector: 'app-votes',
   imports: [
     CommonModule,
-    VoteComponent,
+    VoteCardComponent,
     VoteListHeaderComponent
   ],
   templateUrl: './votes.component.html',
@@ -44,6 +44,14 @@ export class VotesComponent {
     );
   }
 
+  reloadOne(vote: VotePub) {
+    this.voteService.getVote(vote.id).subscribe(data => {
+      const index = this.votes!.findIndex(v => v.id === vote.id);
+
+      this.votes!.splice(index, 1, data);
+    });
+  }
+
   createVote() {
     this.dialogService.openVoteEdit().afterClosed().subscribe(res => {
       console.log('CERTES ? enculerie', res);
@@ -51,6 +59,6 @@ export class VotesComponent {
       if (res) {
         this.reload().subscribe();
       }
-    })
+    });
   }
 }

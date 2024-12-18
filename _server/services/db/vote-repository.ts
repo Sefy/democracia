@@ -1,6 +1,6 @@
 import { BaseRepository } from "./base-repository";
-import { BaseFilters, QueryBuilder, QueryColumnDef } from "../../util/query-builder";
-import { VoteData } from "@common/vote";
+import { QueryBuilder, QueryColumnDef } from "../../util/query-builder";
+import { VoteData, VoteOption } from "@common/vote";
 import { EntityManager } from "./entity-manager";
 import { VoteFilters } from "../vote.service";
 
@@ -40,6 +40,10 @@ export class VoteRepository extends BaseRepository {
 
     // par défaut on va ramener les options à chaque fois, sinon useless .. ?
     qb.leftJoin('vote_options vo ON vo.vote_id = v.id');
+
+    if (filters?.id) {
+      qb.and('v.id = ' + qb.getCurrentParamIndex()).addParam(filters.id);
+    }
 
     // @TODO: devrait potentiellement chercher dans les options rattachées aussi .. ?
     // mais pas vraiment faisable ici => voir pour pré requête qui remonterait les vote_id des options filtrées ..
@@ -107,21 +111,24 @@ export class VoteRepository extends BaseRepository {
 
       await client.query(`
         INSERT INTO vote_options (vote_id, text)
-        VALUES ${optionValues}
+        VALUES
+        ${optionValues}
       `);
 
       return this.find(vote.id);
     });
   }
 
-  async vote(voteId: string, optionId: string, userId: string): Promise<void> {
+  async vote(voteId: number, optionId: number, userId: number): Promise<void> {
     return this.transaction(async (client) => {
       // Remove existing vote if any
       await client.query(
-        `DELETE FROM vote_choices
-         WHERE user_id = $1 AND vote_option_id IN (
-           SELECT id FROM vote_options WHERE vote_id = $2
-         )`,
+        `DELETE
+         FROM vote_choices
+         WHERE user_id = $1
+           AND vote_option_id IN (SELECT id
+                                  FROM vote_options
+                                  WHERE vote_id = $2)`,
         [userId, voteId]
       );
 
@@ -132,5 +139,13 @@ export class VoteRepository extends BaseRepository {
         [optionId, userId]
       );
     });
+  }
+
+  async findOption(id: number) {
+    const sql = `SELECT *
+                 FROM vote_options
+                 WHERE id = $1`;
+
+    return (await this.query<VoteOption>(sql, [id])).rows[0];
   }
 }

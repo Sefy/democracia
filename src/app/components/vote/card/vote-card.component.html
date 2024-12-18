@@ -1,0 +1,31 @@
+<app-card>
+  <app-card-header>
+    <h3 class="title primary">{{ vote.title }}</h3>
+    <span *ngIf="vote.expiresAt" class="expire-date">Finit le : {{ vote.expiresAt|date }}</span>
+  </app-card-header>
+
+  <app-card-content>
+    <ul *ngIf="options" class="options-list">
+      <li *ngFor="let opt of options; let i = index" [ngStyle]="{
+        '--percent': opt.percent,
+        '--color': colors[i]
+      }">
+        <div class="option-text" (click)="select(opt, $event)">
+          <span class="text">{{ opt.text }}</span>
+          <span class="count">{{ opt.percent }} %</span>
+        </div>
+
+        <div class="bar">
+          <div class="fill"></div>
+        </div>
+      </li>
+    </ul>
+
+    <div class="vote-footer">
+      <a class="btn" (click)="showVoteChart()">
+        <app-icon icon="show_chart" />
+        {{ vote.totalCount }} votes au total
+      </a>
+    </div>
+  </app-card-content>
+</app-card>

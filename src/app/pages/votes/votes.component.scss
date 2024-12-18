@@ -12,14 +12,8 @@
   }
 
   .votes-container {
-    display: flex;
-    place-items: stretch;
-    gap: 1rem 2rem;
-    flex-wrap: wrap;
-
-    ::ng-deep app-card {
-      flex: 1;
-      min-width: 250px;
-    }
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 1rem 1.5rem;
   }
 }

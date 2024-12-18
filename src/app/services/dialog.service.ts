@@ -10,6 +10,8 @@ import {
   ConfirmDialogConfig
 } from "@app/components/_dialog/confirm-dialog/confirm-dialog.component";
 import { VoteEditComponent } from "@app/components/vote/edit/vote-edit.component";
+import { VotePub } from "@common/vote";
+import { VoteDetailComponent } from "@app/components/vote/detail/vote-detail.component";
 
 @Injectable({
   providedIn: 'root'
@@ -64,5 +66,11 @@ export class DialogService {
 
   openVoteEdit() {
     return this.matDialog.open(VoteEditComponent);
+  }
+
+  openVoteDetail(vote: VotePub) {
+    return this.matDialog.open(VoteDetailComponent, {
+      data: {vote}
+    });
   }
 }

@@ -37,6 +37,7 @@ export interface VoteOption {
 
 export interface VotePub extends Omit<VoteData, 'updatedAt' | 'data' | 'room'> {
     options?: VoteOptionPub[];
+    totalCount?: number;
 }
 
 export interface VoteOptionPub extends VoteOption {

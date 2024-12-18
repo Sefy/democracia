@@ -1,30 +1,33 @@
-import { Component, ElementRef, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { VoteOptionPub, VotePub } from "@common/vote";
 import { CardComponent } from "@app/components/_global/card/card.component";
 import { CardHeaderComponent } from "@app/components/_global/card/header/card-header.component";
 import { CommonModule, DatePipe } from "@angular/common";
 import { CardContentComponent } from "@app/components/_global/card/card-content/card-content.component";
-import { MatButton } from "@angular/material/button";
 import { DialogService } from "@app/services/dialog.service";
 import { VoteService } from "@app/services/vote.service";
+import { IconComponent } from "@app/components/_global/icon/icon.component";
+import { filter, switchMap, tap } from "rxjs";
 
 type VoteOptionWithPercent = VoteOptionPub & { percent: number };
 
 @Component({
-  selector: 'app-vote',
+  selector: 'app-vote-card',
   imports: [
     CommonModule,
     CardComponent,
     CardHeaderComponent,
     DatePipe,
     CardContentComponent,
-    MatButton
+    IconComponent
   ],
-  templateUrl: './vote.component.html',
-  styleUrl: './vote.component.scss'
+  templateUrl: './vote-card.component.html',
+  styleUrl: './vote-card.component.scss'
 })
-export class VoteComponent implements OnInit {
+export class VoteCardComponent implements OnInit {
   @Input() vote!: VotePub;
+
+  @Output() needsReload = new EventEmitter();
 
   options?: VoteOptionWithPercent[];
   totalVotes?: number;
@@ -41,7 +44,8 @@ export class VoteComponent implements OnInit {
   constructor(
     private dialogService: DialogService,
     private voteService: VoteService
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
     // this.totalHeight = this.el.offsetHeight;
@@ -58,6 +62,14 @@ export class VoteComponent implements OnInit {
     this.dialogService.confirm({
       title: 'A voté ?',
       message: `Voulez vous voter "${option.text}" ?`
-    }).afterClosed().subscribe(() => this.voteService.vote(this.vote, option));
+    }).afterClosed().pipe(
+      filter(confirmed => !!confirmed),
+      switchMap(() => this.voteService.vote(this.vote, option)),
+      tap(() => this.needsReload.emit())
+    ).subscribe();
+  }
+
+  showVoteChart() {
+    this.dialogService.openVoteDetail(this.vote);
   }
 }

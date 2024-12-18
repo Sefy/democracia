@@ -20,11 +20,15 @@ export class VoteService {
     return this.apiService.get<VotePub[]>(API_URL, filters);
   }
 
+  getVote(id: number) {
+    return this.apiService.get<VotePub>(API_URL + '/' + id);
+  }
+
   createVote(data: VotePub) {
     return this.apiService.post(API_URL, data);
   }
 
   vote(vote: VotePub, option: VoteOptionPub) {
-    return this.apiService.post(API_URL + '/vote-option', vote);
+    return this.apiService.post(API_URL + '/vote-option', {vote: vote.id, opt: option.id});
   }
 }
