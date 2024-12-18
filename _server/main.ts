@@ -12,6 +12,7 @@ import { TagFilters, TagService } from "./services/tag.service";
 import { RoomRouter } from "./routes/room.router";
 import { AuthRouter } from "./routes/auth.router";
 import { VoteRouter } from "./routes/vote.router";
+import { z } from "zod";
 
 class Server {
 
@@ -78,6 +79,10 @@ class Server {
         return next(err);
       }
 
+      if (err instanceof z.ZodError) {
+        return resp.status(400).json({message: err.errors[0].message});
+      }
+
       resp.status(500).send({ok: false, error: 'Internal server error'});
     });
 
@@ -131,19 +136,19 @@ class Server {
   }
 
   get userService() {
-    return this.container.get('user.service') as UserService;
+    return this.container.get('user.service');
   }
 
   get chatService() {
-    return this.container.get('chat.service') as ChatService;
+    return this.container.get('chat.service');
   }
 
   get logService() {
-    return this.container.get('log.service') as LogService;
+    return this.container.get('log.service');
   }
 
   get tagService() {
-    return this.container.get('tag.service') as TagService;
+    return this.container.get('tag.service');
   }
 }
 

@@ -1,3 +1,19 @@
 mat-form-field {
   width: 100%;
 }
+
+::ng-deep .mat-mdc-form-field-icon-prefix > app-icon,
+::ng-deep .mat-mdc-form-field-icon-suffix > app-icon {
+  display: block;
+  padding: 0 12px;
+  box-sizing: content-box;
+}
+
+.delete-btn {
+  cursor: pointer;
+  transition: all .2s ease;
+
+  &:hover {
+    color: var(--mat-sys-error);
+  }
+}

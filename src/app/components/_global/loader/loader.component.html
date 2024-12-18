@@ -1,2 +1,4 @@
+<div *ngIf="overlay" class="bg-overlay"></div>
+
 <mat-progress-spinner [color]="'primary'" [mode]="'indeterminate'" [diameter]="size" [strokeWidth]="size / 15" />
 <h3 *ngIf="message" class="message" [style.font-size.px]="fontSize">{{ message }}</h3>

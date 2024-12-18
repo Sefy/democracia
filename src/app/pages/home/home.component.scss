@@ -124,16 +124,6 @@
         place-content: center;
         gap: 1em;
         flex-wrap: wrap;
-
-        // @TODO: finalement valable pour quasiment tous les boutons ?
-        button {
-          ::ng-deep .mdc-button__label {
-            display: flex;
-            place-items: center;
-            gap: .5rem;
-            line-height: 1;
-          }
-        }
       }
     }
   }

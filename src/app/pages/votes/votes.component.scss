@@ -1,6 +1,6 @@
 :host {
   display: block;
-  max-width: min(1200px, 95%);
+  max-width: min(1500px, 95%);
   margin: auto;
 
   font-family: ui-sans-serif, system-ui, sans-serif;
@@ -9,5 +9,17 @@
 
   app-vote-list-header {
     margin: 1em auto;
+  }
+
+  .votes-container {
+    display: flex;
+    place-items: stretch;
+    gap: 1rem 2rem;
+    flex-wrap: wrap;
+
+    ::ng-deep app-card {
+      flex: 1;
+      min-width: 250px;
+    }
   }
 }

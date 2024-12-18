@@ -5,10 +5,12 @@
     padding: var(--component-padding);
     border-radius: var(--component-radius);
 
-    &.center-inner .mdc-button__label {
+    &:has(app-icon) .mdc-button__label,
+    &:has(mat-icon) .mdc-button__label {
       display: flex;
       place-items: center;
-      gap: 4px;
+      gap: .5rem;
+      line-height: 1;
     }
 
     &.gradient {

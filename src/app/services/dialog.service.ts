@@ -9,6 +9,7 @@ import {
   ConfirmDialogComponent,
   ConfirmDialogConfig
 } from "@app/components/_dialog/confirm-dialog/confirm-dialog.component";
+import { VoteEditComponent } from "@app/components/vote/edit/vote-edit.component";
 
 @Injectable({
   providedIn: 'root'
@@ -49,7 +50,7 @@ export class DialogService {
   openRoomEdit(room?: RoomData) {
     return this.matDialog.open(RoomEditComponent, {
       data: {room},
-      minWidth: '600px'
+      minWidth: 600
     });
   }
 
@@ -59,5 +60,9 @@ export class DialogService {
       disableClose: true,
       minWidth: 350
     });
+  }
+
+  openVoteEdit() {
+    return this.matDialog.open(VoteEditComponent);
   }
 }

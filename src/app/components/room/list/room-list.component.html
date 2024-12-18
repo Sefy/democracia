@@ -7,7 +7,7 @@
             [matTooltip]="room.isActive ? 'Active' : 'Inactive'"></span>
     </app-card-header>
 
-    <app-card-content class="flex flex-col gap-2 mt-3">
+    <app-card-content class="flex column gap-2 mt-3">
       <div class="description">{{ room.description }}</div>
 
       <app-tag-list *ngIf="room.tags?.length" [tags]="room.tags"/>

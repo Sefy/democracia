@@ -26,8 +26,8 @@ export class Container {
 
   stuff: ContainerMap = {};
 
-  get(name: keyof ContainerMap) {
-    return this.stuff[name];
+  get<T extends keyof ContainerMap>(name: T) {
+    return this.stuff[name]!;
   }
 
   put(name: keyof ContainerMap, value: any) {

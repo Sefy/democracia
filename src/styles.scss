@@ -24,8 +24,6 @@ $theme: theme.build(#002654, #CE1126);
 }
 
 @include util.reset();
-@include util.style();
-@include util.animations();
 
 html {
   @include mat.theme((
@@ -33,6 +31,9 @@ html {
     typography: 'Inter',
     density: 0
   ));
+
+  @include util.style();
+  @include util.animations();
 
   scrollbar-width: thin;
   scroll-behavior: smooth;

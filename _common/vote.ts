@@ -29,7 +29,7 @@ export interface VoteData {
 
 export interface VoteOption {
     id: number;
-    title: string;
+    text: string;
     count: number;
 
     // on server : can assign votechoices

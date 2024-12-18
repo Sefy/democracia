@@ -64,6 +64,9 @@
   --shadow-large: 0 6px 12px 0;
 
   --bg-flag-linear: #{bg-flag-linear()};
+
+  // @TODO: handle boolean + two vars for case when we need to be readable on white bg .. ?
+  --bg-flag-linear-contrast: linear-gradient(160deg, var(--mat-sys-primary), light-dark(rgba(0 0 0 / .3), white), var(--mat-sys-secondary));
 }
 
 @mixin style() {
@@ -129,7 +132,7 @@
     display: flex;
   }
 
-  .flex-col {
+  .column {
     flex-direction: column;
   }
 
@@ -178,8 +181,6 @@
 }
 
 @function bg-flag-linear() {
-  // @TODO: handle boolean + two vars for case when we need to be readable on white bg .. ?
-  //@return linear-gradient(160deg, var(--primary-light), light-dark(#9690c7, white), var(--secondary-light));
   @return linear-gradient(160deg, var(--primary-light), white, var(--secondary-light));
 }
 

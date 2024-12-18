@@ -3,6 +3,7 @@ import { VoteRepository } from "./db/vote-repository";
 import { VoteData, VotePub } from "@common/vote";
 import { ObjectUtil } from "../util/object-util";
 import { BaseFilters } from "../util/query-builder";
+import { UserData } from "@common/user";
 
 export interface VoteFilters extends BaseFilters {
   id?: number;
@@ -36,5 +37,12 @@ export class VoteService {
 
   getPublicData(vote: VoteData) {
     return ObjectUtil.omit(vote, ['data', 'updatedAt', 'room']) as VotePub;
+  }
+
+  createVote(data: Partial<VoteData>, user: UserData) {
+    return this.repository.create({
+      ...data,
+      createdBy: user
+    });
   }
 }

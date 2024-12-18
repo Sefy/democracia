@@ -1,13 +1,12 @@
 import { Container } from "../services/container";
 import { RoomFilters } from "../services/db/room-repository";
 import express, { Request, Response } from "express";
-import { AnonData } from "@common/user";
+import { AnonData, UserData } from "@common/user";
 import { RoomService } from "../services/room.service";
 import { MessageService } from "../services/message-service";
 import { ChatService } from "../services/chat.service";
 import { TagService } from "../services/tag.service";
 import { UserService } from "../services/user.service";
-import { authenticateJWT } from "../middlewares/auth.middleware";
 
 export class RoomRouter {
   constructor(
@@ -32,12 +31,10 @@ export class RoomRouter {
       }
     });
 
-    router.post('/', authenticateJWT, async (req: Request, resp: Response) => {
+    router.post('/', this.userService.getUserMw(), async (req: Request, resp: Response) => {
+      const user = req.user as UserData;
 
-      // nul !
-      const authUser = await this.userService.get({email: (req.user as { email: string }).email}, {forAccount: true});
-
-      if (!authUser || !this.userService.hasRole(authUser, 'MODERATOR')) {
+      if (!user || !this.userService.hasRole(user, 'MODERATOR')) {
         throw new Error('unauthorized');
       }
 
@@ -132,17 +129,12 @@ export class RoomRouter {
 
     // ======== PROTECTED ROUTES ======== //
 
-    router.get('/:id/join-auth', authenticateJWT, async (req: Request, res: Response, next) => {
-      const reqUser = req.user as any;
-
-      // @TODO: if !reqUser => pas plus loin
-
+    router.get('/:id/join-auth', this.userService.getUserMw(), async (req: Request, res: Response, next) => {
       try {
-        const user = await this.userService.get({email: reqUser.email});
+        const user = req.user as UserData;
 
         if (!user) {
-          res.send({ok: false, errors: [`No user found`]});
-          return;
+          throw new Error('unauthorized');
         }
 
         const id = +req.params.id;

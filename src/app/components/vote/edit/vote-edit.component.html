@@ -1,0 +1,32 @@
+<app-dialog-header [title]="vote?.id ? 'Modifier Vote' : 'Nouveau vote'"/>
+
+<form (submit)="submit($event)" [formGroup]="form">
+  <mat-dialog-content>
+    <app-loader *ngIf="loading" [overlay]="true" message="Chargement ..." [size]="75" />
+    <app-base-input formControlName="title" label="Titre" [required]="true"/>
+    <app-base-input formControlName="description" label="Description"/>
+
+    <div formArrayName="options" class="options flex column gap-2">
+      <div class="flex items-center">
+        <h3 class="flex-1">Options</h3>
+
+        <button mat-raised-button type="button" (click)="addOption()" [disabled]="options.length >= 5">
+          <app-icon icon="add"></app-icon>
+          Ajouter
+        </button>
+      </div>
+
+      <div
+        *ngFor="let option of options.controls; let i = index"
+        [formGroupName]="i"
+      >
+        <app-base-input formControlName="text" [label]="'Option ' + (i + 1)"
+                        [deleteBtnSuffix]="options.length > 2" (delete)="removeOption(i)"/>
+      </div>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <button mat-raised-button [disabled]="form.invalid">OK</button>
+  </mat-dialog-actions>
+</form>

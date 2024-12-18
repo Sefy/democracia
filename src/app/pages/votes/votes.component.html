@@ -1,3 +1,5 @@
-<app-vote-list-header />
+<app-vote-list-header (create)="createVote()" (searchChange)="searchSubject.next($event)"/>
 
-<app-vote *ngFor="let vote of votes" [vote]="vote" />
+<div class="votes-container">
+  <app-vote *ngFor="let vote of votes" [vote]="vote"/>
+</div>

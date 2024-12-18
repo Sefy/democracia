@@ -57,7 +57,7 @@ export class VoteComponent implements OnInit {
   select(option: VoteOptionPub, e: Event) {
     this.dialogService.confirm({
       title: 'A voté ?',
-      message: `Voulez vous voter "${option.title}" ?`
+      message: `Voulez vous voter "${option.text}" ?`
     }).afterClosed().subscribe(() => this.voteService.vote(this.vote, option));
   }
 }

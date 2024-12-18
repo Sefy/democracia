@@ -6,6 +6,7 @@ import { env } from "../env";
 import { ChatService } from "./chat.service";
 import { UserFilters } from "./db/user-repository";
 import { LogService } from "./log.service";
+import { NextFunction, Request, Response } from "express";
 
 // const SALT_ROUNDS = 7;
 
@@ -168,6 +169,37 @@ export class UserService {
       id: crypto.randomUUID(),
       ip: data.ip
     } as AnonData;
+  }
+
+  // hyper moche ! obligé pour l'instant pour se mettre dans le contexte du service / container
+  getUserMw() {
+    return async (req: Request, res: Response, next: NextFunction) => {
+      const authHeader = req.headers.authorization;
+      const token = authHeader?.split(' ')[1];
+
+      if (!token) {
+        return res.status(401).json({message: 'Authentication required'});
+      }
+
+      try {
+        const tokenData = jwt.verify(token, env.SECRET) as { id: number | string };
+
+        if (typeof tokenData.id !== 'number') {
+          return res.status(403).json({message: 'Invalid token'});
+        }
+
+        const user = await this.repository.findOne({id: tokenData.id});
+
+        if (!user) {
+          return res.status(403).json({message: 'Invalid token'});
+        }
+
+        req.user = user;
+        next();
+      } catch (e) {
+        return res.status(403).json({message: 'Invalid token'});
+      }
+    };
   }
 
   get repository() {
